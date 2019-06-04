@@ -11,8 +11,8 @@ import { AppComponent } from './app.component';
 import {environment} from '../environments/environment';
 import {DateFnsConfigurationService, DateFnsModule} from 'ngx-date-fns';
 import * as esLocale from 'date-fns/locale/es/index.js';
-import {SessionsService} from './services/sessions.service';
-import { SessionDetailComponent } from './components/session/session-detail.component';
+import {SessionsModule} from './components/sessions/sessions.module';
+import {ServicesModule} from './services/services.module';
 
 const SpanishConfig = new DateFnsConfigurationService();
 SpanishConfig.setLocale(esLocale);
@@ -20,8 +20,7 @@ SpanishConfig.setLocale(esLocale);
 
 @NgModule({
   declarations: [
-    AppComponent,
-    SessionDetailComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -30,13 +29,13 @@ SpanishConfig.setLocale(esLocale);
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
-    AngularFireStorageModule,
+    AngularFireStorageModule,     // imports firebase/storage only needed for storage features
     FormsModule,
-    // imports firebase/storage only needed for storage features
+    SessionsModule,
+    ServicesModule
   ],
   providers: [
-    { provide: DateFnsConfigurationService, useValue: SpanishConfig },
-    SessionsService
+    { provide: DateFnsConfigurationService, useValue: SpanishConfig }
     ],
   bootstrap: [AppComponent]
 })

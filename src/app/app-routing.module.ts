@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {SessionDetailComponent} from './components/session/session-detail.component';
 
 const routes: Routes = [
-  { path: 'session/:id', component: SessionDetailComponent},
+  { path: 'sessions',
+    loadChildren: () => import('./components/sessions/sessions.module').then(mod => mod.SessionsModule)
+  },
   { path: '**', redirectTo: ''}
 ];
 

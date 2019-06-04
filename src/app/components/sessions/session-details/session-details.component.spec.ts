@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SessionComponent } from './session-detail.component';
+import { SessionComponent } from './session-details.component';
 
 describe('SessionComponent', () => {
   let component: SessionComponent;

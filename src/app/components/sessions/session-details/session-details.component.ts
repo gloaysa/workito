@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {Session} from '../../models/session.models';
+import {Session} from '../../../models/session.models';
 import {ActivatedRoute, ParamMap} from '@angular/router';
-import {SessionsService} from '../../services/sessions.service';
+import {SessionsService} from '../../../services/sessions.service';
 
 @Component({
   selector: 'workito-session-detail',
-  templateUrl: './session-detail.component.html',
-  styleUrls: ['./session-detail.component.scss']
+  templateUrl: './session-details.component.html',
+  styleUrls: ['./session-details.component.scss']
 })
-export class SessionDetailComponent implements OnInit {
+export class SessionDetailsComponent implements OnInit {
   session: Session;
 
   constructor(
