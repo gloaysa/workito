@@ -1,15 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Session} from '../../models/session.models';
+import {Subscription} from 'rxjs';
+import {SessionsService} from '../../services/sessions.service';
 
 @Component({
   selector: 'workito-sessions',
   templateUrl: './sessions.component.html',
   styleUrls: ['./sessions.component.scss']
 })
-export class SessionsComponent implements OnInit {
+export class SessionsComponent implements OnInit, OnDestroy {
 
-  constructor() { }
+  sessions: Session[];
+  sessionsSubscription: Subscription;
 
-  ngOnInit() {
+  constructor(
+    private sessionsService: SessionsService
+  ) {}
+
+  ngOnInit(): void {
+    this.sessionsSubscription = this.sessionsService.sessionsSubscriber.subscribe(sessions => this.sessions = sessions);
+  }
+
+  addSession() {
+    this.sessionsService.addNewSession();
+  }
+
+  ngOnDestroy(): void {
+    this.sessionsSubscription.unsubscribe();
   }
 
 }

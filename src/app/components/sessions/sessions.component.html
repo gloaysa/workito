@@ -1,3 +1,25 @@
-<p>
-  sessions works!
-</p>
+<div class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <h2 class="is-title is-2">Añade una nueva sesión</h2>
+        <button
+          class="button is-medium"
+          type="button"
+          (click)="addSession()"
+        >Add item</button>
+
+        <div class="is-title">Sesiones anteriores</div>
+        <ul>
+          <li class="text" *ngFor="let session of sessions">
+            <a [routerLink]="['/sessions', session.id]" class="link">{{session.name}}</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

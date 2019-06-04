@@ -11,6 +11,9 @@ import {SessionsRoutingModule} from './sessions-routing.module';
     SessionsComponent,
     SessionDetailsComponent
   ],
+  exports: [
+    SessionsComponent
+  ],
   imports: [
     CommonModule,
     DateFnsModule,
