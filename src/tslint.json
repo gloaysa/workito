@@ -7,10 +7,11 @@
       "app",
       "camelCase"
     ],
+    "no-trailing-whitespace": false,
     "component-selector": [
       true,
       "element",
-      "app",
+      "workito",
       "kebab-case"
     ]
   }
