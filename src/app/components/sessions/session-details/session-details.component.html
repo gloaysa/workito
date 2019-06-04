@@ -1,7 +1,7 @@
 <div class="workito-session-detail">
   <div class="card" *ngIf="session">
     <div class="card-header">{{session.name}}</div>
-    <div class="card-content">{{session.stoppedAt | dfnsDifferenceInHours:session.createdAt}} hours</div>
+    <div class="card-content">{{session.timer | date:'HH:mm:ss'}}</div>
   </div>
 </div>
 

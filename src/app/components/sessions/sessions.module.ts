@@ -5,11 +5,13 @@ import {SessionsComponent} from './sessions.component';
 import {SessionDetailsComponent} from './session-details/session-details.component';
 import {DateFnsModule} from 'ngx-date-fns';
 import {SessionsRoutingModule} from './sessions-routing.module';
+import { NewSessionComponent } from './new-session/new-session.component';
 
 @NgModule({
   declarations: [
     SessionsComponent,
-    SessionDetailsComponent
+    SessionDetailsComponent,
+    NewSessionComponent
   ],
   exports: [
     SessionsComponent

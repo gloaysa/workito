@@ -34,11 +34,14 @@ export class SessionsService {
     });
   }
 
-
-  addNewSession() {
+  createNewSession(): Session {
     const id = this.afs.createId();
     const session = new Session(id);
-
     this.sessionsCollection.doc(id).set(Object.assign({}, session));
+    return session;
+  }
+
+  updateSession(session) {
+    this.sessionsCollection.doc(session.id).update(Object.assign({}, session));
   }
 }

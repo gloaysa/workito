@@ -13,16 +13,10 @@ export class SessionsComponent implements OnInit, OnDestroy {
   sessions: Session[];
   sessionsSubscription: Subscription;
 
-  constructor(
-    private sessionsService: SessionsService
-  ) {}
+  constructor(private sessionsService: SessionsService) {}
 
   ngOnInit(): void {
     this.sessionsSubscription = this.sessionsService.sessionsSubscriber.subscribe(sessions => this.sessions = sessions);
-  }
-
-  addSession() {
-    this.sessionsService.addNewSession();
   }
 
   ngOnDestroy(): void {
