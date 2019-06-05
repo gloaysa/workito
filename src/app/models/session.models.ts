@@ -1,5 +1,5 @@
 import {format} from 'date-fns';
-import {Deserialize} from './deserialize.model';
+import {Deserialize} from './deserialize.interface';
 
 import * as esLocale from 'date-fns/locale/es/index.js';
 

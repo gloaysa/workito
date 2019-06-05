@@ -13,6 +13,7 @@ import {DateFnsConfigurationService, DateFnsModule} from 'ngx-date-fns';
 import * as esLocale from 'date-fns/locale/es/index.js';
 import {SessionsModule} from './components/sessions/sessions.module';
 import {ServicesModule} from './services/services.module';
+import {UsersModule} from './components/users/users.module';
 
 const SpanishConfig = new DateFnsConfigurationService();
 SpanishConfig.setLocale(esLocale);
@@ -32,7 +33,8 @@ SpanishConfig.setLocale(esLocale);
     AngularFireStorageModule,     // imports firebase/storage only needed for storage features
     FormsModule,
     SessionsModule,
-    ServicesModule
+    ServicesModule,
+    UsersModule
   ],
   providers: [
     { provide: DateFnsConfigurationService, useValue: SpanishConfig }
