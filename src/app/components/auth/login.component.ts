@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from '../../../services/auth.service';
+
+import {AuthService} from '../../services/auth.service';
 
 @Component({
-  selector: 'workito-user-login',
-  templateUrl: './user-login.component.html',
-  styleUrls: ['./user-login.component.scss']
+  selector: 'workito-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
-export class UserLoginComponent implements OnInit {
+export class LoginComponent implements OnInit {
   user: string;
   password: string;
 

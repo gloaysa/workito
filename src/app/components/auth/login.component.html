@@ -2,7 +2,7 @@
   <div class="container">
     <div class="field">
       <p class="control has-icons-left has-icons-right">
-        <input class="input" type="email" placeholder="Email" id="email">
+        <input class="input" [(ngModel)]="user" type="email" placeholder="Email" id="email">
         <span class="icon is-small is-left">
       <i class="fa fa-envelope"></i>
     </span>
@@ -13,7 +13,7 @@
     </div>
     <div class="field">
       <p class="control has-icons-left">
-        <input class="input" type="password" placeholder="Password" id="password">
+        <input class="input" type="password" [(ngModel)]="password" placeholder="Password" id="password">
         <span class="icon is-small is-left">
       <i class="fa fa-lock"></i>
     </span>
@@ -21,7 +21,7 @@
     </div>
     <div class="field">
       <p class="control">
-        <button class="button is-success">
+        <button class="button is-success" (click)="login()">
           Login
         </button>
       </p>
