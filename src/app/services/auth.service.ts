@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { User } from 'firebase';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -32,12 +33,16 @@ export class AuthService {
   async logout() {
     await this.afAuth.auth.signOut();
     localStorage.removeItem('user');
-    this.router.navigate(['user/login']);
+    this.router.navigate(['user/auth']);
   }
 
-  isLoggedIn(): boolean {
+  get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
     return user !== null;
+  }
+
+  get currentUserObservable(): Observable<any> {
+    return this.afAuth.authState;
   }
 
 

@@ -14,6 +14,8 @@ import * as esLocale from 'date-fns/locale/es/index.js';
 import {SessionsModule} from './components/sessions/sessions.module';
 import {ServicesModule} from './services/services.module';
 import {UsersModule} from './components/users/users.module';
+import { LoginComponent } from './components/auth/login.component';
+import {UserGuard} from './guards/user.guard';
 
 const SpanishConfig = new DateFnsConfigurationService();
 SpanishConfig.setLocale(esLocale);
@@ -21,7 +23,8 @@ SpanishConfig.setLocale(esLocale);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +40,8 @@ SpanishConfig.setLocale(esLocale);
     UsersModule
   ],
   providers: [
-    { provide: DateFnsConfigurationService, useValue: SpanishConfig }
+    { provide: DateFnsConfigurationService, useValue: SpanishConfig },
+    UserGuard
     ],
   bootstrap: [AppComponent]
 })
