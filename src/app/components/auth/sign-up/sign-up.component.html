@@ -1,0 +1,33 @@
+<div class="section">
+  <div class="container">
+    <div class="field">
+      <p class="control has-icons-left has-icons-right">
+        <input class="input" [(ngModel)]="user" type="email" placeholder="Email" id="email">
+        <span class="icon is-small is-left">
+      <i class="fa fa-envelope"></i>
+    </span>
+        <span class="icon is-small is-right">
+      <i class="fa fa-check"></i>
+    </span>
+      </p>
+    </div>
+    <div class="field">
+      <p class="control has-icons-left">
+        <input class="input" type="password" [(ngModel)]="password" placeholder="Password" id="password">
+        <span class="icon is-small is-left">
+      <i class="fa fa-lock"></i>
+    </span>
+      </p>
+    </div>
+    <div class="field">
+      <p class="control">
+        <button class="button is-info" (click)="signUp()">
+          Regístrate
+        </button>
+      </p>
+    </div>
+  </div>
+  <p>
+    <a class="link" routerLink="/login">O identifícate</a>
+  </p>
+</div>
