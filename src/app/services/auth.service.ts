@@ -21,13 +21,16 @@ export class AuthService {
   }
 
   async login(email: string, password: string) {
+    await this.afAuth.auth.signInWithEmailAndPassword(email, password)
+        .catch(error => console.log('error', error.message));
+    this.router.navigate(['user']);
 
-    try {
-      await this.afAuth.auth.signInWithEmailAndPassword(email, password);
-      this.router.navigate(['user']);
-    } catch (e) {
-      console.error('Error!'  +  e.message);
-    }
+  }
+
+  async signUp(email: string, password: string) {
+    await this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+      .catch(error => console.log(error.message));
+    this.router.navigate(['user']);
   }
 
   async logout() {

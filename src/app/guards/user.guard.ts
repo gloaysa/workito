@@ -22,7 +22,13 @@ export class UserGuard implements CanActivate, CanActivateChild {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
-    return this.checkUserStatusAndRedirect();
+    // redirect and return false
+    if (!this.auth.isLoggedIn) {
+      this.router.navigate(['']);
+      return false;
+    }
+
+    return true;
   }
 
   private checkUserStatusAndRedirect() {
