@@ -16,7 +16,9 @@ export class SessionsComponent implements OnInit, OnDestroy {
   constructor(private sessionsService: SessionsService) {}
 
   ngOnInit(): void {
-    this.sessionsSubscription = this.sessionsService.sessionsSubscriber.subscribe(sessions => this.sessions = sessions);
+    this.sessionsSubscription = this.sessionsService.getSessionsAsObservable.subscribe(sessions => {
+      this.sessions = sessions;
+    });
   }
 
   ngOnDestroy(): void {

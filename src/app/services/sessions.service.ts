@@ -3,15 +3,12 @@ import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firest
 
 import {SessionModel} from '../models/session.model';
 import {UserService} from './user.service';
-import {Observable, Subject} from 'rxjs';
+import {ReplaySubject} from 'rxjs';
 
 @Injectable()
 export class SessionsService {
-  private sessions$: Subject<SessionModel[]> = new Subject();
+  private sessions$: ReplaySubject<SessionModel[]> = new ReplaySubject(1);
   private sessionsCollection: AngularFirestoreCollection<any>;
-  private sessions: SessionModel[] = [];
-
-  public sessionsSubscriber: Observable<SessionModel[]> = this.sessions$.asObservable();
 
   constructor(private db: AngularFirestore, private userService: UserService) {
     this.userService.currentUserObservable.subscribe(user => {
@@ -22,21 +19,8 @@ export class SessionsService {
 
   }
 
-  getSessions(): void {
-    this.sessionsCollection.valueChanges()
-      .subscribe(sessions => {
-        const deserializeSessions =  sessions.map(session => {
-          return new SessionModel(session.id, session.uid).deserialize(session);
-        });
-        this.sessions = deserializeSessions;
-        this.sessions$.next(deserializeSessions);
-      });
-  }
-
-  getSession(id): SessionModel {
-    return this.sessions.find(session => {
-      return session.id === id;
-    });
+  get getSessionsAsObservable() {
+    return this.sessions$.asObservable();
   }
 
   async createNewSession(name?): Promise<SessionModel> {
@@ -49,7 +33,21 @@ export class SessionsService {
     return session;
   }
 
-  updateSession(session) {
-    this.sessionsCollection.doc(session.id).update(Object.assign({}, session));
+  async updateSession(session: SessionModel): Promise<void> {
+    await this.sessionsCollection.doc(session.id).update(Object.assign({}, session));
+  }
+
+  async destroySession(session: SessionModel): Promise<void> {
+    await this.sessionsCollection.doc(session.id).delete();
+  }
+
+  private getSessions(): void {
+    this.sessionsCollection.valueChanges()
+      .subscribe(sessions => {
+        const deserializeSessions =  sessions.map(session => {
+          return new SessionModel(session.id, session.uid).deserialize(session);
+        });
+        this.sessions$.next(deserializeSessions);
+      });
   }
 }

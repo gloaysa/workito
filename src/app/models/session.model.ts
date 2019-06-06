@@ -10,6 +10,7 @@ export class SessionModel implements Deserialize {
     this.createdAt = new Date().toString();
     this.name = name || SessionModel.generateName();
     this.timer = new Date(2000, 1, 1).toString();
+    this.started = false;
     this.stopped = false;
     this.paused = true;
   }
@@ -18,8 +19,10 @@ export class SessionModel implements Deserialize {
   createdAt: string;
   name: string;
   timer: any;
+  started: boolean;
   stopped: boolean;
   paused: boolean;
+  comments: string;
   protected timerInterval;
 
   static generateName(): string {

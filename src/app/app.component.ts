@@ -11,8 +11,4 @@ export class AppComponent {
   title = 'workito';
   constructor(private userService: UserService) {}
 
-  logout() {
-    this.userService.logout();
-  }
-
 }

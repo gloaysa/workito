@@ -5,24 +5,23 @@
       <h1 class="title is-1">Welcome to {{ title }}!</h1>
     </div>
     <button
-      class="button is-danger"
-      *ngIf="userService.currentUser"
-      (click)="logout()"
-      [routerLink]="['/login']"
-      >Logout</button>
+      class="button is-info"
+      *ngIf="userService.userLoggedIn"
+      [routerLink]="['/user']"
+      >Usuario</button>
     <button
       class="button is-info"
-      *ngIf="!userService.currentUser"
+      *ngIf="!userService.userLoggedIn"
       [routerLink]="['/sign-up']"
     >Sign Up</button>
     <button
       class="button is-info"
-      *ngIf="!userService.currentUser"
+      *ngIf="!userService.userLoggedIn"
       [routerLink]="['/login']"
     >Login</button>
     <button
       class="button is-primary"
-      *ngIf="userService.currentUser"
+      *ngIf="userService.userLoggedIn"
       [routerLink]="['/sessions']"
     >Sessions</button>
   </div>

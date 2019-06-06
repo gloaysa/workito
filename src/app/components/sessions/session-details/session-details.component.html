@@ -1,20 +1,47 @@
-<div class="workito-session-details card" *ngIf="session">
-  <div class="workito-session-details__name card-header-title">
-    {{session.name}}
+<div class="columns is-centered">
+  <div class="column is-full-mobile is-half-tablet is-one-quarter-desktop">
+    <div class="workito-session-details card" *ngIf="session">
+      <div class="workito-session-details__name card-header-title">
+        <input type="text" class="input is-static title" [(ngModel)]="session.name">
+      </div>
+      <div class="card-content">
+        <p class="content workito-session-details__counter">{{session.timer | date:'HH:mm:ss'}}</p>
+        <div class="content">
+          <h4 class="is-title">Comentarios</h4>
+          <textarea
+            class="workito-session-details__textarea textarea"
+            name="comments"
+            [(ngModel)]="session.comments"></textarea>
+        </div>
+      </div>
+      <footer class="card-footer">
+        <a class="card-footer-item button is-success" *ngIf="session.stopped"
+           (click)="updateSession()"
+        >Guardar cambios
+        </a>
+        <a class="card-footer-item button is-info" *ngIf="!session.started"
+           (click)="startTimer()"
+        >Empezar una sesión
+        </a>
+        <a class="card-footer-item button is-warning" *ngIf="!session.paused && !session.stopped"
+           (click)="pauseTimer()"
+        >Pausar
+        </a>
+        <a class="card-footer-item button is-primary" *ngIf="session.started && session.paused && !session.stopped"
+           (click)="startTimer()"
+        >Reanudar
+        </a>
+        <a class="card-footer-item button is-danger" *ngIf="session.started && !session.stopped"
+           (click)="stopTimer()"
+        >Parar
+        </a>
+        <a class="card-footer-item button is-danger"
+           *ngIf="session.stopped"
+           (click)="deleteSession()"
+        >Borrar sesión
+        </a>
+      </footer>
+    </div>
   </div>
-  <div class="card-content">
-    <p class="content workito-session-details__counter">{{session.timer | date:'HH:mm:ss'}}</p>
-  </div>
-  <footer class="card-footer">
-    <a class="card-footer-item button is-warning" *ngIf="!session.paused && !session.stopped" (click)="pauseTimer()">
-      Pausar
-    </a>
-    <a class="card-footer-item button is-primary" *ngIf="session.paused && !session.stopped" (click)="resumeTimer()">
-      Reanudar
-    </a>
-    <a class="card-footer-item button is-danger" *ngIf="!session.stopped" (click)="stopTimer()">
-      Parar
-    </a>
-  </footer>
 </div>
 

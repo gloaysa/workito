@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'workito-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent  {
 
-  constructor() { }
+  constructor(private userService: UserService) {}
 
-  ngOnInit() {
+  logout() {
+    this.userService.logout();
   }
 
 }
