@@ -3,7 +3,7 @@ import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firest
 
 import {Session} from '../models/session.models';
 import {Observable, Subject} from 'rxjs';
-import {AuthService} from './auth.service';
+import {UserService} from './user.service';
 
 @Injectable()
 export class SessionsService {
@@ -14,11 +14,10 @@ export class SessionsService {
 
   public sessionsSubscriber: Observable<Session[]> = this.sessions$.asObservable();
 
-  constructor(private db: AngularFirestore, private authService: AuthService) {
-    this.user = this.authService.currentUser;
+  constructor(private db: AngularFirestore, private userService: UserService) {
+    this.user = this.userService.currentUser;
     this.sessionsCollection = db.collection<Session[]>('sessions');
     this.getSessions();
-
   }
 
   getSessions(): void {

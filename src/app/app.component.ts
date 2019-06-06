@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AuthService} from './services/auth.service';
+import {UserService} from './services/user.service';
 
 
 @Component({
@@ -9,10 +9,10 @@ import {AuthService} from './services/auth.service';
 })
 export class AppComponent {
   title = 'workito';
-  constructor(private authService: AuthService) {}
+  constructor(private userService: UserService) {}
 
   logout() {
-    this.authService.logout();
+    this.userService.logout();
   }
 
 }

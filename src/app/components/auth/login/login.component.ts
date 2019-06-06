@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import {AuthService} from '../../../services/auth.service';
+import {UserService} from '../../../services/user.service';
 
 @Component({
   selector: 'workito-login',
@@ -11,13 +11,13 @@ export class LoginComponent implements OnInit {
   user: string;
   password: string;
 
-  constructor(private authService: AuthService) { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
   }
 
   login() {
-    this.authService.login(this.user, this.password);
+    this.userService.login(this.user, this.password);
   }
 
 }
