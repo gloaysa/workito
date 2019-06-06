@@ -4,6 +4,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
 
 import { User } from 'firebase';
+import {UserInterface} from '../models/user.interface';
 
 @Injectable()
 export class AuthService {
@@ -32,18 +33,21 @@ export class AuthService {
     this.router.navigate(['user/auth']);
   }
 
-  private createNewUserInDataBase(newUser) {
-    const user = {id: '', name: '', email: ''};
-    user.id = newUser.uid;
-    user.name = newUser.displayName;
-    user.email = newUser.email;
-    console.log(user);
-    this.saveUser(user);
+  private createNewUserInDataBase(user: User) {
+    const newUser = {
+      uid: user.uid,
+      displayName: user.displayName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      photoURL: user.photoURL
+    };
+    console.log(new UserInterface().deserialize(newUser));
+    this.saveUser(new UserInterface().deserialize(newUser));
 
   }
 
-  saveUser(user) {
-    this.db.collection<User[]>('users').doc(user.id).set(user);
+  private saveUser(user: UserInterface) {
+    this.db.collection<User[]>('users').doc(user.uid).set(Object.assign({}, user));
   }
 
 }
