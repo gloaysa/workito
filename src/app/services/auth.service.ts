@@ -41,7 +41,6 @@ export class AuthService {
       phoneNumber: user.phoneNumber,
       photoURL: user.photoURL
     };
-    console.log(new UserInterface().deserialize(newUser));
     this.saveUser(new UserInterface().deserialize(newUser));
 
   }

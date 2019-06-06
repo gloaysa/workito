@@ -31,7 +31,7 @@ export class UserService {
     return this.user;
   }
 
-  get currentUserObservable(): Observable<any> {
+  get currentUserObservable(): Observable<User> {
     return this.afAuth.authState;
   }
 

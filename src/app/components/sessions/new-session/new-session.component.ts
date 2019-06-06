@@ -20,8 +20,10 @@ export class NewSessionComponent implements OnInit {
   }
 
   createNewSession() {
-    this.session = this.sessionsService.createNewSession();
-    this.startTimer();
+    this.sessionsService.createNewSession().then(session => {
+      this.session = session;
+      this.startTimer();
+    });
   }
 
   startTimer() {

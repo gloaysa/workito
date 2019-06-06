@@ -10,14 +10,16 @@ export class SessionsService {
   private sessions$: Subject<Session[]> = new Subject();
   private sessionsCollection: AngularFirestoreCollection<any>;
   private sessions: Session[] = [];
-  private user;
 
   public sessionsSubscriber: Observable<Session[]> = this.sessions$.asObservable();
 
   constructor(private db: AngularFirestore, private userService: UserService) {
-    this.user = this.userService.currentUser;
-    this.sessionsCollection = db.collection<Session[]>('sessions');
-    this.getSessions();
+    this.userService.currentUserObservable.subscribe(user => {
+      this.sessionsCollection = db.collection<Session[]>('users').doc(user.uid)
+        .collection('sessions');
+      this.getSessions();
+    });
+
   }
 
   getSessions(): void {
@@ -37,11 +39,13 @@ export class SessionsService {
     });
   }
 
-  createNewSession(): Session {
+  async createNewSession(): Promise<Session> {
     const id = this.db.createId();
-    const uid = this.user.uid;
-    const session = new Session(id, uid);
-    this.sessionsCollection.doc(id).set(Object.assign({}, session));
+    let session: Session;
+    await this.userService.currentUserObservable.subscribe(user => {
+      session = new Session(id, user.uid);
+      this.sessionsCollection.doc(id).set(Object.assign({}, session));
+    });
     return session;
   }
 
