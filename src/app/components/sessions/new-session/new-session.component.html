@@ -1,32 +1,22 @@
 <div class="workito-new-session section">
   <div class="container">
-    <div class="card">
-      <div class="workito-new-session__name card-header-title" *ngIf="session">
-        {{session.name}}
-      </div>
-      <div class="card-content">
-        <span *ngIf="session">{{timer | date:'HH:mm:ss'}}</span>
-        <span *ngIf="!session">00:00:00</span>
-      </div>
-      <footer class="card-footer">
-        <button class="button is-info" *ngIf="!session || session.finished === true" (click)="createNewSession()">
-          Empezar una sesión
-        </button>
-        <div class="buttons" *ngIf="session">
-          <button class="button is-warning" *ngIf="timerRunning" (click)="pauseTimer()">
-            Pausar
-          </button>
-          <button class="button is-primary" *ngIf="!timerRunning && session.finished === false" (click)="resumeTimer()">
-            Reanudar
-          </button>
-          <button class="button is-danger" *ngIf="session.finished === false" (click)="stopTimer()">
-            Parar
-          </button>
+    <div class="columns is-centered">
+      <div class="column is-full-mobile is-half-tablet is-one-quarter-desktop">
+        <div class="card">
+          <div class="workito-new-session__name card-header-title is-centered">
+            <input type="text" class="input is-static" [(ngModel)]="sessionName">
+          </div>
+          <div class="card-content">
+            <div class="content">00:00:00</div>
+          </div>
+          <footer class="card-footer">
+            <a class="card-footer-item button is-info" (click)="createNewSession()">Empezar una sesión </a>
+          </footer>
         </div>
-
-
-      </footer>
-
+      </div>
     </div>
+
+
+
   </div>
 </div>

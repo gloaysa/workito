@@ -4,7 +4,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
 
 import { User } from 'firebase';
-import {UserInterface} from '../models/user.interface';
+import {UserModel} from '../models/user.model';
 
 @Injectable()
 export class AuthService {
@@ -41,11 +41,11 @@ export class AuthService {
       phoneNumber: user.phoneNumber,
       photoURL: user.photoURL
     };
-    this.saveUser(new UserInterface().deserialize(newUser));
+    this.saveUser(new UserModel().deserialize(newUser));
 
   }
 
-  private saveUser(user: UserInterface) {
+  private saveUser(user: UserModel) {
     this.db.collection<User[]>('users').doc(user.uid).set(Object.assign({}, user));
   }
 

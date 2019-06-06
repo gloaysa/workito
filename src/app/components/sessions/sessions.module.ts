@@ -6,6 +6,7 @@ import {SessionDetailsComponent} from './session-details/session-details.compone
 import {DateFnsModule} from 'ngx-date-fns';
 import {SessionsRoutingModule} from './sessions-routing.module';
 import { NewSessionComponent } from './new-session/new-session.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { NewSessionComponent } from './new-session/new-session.component';
   imports: [
     CommonModule,
     DateFnsModule,
-    SessionsRoutingModule
+    SessionsRoutingModule,
+    FormsModule
   ]
 })
 export class SessionsModule { }

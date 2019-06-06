@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Session} from '../../models/session.models';
-import {Subscription} from 'rxjs';
+import {SessionModel} from '../../models/session.model';
 import {SessionsService} from '../../services/sessions.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'workito-sessions',
@@ -10,7 +10,7 @@ import {SessionsService} from '../../services/sessions.service';
 })
 export class SessionsComponent implements OnInit, OnDestroy {
 
-  sessions: Session[];
+  sessions: SessionModel[];
   sessionsSubscription: Subscription;
 
   constructor(private sessionsService: SessionsService) {}

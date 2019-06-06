@@ -1,7 +1,20 @@
-<div class="workito-session-detail">
-  <div class="card" *ngIf="session">
-    <div class="card-header">{{session.name}}</div>
-    <div class="card-content">{{session.timer | date:'HH:mm:ss'}}</div>
+<div class="workito-session-details card" *ngIf="session">
+  <div class="workito-session-details__name card-header-title">
+    {{session.name}}
   </div>
+  <div class="card-content">
+    <p class="content workito-session-details__counter">{{session.timer | date:'HH:mm:ss'}}</p>
+  </div>
+  <footer class="card-footer">
+    <a class="card-footer-item button is-warning" *ngIf="!session.paused && !session.stopped" (click)="pauseTimer()">
+      Pausar
+    </a>
+    <a class="card-footer-item button is-primary" *ngIf="session.paused && !session.stopped" (click)="resumeTimer()">
+      Reanudar
+    </a>
+    <a class="card-footer-item button is-danger" *ngIf="!session.stopped" (click)="stopTimer()">
+      Parar
+    </a>
+  </footer>
 </div>
 

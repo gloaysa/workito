@@ -1,7 +1,7 @@
 import {Deserialize} from './deserialize.interface';
 import {UserInfo} from 'firebase';
 
-export class UserInterface implements Deserialize, UserInfo {
+export class UserModel implements Deserialize, UserInfo {
   constructor() {}
   uid: string;
   displayName: string;
@@ -9,6 +9,7 @@ export class UserInterface implements Deserialize, UserInfo {
   phoneNumber: string;
   photoURL: string;
   providerId: string;
+  protected createdAt = new Date();
 
   deserialize(input: any): this {
     Object.assign(this, input);

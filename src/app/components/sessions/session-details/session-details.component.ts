@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Session} from '../../../models/session.models';
-import {ActivatedRoute, ParamMap} from '@angular/router';
+
+import {SessionModel} from '../../../models/session.model';
 import {SessionsService} from '../../../services/sessions.service';
+import {ActivatedRoute, ParamMap} from '@angular/router';
 
 @Component({
   selector: 'workito-session-detail',
@@ -9,13 +10,12 @@ import {SessionsService} from '../../../services/sessions.service';
   styleUrls: ['./session-details.component.scss']
 })
 export class SessionDetailsComponent implements OnInit {
-  session: Session;
+  session: SessionModel;
 
   constructor(
-    private route: ActivatedRoute,
-    private sessionsService: SessionsService
-
-  ) { }
+    private sessionsService: SessionsService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe(
@@ -23,6 +23,26 @@ export class SessionDetailsComponent implements OnInit {
          this.session = this.sessionsService.getSession(params.get('id'));
       }
     );
+  }
+
+  pauseTimer() {
+    this.session.pauseTimer();
+    this.currentTimerToString();
+    this.sessionsService.updateSession(this.session);
+  }
+
+  resumeTimer() {
+    this.session.startTimer();
+  }
+
+  stopTimer() {
+    this.session.stopTimer();
+    this.currentTimerToString();
+    this.sessionsService.updateSession(this.session);
+  }
+
+  private currentTimerToString() {
+    this.session.timer = this.session.timer.toString();
   }
 
 }

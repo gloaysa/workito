@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {UserInterface} from '../models/user.interface';
+import {UserModel} from '../models/user.model';
 import {Observable} from 'rxjs';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {User} from 'firebase';
@@ -8,12 +8,12 @@ import {AuthService} from './auth.service';
 
 @Injectable()
 export class UserService {
-  private user: UserInterface;
+  private user: UserModel;
 
   constructor(private afAuth: AngularFireAuth, private authService: AuthService) {
     this.afAuth.authState.subscribe((user: User) => {
       if (user) {
-        this.user = new UserInterface().deserialize(user.providerData[0]);
+        this.user = new UserModel().deserialize(user.providerData[0]);
       }
     });
   }
