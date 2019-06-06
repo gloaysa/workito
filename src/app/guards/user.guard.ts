@@ -3,7 +3,6 @@ import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, CanAct
 
 import {Observable} from 'rxjs';
 import {UserService} from '../services/user.service';
-import {map, take, tap} from 'rxjs/operators';
 
 @Injectable()
 export class UserGuard implements CanActivate, CanActivateChild {
@@ -12,30 +11,19 @@ export class UserGuard implements CanActivate, CanActivateChild {
 
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | boolean {
-    if (this.userService.currentUser) { return true; }
-    return this.checkUserStatusAndRedirect();
+    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    if (this.userService.userLoggedIn) { return true; }
+    return this.redirectToLogin();
   }
 
   canActivateChild(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-
-    // redirect and return false
-    this.userService.currentUserObservable.subscribe(user => {
-      if (!user) {
-        this.router.navigate(['']);
-        return false;
-      }
-    });
-    return true;
+    if (this.userService.userLoggedIn) { return true; }
+    return this.redirectToLogin();
   }
 
-  private checkUserStatusAndRedirect(): Observable<boolean> {
-    return this.userService.currentUserObservable.pipe(
-      take(1),
-      map(user => !user),
-      tap(loggedIn => this.router.navigate(['login']))
-    );
+  private redirectToLogin(): Promise<boolean> {
+    return this.router.navigate(['login']);
   }
 }
