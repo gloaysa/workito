@@ -1,18 +1,22 @@
 import {Injectable} from '@angular/core';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+
 import {Session} from '../models/session.models';
 import {Observable, Subject} from 'rxjs';
+import {AuthService} from './auth.service';
 
 @Injectable()
 export class SessionsService {
   private sessions$: Subject<Session[]> = new Subject();
   private sessionsCollection: AngularFirestoreCollection<any>;
   private sessions: Session[] = [];
+  private user;
 
   public sessionsSubscriber: Observable<Session[]> = this.sessions$.asObservable();
 
-  constructor(private afs: AngularFirestore) {
-    this.sessionsCollection = afs.collection<Session[]>('sessions');
+  constructor(private db: AngularFirestore, private authService: AuthService) {
+    this.user = this.authService.currentUser;
+    this.sessionsCollection = db.collection<Session[]>('sessions');
     this.getSessions();
 
   }
@@ -21,7 +25,7 @@ export class SessionsService {
     this.sessionsCollection.valueChanges()
       .subscribe(sessions => {
         const deserializeSessions =  sessions.map(session => {
-          return new Session(session.id).deserialize(session);
+          return new Session(session.id, session.uid).deserialize(session);
         });
         this.sessions = deserializeSessions;
         this.sessions$.next(deserializeSessions);
@@ -35,8 +39,9 @@ export class SessionsService {
   }
 
   createNewSession(): Session {
-    const id = this.afs.createId();
-    const session = new Session(id);
+    const id = this.db.createId();
+    const uid = this.user.uid;
+    const session = new Session(id, uid);
     this.sessionsCollection.doc(id).set(Object.assign({}, session));
     return session;
   }

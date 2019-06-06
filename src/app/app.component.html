@@ -4,6 +4,22 @@
     <div class="container">
       <h1 class="title is-1">Welcome to {{ title }}!</h1>
     </div>
+    <button
+      class="button is-danger"
+      *ngIf="authService.isLoggedIn"
+      (click)="logout()"
+      [routerLink]="['/login']"
+      >Logout</button>
+    <button
+      class="button is-info"
+      *ngIf="!authService.isLoggedIn"
+      [routerLink]="['/sign-up']"
+    >Sign Up</button>
+    <button
+      class="button is-info"
+      *ngIf="!authService.isLoggedIn"
+      [routerLink]="['/login']"
+    >Login</button>
   </div>
 
   <hr>
