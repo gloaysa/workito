@@ -52,6 +52,7 @@ export class SessionDetailsComponent implements OnInit, OnDestroy {
     if (!this.session.started) {
       this.sessionsService.destroySession(this.session);
     }
+    this.sessionsSubscription.unsubscribe();
   }
 
   private startTimer() {
