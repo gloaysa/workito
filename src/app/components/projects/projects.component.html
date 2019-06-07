@@ -1,0 +1,14 @@
+<div class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <div class="is-title">Projectos anteriores</div>
+        <ul>
+          <li class="text" *ngFor="let project of projectsService.projects">
+            <a [routerLink]="['/sessions', project.id]" class="link">{{project.name}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

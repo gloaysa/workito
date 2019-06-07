@@ -9,6 +9,10 @@ const routes: Routes = [
   { path: '', component: AppComponent, canActivate: [UserGuard]},
   { path: 'login', component: LoginComponent },
   { path: 'sign-up', component: SignUpComponent },
+  { path: 'projects',
+    loadChildren: () => import('./components/projects/projects.module').then(mod => mod.ProjectsModule),
+    canActivateChild: [UserGuard]
+  },
   { path: 'sessions',
     loadChildren: () => import('./components/sessions/sessions.module').then(mod => mod.SessionsModule),
     canActivateChild: [UserGuard]

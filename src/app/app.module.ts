@@ -20,6 +20,9 @@ import {SessionsService} from './components/sessions/sessions.service';
 import {AuthService} from './components/auth/auth.service';
 import {UserService} from './components/users/user.service';
 import { FixedNavbarComponent } from './components/fixed-navbar/fixed-navbar.component';
+import { ProjectsComponent } from './components/projects/projects.component';
+import {ProjectsModule} from './components/projects/projects.module';
+import {ProjectsService} from './components/projects/projects.service';
 
 const SpanishConfig = new DateFnsConfigurationService();
 SpanishConfig.setLocale(esLocale);
@@ -42,14 +45,16 @@ SpanishConfig.setLocale(esLocale);
     AngularFireStorageModule,     // imports firebase/storage only needed for storage features
     FormsModule,
     SessionsModule,
-    UsersModule
+    UsersModule,
+    ProjectsModule
   ],
   providers: [
     { provide: DateFnsConfigurationService, useValue: SpanishConfig },
     UserGuard,
     SessionsService,
     AuthService,
-    UserService
+    UserService,
+    ProjectsService
     ],
   bootstrap: [AppComponent]
 })

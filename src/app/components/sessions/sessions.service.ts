@@ -19,8 +19,8 @@ export class SessionsService {
     this.userServiceSubscription = this.userService.userLoggedInAsObservable.subscribe((user) => {
       if (user) {
         this.sessionsCollection = db.collection<SessionModel[]>('users')
-          .doc(this.userService.currentUser.uid)
-          .collection('sessions');
+          .doc(user.uid)
+          .collection('projects').doc(user.uid).collection('sessions');
         this.getSessions();
       } else {
         this.sessionsCollectionSubscription.unsubscribe();
