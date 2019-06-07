@@ -3,46 +3,40 @@ import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firest
 
 import {SessionModel} from '../../models/session.model';
 import {UserService} from '../users/user.service';
-import {Observable, ReplaySubject, Subscription} from 'rxjs';
+import {Subscription} from 'rxjs';
 
 @Injectable()
 export class SessionsService {
-  private sessions$: ReplaySubject<SessionModel[]> = new ReplaySubject(1);
   private sessionsCollection: AngularFirestoreCollection<any>;
-  session: SessionModel;
+  private sessionsCollectionSubscription: Subscription;
+
+  sessions: SessionModel[];
   noSessionIsRunning = true;
-  sessionsCollectionSubscription: Subscription;
-  userSubscription: Subscription;
 
   constructor(private db: AngularFirestore, private userService: UserService) {
-    this.userSubscription = this.userService.currentUserObservable.subscribe(user => {
-      if (user) {
-        this.sessionsCollection = db.collection<SessionModel[]>('users').doc(user.uid)
-          .collection('sessions');
-        this.getSessions();
-      } else {
-        this.userSubscription.unsubscribe();
-        this.sessionsCollectionSubscription.unsubscribe();
-      }
-    });
+    if (this.userService.currentUser) {
+      this.sessionsCollection = db.collection<SessionModel[]>('users')
+        .doc(this.userService.currentUser.uid)
+        .collection('sessions');
+      this.getSessions();
+    } else {
+      this.sessionsCollectionSubscription.unsubscribe();
+    }
   }
 
-  get getSessionsAsObservable(): Observable<SessionModel[]> {
-    return this.sessions$.asObservable();
-  }
-
-  async createNewSession(name?): Promise<void> {
-    if (this.noSessionIsRunning) {
-      const id = this.db.createId();
-      this.userSubscription = await this.userService.currentUserObservable.subscribe(user => {
-        if (user) {
-          this.session = new SessionModel(id, user.uid, name);
-          this.sessionsCollection.doc(id).set(Object.assign({}, this.session));
-        } else {
-          this.userSubscription.unsubscribe();
-        }
-
+  private getSessions(): Promise<void> {
+    return this.sessionsCollection.valueChanges()
+      .forEach(sessions => {
+        this.sessions = sessions.map(session => new SessionModel(session.id, session.uid).deserialize(session));
       });
+  }
+
+  async createNewSession(name?): Promise<SessionModel> {
+    if (this.noSessionIsRunning && this.userService.currentUser) {
+      const id = this.db.createId();
+      const session = new SessionModel(id, this.userService.currentUser.uid, name);
+      await this.sessionsCollection.doc(id).set(Object.assign({}, session));
+      return this.getSession(session.id);
     }
   }
 
@@ -54,21 +48,9 @@ export class SessionsService {
     await this.sessionsCollection.doc(session.id).delete();
   }
 
-  private getSessions(): void {
-    this.sessionsCollectionSubscription = this.sessionsCollection.valueChanges()
-      .subscribe(sessions => {
-        const deserializeSessions =  sessions.map(session => {
-          return new SessionModel(session.id, session.uid).deserialize(session);
-        });
-        this.sessions$.next(deserializeSessions);
-      });
-  }
-
-  async getSession(sessionId: string): Promise<void> {
-    this.getSessionsAsObservable.subscribe(sessions => {
-      this.session = sessions.find(sessionModel => {
-        return sessionModel.id === sessionId;
-      });
+  getSession(sessionId: string): SessionModel {
+    return this.sessions.find(session => {
+      return session.id === sessionId;
     });
   }
 
@@ -78,7 +60,6 @@ export class SessionsService {
       session.startTimer();
       this.noSessionIsRunning = false;
     }
-
   }
 
   pauseTimer(session) {

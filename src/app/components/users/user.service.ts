@@ -1,20 +1,19 @@
 import {Injectable} from '@angular/core';
 
 import {UserModel} from '../../models/user.model';
-import {Observable, ReplaySubject} from 'rxjs';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {User} from 'firebase';
 import {AuthService} from '../auth/auth.service';
 
 @Injectable()
 export class UserService {
-  private user$: ReplaySubject<UserModel> = new ReplaySubject(1);
   private userLogged: boolean;
+  private user: UserModel;
 
   constructor(private afAuth: AngularFireAuth, private authService: AuthService) {
     this.afAuth.authState.subscribe((user: User) => {
       if (user) {
-        this.user$.next(UserService.createUserModel(user));
+        this.user = UserService.createUserModel(user);
         this.userLogged = true;
       }
     });
@@ -40,11 +39,11 @@ export class UserService {
   logout() {
     this.userLogged = false;
     this.authService.logout();
-    this.user$.next(null);
+    this.user = null;
   }
 
-  get currentUserObservable(): Observable<UserModel> {
-    return this.user$.asObservable();
+  get currentUser(): UserModel {
+    return this.user;
   }
 
   get userLoggedIn(): boolean {
