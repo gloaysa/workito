@@ -15,7 +15,8 @@ import {FormsModule} from '@angular/forms';
     NewSessionComponent
   ],
   exports: [
-    SessionsComponent
+    SessionsComponent,
+    NewSessionComponent
   ],
   imports: [
     CommonModule,

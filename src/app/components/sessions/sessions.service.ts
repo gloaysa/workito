@@ -8,9 +8,9 @@ import {Subscription} from 'rxjs';
 @Injectable()
 export class SessionsService {
   private sessionsCollection: AngularFirestoreCollection<any>;
-  private sessionsCollectionSubscription: Subscription;
 
   sessions: SessionModel[];
+  sessionRunning: SessionModel;
   noSessionIsRunning = true;
 
   constructor(private db: AngularFirestore, private userService: UserService) {
@@ -19,8 +19,6 @@ export class SessionsService {
         .doc(this.userService.currentUser.uid)
         .collection('sessions');
       this.getSessions();
-    } else {
-      this.sessionsCollectionSubscription.unsubscribe();
     }
   }
 
@@ -36,7 +34,7 @@ export class SessionsService {
       const id = this.db.createId();
       const session = new SessionModel(id, this.userService.currentUser.uid, name);
       await this.sessionsCollection.doc(id).set(Object.assign({}, session));
-      return this.getSession(session.id);
+      return this.sessionRunning = this.getSession(session.id);
     }
   }
 
