@@ -1,7 +1,10 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div class="workito-app">
-  <nav class="navbar is-dark">
+  <nav class="navbar is-dark is-fixed-top">
     <div class="navbar-brand">
+      <a class="navbar-item" href="https://bulma.io">
+        <img src="../assets/media/pngs/workito.png" alt="workito logo">
+      </a>
       <workito-new-session *ngIf="userService.userLoggedIn"></workito-new-session>
     </div>
   </nav>

@@ -4,6 +4,7 @@ import {UserModel} from '../../models/user.model';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {User} from 'firebase';
 import {AuthService} from '../auth/auth.service';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -48,6 +49,10 @@ export class UserService {
 
   get userLoggedIn(): boolean {
     return this.userLogged;
+  }
+
+  get userLoggedInAsObservable(): Observable<User> {
+    return this.afAuth.authState;
   }
 
 
