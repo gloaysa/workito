@@ -1,19 +1,20 @@
 <div class="workito-new-session navbar-brand">
   <div class="navbar-item">
-    <a class="button" *ngIf="sessionsService.noSessionIsRunning" (click)="createNewSession()">
-      <span class="icon is-small">
-        <i class="fas fa-play-circle"></i>
+    <a class="button is-dark" *ngIf="!sessionsService.noSessionIsRunning">
+      <span class="icon">
+        <i class="fas fa-hourglass-start"></i>
       </span>
     </a>
-    <i *ngIf="!sessionsService.noSessionIsRunning" class="fas fa-hourglass-start"></i>
-  </div>
-
-  <div class="workito-new-session-counter navbar-item" *ngIf="!sessionsService.noSessionIsRunning">
-    <span class="workito-new-session-counter__name">{{sessionsService.sessionRunning.name}}</span>
-    <span class="icon">
+    <span *ngIf="sessionsService.sessionRunning">
+      <a class="button is-dark" [routerLink]="['sessions/' + sessionsService.sessionRunning.id]">
+      <span class="workito-new-session-counter__name">{{sessionsService.sessionRunning.name}}</span>
+      <span class="icon">
       <i class="fas fa-grip-lines-vertical"></i>
     </span>
-    <span class="workito-new-session-counter__timer"> {{sessionsService.sessionRunning.timer | date:'HH mm ss' }}</span>
+      <span
+        class="workito-new-session-counter__timer"> {{sessionsService.sessionRunning.timer | date:'HH mm ss' }}</span>
+    </a>
+    </span>
   </div>
 </div>
 

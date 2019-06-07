@@ -1,0 +1,45 @@
+<nav class="navbar is-dark is-fixed-bottom">
+  <div class="navbar-brand">
+    <div class="workito-fixed-navbar-logged-buttons is-flex" *ngIf="!userService.userLoggedIn">
+      <div class="navbar-item">
+        <a class="button" [routerLink]="['/login']">
+        <span class="icon">
+          <i class="fas fa-sign-in-alt"></i>
+        </span>
+        </a>
+      </div>
+    </div>
+
+    <div class="workito-fixed-navbar-logged-buttons is-flex" *ngIf="userService.userLoggedIn">
+        <div class="navbar-item">
+        <a class="button" routerLink="/user">
+          <span class="icon">
+            <i class="fas fa-user"></i>
+          </span>
+        </a>
+      </div>
+
+      <div class="navbar-item">
+        <a class="button" routerLink="/sessions">
+          <span class="icon">
+            <i class="fas fa-tasks"></i>
+          </span>
+        </a>
+      </div>
+
+      <div class="navbar-item">
+        <a class="button" routerLink="/sessions">
+        <span class="icon is-small">
+          <i class="fas fa-play-circle"></i>
+        </span>
+        </a>
+      </div>
+    </div>
+
+
+
+
+
+  </div>
+
+</nav>
