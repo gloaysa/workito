@@ -12,8 +12,10 @@ export class NewSessionComponent {
   constructor(private sessionsService: SessionsService, private router: Router) { }
 
   createNewSession() {
-    this.sessionsService.createNewSession(this.sessionName).then(session => {
-      this.router.navigate(['sessions/' + session.id]);
-    });
+    if (this.sessionsService.noSessionIsRunning) {
+      this.sessionsService.createNewSession(this.sessionName).then(() => {
+        this.router.navigate(['sessions/' + this.sessionsService.session.id]);
+      });
+    }
   }
 }

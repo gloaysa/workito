@@ -1,9 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 
-import {SessionModel} from '../../../models/session.model';
 import {SessionsService} from '../sessions.service';
-import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'workito-session-detail',
@@ -11,8 +9,6 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./session-details.component.scss']
 })
 export class SessionDetailsComponent implements OnInit, OnDestroy {
-  session: SessionModel;
-  sessionsSubscription: Subscription;
   editing = false;
 
   constructor(private sessionsService: SessionsService, private route: ActivatedRoute, private router: Router) {}
@@ -20,11 +16,7 @@ export class SessionDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.paramMap.subscribe(
       (params: ParamMap) => {
-        this.sessionsSubscription = this.sessionsService.getSessionsAsObservable.subscribe(sessions => {
-          this.session = sessions.find(sessionModel => {
-            return sessionModel.id === params.get('id');
-          });
-        });
+        this.sessionsService.getSession(params.get('id'));
       }
     );
   }
@@ -38,42 +30,32 @@ export class SessionDetailsComponent implements OnInit, OnDestroy {
   }
 
   updateSession() {
-    this.sessionsService.updateSession(this.session);
+    this.sessionsService.updateSession(this.sessionsService.session);
   }
 
   deleteSession() {
-    if (this.session.stopped) {
-      this.sessionsService.destroySession(this.session);
+    if (this.sessionsService.session.stopped) {
+      this.sessionsService.destroySession(this.sessionsService.session);
       this.router.navigate(['sessions/']);
     }
   }
 
   ngOnDestroy(): void {
-    if (!this.session.started) {
-      this.sessionsService.destroySession(this.session);
+    if (!this.sessionsService.session.started) {
+      this.sessionsService.destroySession(this.sessionsService.session);
     }
-    this.sessionsSubscription.unsubscribe();
   }
 
   private startTimer() {
-    this.session.started = true;
-    this.session.startTimer();
+    this.sessionsService.startTimer(this.sessionsService.session);
   }
 
   private pauseTimer() {
-    this.session.pauseTimer();
-    this.currentTimerToString();
-    this.updateSession();
+    this.sessionsService.pauseTimer(this.sessionsService.session);
   }
 
   private stopTimer() {
-    this.session.stopTimer();
-    this.currentTimerToString();
-    this.updateSession();
-  }
-
-  private currentTimerToString() {
-    this.session.timer = this.session.timer.toString();
+    this.sessionsService.stopTimer(this.sessionsService.session);
   }
 
 }

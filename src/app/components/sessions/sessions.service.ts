@@ -3,12 +3,14 @@ import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firest
 
 import {SessionModel} from '../../models/session.model';
 import {UserService} from '../users/user.service';
-import {ReplaySubject, Subscription} from 'rxjs';
+import {Observable, ReplaySubject, Subscription} from 'rxjs';
 
 @Injectable()
 export class SessionsService {
   private sessions$: ReplaySubject<SessionModel[]> = new ReplaySubject(1);
   private sessionsCollection: AngularFirestoreCollection<any>;
+  session: SessionModel;
+  noSessionIsRunning = true;
   sessionsCollectionSubscription: Subscription;
   userSubscription: Subscription;
 
@@ -25,23 +27,23 @@ export class SessionsService {
     });
   }
 
-  get getSessionsAsObservable() {
+  get getSessionsAsObservable(): Observable<SessionModel[]> {
     return this.sessions$.asObservable();
   }
 
-  async createNewSession(name?): Promise<SessionModel> {
-    const id = this.db.createId();
-    let session: SessionModel;
-    this.userSubscription = await this.userService.currentUserObservable.subscribe(user => {
-      if (user) {
-        session = new SessionModel(id, user.uid, name);
-        this.sessionsCollection.doc(id).set(Object.assign({}, session));
-      } else {
-        this.userSubscription.unsubscribe();
-      }
+  async createNewSession(name?): Promise<void> {
+    if (this.noSessionIsRunning) {
+      const id = this.db.createId();
+      this.userSubscription = await this.userService.currentUserObservable.subscribe(user => {
+        if (user) {
+          this.session = new SessionModel(id, user.uid, name);
+          this.sessionsCollection.doc(id).set(Object.assign({}, this.session));
+        } else {
+          this.userSubscription.unsubscribe();
+        }
 
-    });
-    return session;
+      });
+    }
   }
 
   async updateSession(session: SessionModel): Promise<void> {
@@ -60,5 +62,40 @@ export class SessionsService {
         });
         this.sessions$.next(deserializeSessions);
       });
+  }
+
+  async getSession(sessionId: string): Promise<void> {
+    this.getSessionsAsObservable.subscribe(sessions => {
+      this.session = sessions.find(sessionModel => {
+        return sessionModel.id === sessionId;
+      });
+    });
+  }
+
+  startTimer(session) {
+    if (this.noSessionIsRunning) {
+      session.started = true;
+      session.startTimer();
+      this.noSessionIsRunning = false;
+    }
+
+  }
+
+  pauseTimer(session) {
+    session.pauseTimer();
+    this.currentTimerToString(session);
+    this.updateSession(session);
+    this.noSessionIsRunning = true;
+  }
+
+  stopTimer(session) {
+    session.stopTimer();
+    this.currentTimerToString(session);
+    this.updateSession(session);
+    this.noSessionIsRunning = true;
+  }
+
+  private currentTimerToString(session) {
+    session.timer = session.timer.toString();
   }
 }
