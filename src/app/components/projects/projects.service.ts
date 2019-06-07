@@ -33,7 +33,22 @@ export class ProjectsService {
   private getProjects() {
     this.userServiceSubscription = this.projectsCollection.valueChanges()
       .subscribe(projects => {
-        this.projects = projects.map(project => new ProjectModel().deserialize(project));
+        this.projects = projects.map(project => new ProjectModel(project.id, project.uid, project.name).deserialize(project));
       });
+  }
+
+  getProject(projectId: string): ProjectModel {
+    return this.projects.find(project => {
+      return project.id === projectId;
+    });
+  }
+
+  async createNewProject(name): Promise<ProjectModel> {
+    if (this.userService.currentUser && name) {
+      const id = this.db.createId();
+      const project = new ProjectModel(id, this.userService.currentUser.uid, name);
+      await this.projectsCollection.doc(id).set(Object.assign({}, project));
+      return this.getProject(project.id);
+    }
   }
 }

@@ -2,6 +2,25 @@
   <div class="container">
     <div class="columns">
       <div class="column">
+        <form #f="ngForm" (ngSubmit)="f.valid && createNewProject(f.value.name)">
+          <div class="field">
+            <label class="label">Nombre del project</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                required
+                ngModel
+                name="name"
+                #name="ngModel"
+                placeholder="Nombre">
+            </div>
+            <p class="help is-danger" *ngIf="f.submitted && !f.valid">Obligatorio</p>
+          </div>
+          <button class="button">Crear nuevo projecto</button>
+        </form>
+      </div>
+      <div class="column">
         <div class="is-title">Projectos anteriores</div>
         <ul>
           <li class="text" *ngFor="let project of projectsService.projects">

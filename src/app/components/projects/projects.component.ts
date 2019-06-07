@@ -6,11 +6,13 @@ import {ProjectsService} from './projects.service';
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss']
 })
-export class ProjectsComponent implements OnInit {
+export class ProjectsComponent {
 
   constructor(private projectsService: ProjectsService) { }
 
-  ngOnInit() {
+  createNewProject(name) {
+    if (name) {
+      this.projectsService.createNewProject(name);
+    }
   }
-
 }
