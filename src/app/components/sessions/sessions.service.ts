@@ -8,23 +8,35 @@ import {Subscription} from 'rxjs';
 @Injectable()
 export class SessionsService {
   private sessionsCollection: AngularFirestoreCollection<any>;
+  private sessionsCollectionSubscription: Subscription;
+  private userServiceSubscription: Subscription;
 
   sessions: SessionModel[];
   sessionRunning: SessionModel;
   noSessionIsRunning = true;
 
   constructor(private db: AngularFirestore, private userService: UserService) {
-    if (this.userService.currentUser) {
-      this.sessionsCollection = db.collection<SessionModel[]>('users')
-        .doc(this.userService.currentUser.uid)
-        .collection('sessions');
-      this.getSessions();
-    }
+    this.userServiceSubscription = this.userService.userLoggedInAsObservable.subscribe((user) => {
+      if (user) {
+        this.sessionsCollection = db.collection<SessionModel[]>('users')
+          .doc(this.userService.currentUser.uid)
+          .collection('sessions');
+        this.getSessions();
+      } else {
+        this.sessionsCollectionSubscription.unsubscribe();
+        this.userServiceSubscription.unsubscribe();
+      }
+    });
+
   }
 
-  private getSessions(): Promise<void> {
-    return this.sessionsCollection.valueChanges()
-      .forEach(sessions => {
+  static currentTimerToString(session) {
+    session.timer = session.timer.toString();
+  }
+
+  private getSessions() {
+    this.sessionsCollectionSubscription = this.sessionsCollection.valueChanges()
+      .subscribe(sessions => {
         this.sessions = sessions.map(session => new SessionModel(session.id, session.uid).deserialize(session));
       });
   }
@@ -63,19 +75,15 @@ export class SessionsService {
 
   pauseTimer(session) {
     session.pauseTimer();
-    this.currentTimerToString(session);
+    SessionsService.currentTimerToString(session);
     this.updateSession(session);
     this.noSessionIsRunning = true;
   }
 
   stopTimer(session) {
     session.stopTimer();
-    this.currentTimerToString(session);
+    SessionsService.currentTimerToString(session);
     this.updateSession(session);
     this.noSessionIsRunning = true;
-  }
-
-  private currentTimerToString(session) {
-    session.timer = session.timer.toString();
   }
 }
