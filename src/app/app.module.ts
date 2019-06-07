@@ -19,6 +19,7 @@ import { SignUpComponent } from './components/auth/sign-up/sign-up.component';
 import {SessionsService} from './components/sessions/sessions.service';
 import {AuthService} from './components/auth/auth.service';
 import {UserService} from './components/users/user.service';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 const SpanishConfig = new DateFnsConfigurationService();
 SpanishConfig.setLocale(esLocale);
@@ -28,7 +29,8 @@ SpanishConfig.setLocale(esLocale);
   declarations: [
     AppComponent,
     LoginComponent,
-    SignUpComponent
+    SignUpComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

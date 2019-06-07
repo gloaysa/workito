@@ -1,45 +1,12 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div class="workito-app">
+  <workito-navbar></workito-navbar>
   <div class="section">
     <div class="container">
       <h1 class="title is-1">Welcome to {{ title }}!</h1>
     </div>
-
-
-    <div class="navbar">
-      <div class="navbar-content">
-        <div class="buttons">
-          <button
-            class="button is-info"
-            *ngIf="userService.userLoggedIn"
-            [routerLink]="['/user']"
-          >Usuario</button>
-          <button
-            class="button is-info"
-            *ngIf="!userService.userLoggedIn"
-            [routerLink]="['/sign-up']"
-          >Sign Up</button>
-          <button
-            class="button is-info"
-            *ngIf="!userService.userLoggedIn"
-            [routerLink]="['/login']"
-          >Login</button>
-          <button
-            class="button is-primary"
-            *ngIf="userService.userLoggedIn"
-            [routerLink]="['/sessions']"
-          >Sessions</button>
-        </div>
-      </div>
-      <div class="navbar-content">
-        <workito-new-session></workito-new-session>
-      </div>
-    </div>
-
   </div>
-
   <hr>
-
   <div class="column">
     <router-outlet></router-outlet>
   </div>

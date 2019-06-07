@@ -1,15 +1,21 @@
-<div class="workito-new-session is-inline">
-  <div class="workito-new-session__name is-centered">
-    <input type="text" class="input is-static" [(ngModel)]="sessionName">
+<div class="workito-new-session navbar-brand">
+  <div class="navbar-item">
+    <a class="button" *ngIf="sessionsService.noSessionIsRunning" (click)="createNewSession()">
+      <span class="icon is-small">
+        <i class="fas fa-play-circle"></i>
+      </span>
+    </a>
+    <i *ngIf="!sessionsService.noSessionIsRunning" class="fas fa-hourglass-start"></i>
   </div>
-  <div class="">
-    <div class="content" *ngIf="!sessionsService.sessionRunning">00:00:00</div>
-    <div class="content"
-         *ngIf="sessionsService.sessionRunning">{{sessionsService.sessionRunning.timer | date:'HH mm ss' }}</div>
+
+  <div class="workito-new-session-counter navbar-item" *ngIf="!sessionsService.noSessionIsRunning">
+    <span class="workito-new-session-counter__name">{{sessionsService.sessionRunning.name}}</span>
+    <span class="icon">
+      <i class="fas fa-grip-lines-vertical"></i>
+    </span>
+    <span class="workito-new-session-counter__timer"> {{sessionsService.sessionRunning.timer | date:'HH mm ss' }}</span>
   </div>
-  <footer class="">
-    <a class=" button is-info"
-       (click)="createNewSession()"
-    >Empezar una sesión </a>
-  </footer>
 </div>
+
+
+

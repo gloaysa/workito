@@ -55,6 +55,7 @@ export class SessionsService {
   startTimer(session) {
     if (this.noSessionIsRunning) {
       session.started = true;
+      this.sessionRunning = session;
       session.startTimer();
       this.noSessionIsRunning = false;
     }
