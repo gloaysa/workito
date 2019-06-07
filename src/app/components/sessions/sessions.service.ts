@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 
-import {SessionModel} from '../models/session.model';
-import {UserService} from './user.service';
+import {SessionModel} from '../../models/session.model';
+import {UserService} from '../users/user.service';
 import {ReplaySubject, Subscription} from 'rxjs';
 
 @Injectable()

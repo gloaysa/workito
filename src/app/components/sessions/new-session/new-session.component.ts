@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {SessionsService} from '../../../services/sessions.service';
+import {SessionsService} from '../sessions.service';
 import {format} from 'date-fns';
 import {Router} from '@angular/router';
 @Component({

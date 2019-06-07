@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import {UserService} from '../../../services/user.service';
+import {UserService} from '../../users/user.service';
 
 @Component({
   selector: 'workito-login',

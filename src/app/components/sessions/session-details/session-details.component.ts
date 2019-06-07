@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 
 import {SessionModel} from '../../../models/session.model';
-import {SessionsService} from '../../../services/sessions.service';
+import {SessionsService} from '../sessions.service';
 import {Subscription} from 'rxjs';
 
 @Component({

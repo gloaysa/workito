@@ -16,9 +16,9 @@ import {UsersModule} from './components/users/users.module';
 import { LoginComponent } from './components/auth/login/login.component';
 import {UserGuard} from './guards/user.guard';
 import { SignUpComponent } from './components/auth/sign-up/sign-up.component';
-import {SessionsService} from './services/sessions.service';
-import {AuthService} from './services/auth.service';
-import {UserService} from './services/user.service';
+import {SessionsService} from './components/sessions/sessions.service';
+import {AuthService} from './components/auth/auth.service';
+import {UserService} from './components/users/user.service';
 
 const SpanishConfig = new DateFnsConfigurationService();
 SpanishConfig.setLocale(esLocale);

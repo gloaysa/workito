@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 
-import {UserModel} from '../models/user.model';
+import {UserModel} from '../../models/user.model';
 import {Observable, ReplaySubject} from 'rxjs';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {User} from 'firebase';
-import {AuthService} from './auth.service';
+import {AuthService} from '../auth/auth.service';
 
 @Injectable()
 export class UserService {
