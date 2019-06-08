@@ -10,7 +10,7 @@ import {ProjectModel} from '../../models/project.model';
   providedIn: 'root'
 })
 export class ProjectsService {
-  private projectsCollection: AngularFirestoreCollection<any>;
+  projectsCollection: AngularFirestoreCollection<any>;
   private projectsCollectionSubscription: Subscription;
   private userServiceSubscription: Subscription;
 
@@ -30,25 +30,18 @@ export class ProjectsService {
     });
   }
 
-  private getProjects() {
-    this.userServiceSubscription = this.projectsCollection.valueChanges()
+  private async getProjects(): Promise<void> {
+    this.userServiceSubscription = await this.projectsCollection.valueChanges()
       .subscribe(projects => {
         this.projects = projects.map(project => new ProjectModel(project.id, project.uid, project.name).deserialize(project));
       });
   }
 
-  getProject(projectId: string): ProjectModel {
-    if (this.projects) {
-      return this.projects.find(project => project.id === projectId);
-    }
-  }
-
-  async createNewProject(name): Promise<ProjectModel> {
+  async createNewProject(name): Promise<void> {
     if (name && this.userService.currentUser && this.projectNameIsValid(name)) {
       const id = name;
       const project = new ProjectModel(id, this.userService.currentUser.uid, name);
       await this.projectsCollection.doc(id).set(Object.assign({}, project));
-      return this.getProject(project.id);
     }
   }
 
