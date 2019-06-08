@@ -10,9 +10,10 @@ import {ProjectModel} from '../../models/project.model';
   providedIn: 'root'
 })
 export class ProjectsService {
-  projectsCollection: AngularFirestoreCollection<any>;
   private projectsCollectionSubscription: Subscription;
   private userServiceSubscription: Subscription;
+
+  public projectsCollection: AngularFirestoreCollection<any>;
 
   projects: ProjectModel[];
 
@@ -30,6 +31,16 @@ export class ProjectsService {
     });
   }
 
+  private createFriendlyId(id: string): string {
+    let newId = id.replace(/([^a-z0-9_-]|[\t\n\f\r\v\0\s\.,])/gim, '').trim().toLowerCase();
+    let suffix = 1;
+    while (!!this.projects.find(project => project.id === newId)) {
+      newId = newId + '-' + suffix;
+      suffix ++;
+    }
+    return newId;
+  }
+
   private async getProjects(): Promise<void> {
     this.userServiceSubscription = await this.projectsCollection.valueChanges()
       .subscribe(projects => {
@@ -37,16 +48,16 @@ export class ProjectsService {
       });
   }
 
-  async createNewProject(name): Promise<void> {
+  public async createNewProject(name): Promise<void> {
     if (name && this.userService.currentUser && this.projectNameIsValid(name)) {
-      const id = name;
+      const id = this.createFriendlyId(name);
       const project = new ProjectModel(id, this.userService.currentUser.uid, name);
       await this.projectsCollection.doc(id).set(Object.assign({}, project));
     }
   }
 
-  projectNameIsValid(name): boolean {
-    return name && name.length < 31 && !!!this.projects.find(project => project.name === name);
+  public projectNameIsValid(name): boolean {
+    return name && name.length < 31 && !!!this.projects.find(project => project.name.toLowerCase() === name.toLowerCase());
   }
 
 
