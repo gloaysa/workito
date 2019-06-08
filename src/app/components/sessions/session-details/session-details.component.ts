@@ -18,6 +18,10 @@ export class SessionDetailsComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe(
       (params: ParamMap) => {
         this.session = this.sessionsService.getSession(params.get('id'));
+        if (!this.session) {
+          // TODO: inform through notification service that session doesn't exist
+          this.router.navigate(['sessions/']);
+        }
       }
     );
   }
@@ -34,7 +38,7 @@ export class SessionDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (!this.session.started) {
+    if (this.session && !this.session.started) {
       this.sessionsService.destroySession(this.session);
     }
   }

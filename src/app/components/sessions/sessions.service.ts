@@ -59,9 +59,9 @@ export class SessionsService {
   }
 
   getSession(sessionId: string): SessionModel {
-    return this.sessions.find(session => {
-      return session.id === sessionId;
-    });
+    if (this.sessions) {
+      return this.sessions.find(session => session.id === sessionId);
+    }
   }
 
   startTimer(session) {
