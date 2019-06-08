@@ -2,20 +2,22 @@
   <div class="container">
     <div class="columns">
       <div class="column">
-        <form #f="ngForm" (ngSubmit)="f.valid && createNewProject(f.value.name)">
+        <form #nameForm="ngForm" (ngSubmit)="createNewProject()">
           <div class="field">
-            <label class="label">Nombre del project</label>
+            <label class="label">Nombre del projecto</label>
             <div class="control">
               <input
                 class="input"
                 type="text"
+                maxlength="30"
                 required
-                ngModel
+                (keyup)="checkName($event)"
+                [(ngModel)]="name"
                 name="name"
-                #name="ngModel"
                 placeholder="Nombre">
             </div>
-            <p class="help is-danger" *ngIf="f.submitted && !f.valid">Obligatorio</p>
+            <p class="help is-danger" *ngIf="nameForm.touched && !nameForm.valid">Obligatorio</p>
+            <p class="help is-danger" *ngIf="invalidName">Ya hay un proyecto con ese nombre</p>
           </div>
           <button class="button">Crear nuevo projecto</button>
         </form>

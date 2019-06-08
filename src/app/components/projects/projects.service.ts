@@ -38,17 +38,23 @@ export class ProjectsService {
   }
 
   getProject(projectId: string): ProjectModel {
-    return this.projects.find(project => {
-      return project.id === projectId;
-    });
+    if (this.projects) {
+      return this.projects.find(project => project.id === projectId);
+    }
   }
 
   async createNewProject(name): Promise<ProjectModel> {
-    if (this.userService.currentUser && name) {
-      const id = this.db.createId();
+    if (name && this.userService.currentUser && this.projectNameIsValid(name)) {
+      const id = name;
       const project = new ProjectModel(id, this.userService.currentUser.uid, name);
       await this.projectsCollection.doc(id).set(Object.assign({}, project));
       return this.getProject(project.id);
     }
   }
+
+  projectNameIsValid(name): boolean {
+    return name && name.length < 31 && !!!this.projects.find(project => project.name === name);
+  }
+
+
 }

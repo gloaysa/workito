@@ -7,12 +7,18 @@ import {ProjectsService} from './projects.service';
   styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent {
+  private invalidName;
+  private name: string;
 
   constructor(private projectsService: ProjectsService) { }
 
-  createNewProject(name) {
-    if (name) {
-      this.projectsService.createNewProject(name);
+  private createNewProject() {
+    if (this.name && !this.invalidName) {
+      this.projectsService.createNewProject(this.name);
     }
+  }
+
+  private checkName(event: any) {
+    this.invalidName = !this.projectsService.projectNameIsValid(event.target.value);
   }
 }
