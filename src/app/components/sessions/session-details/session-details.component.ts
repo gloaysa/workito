@@ -20,7 +20,7 @@ export class SessionDetailsComponent implements OnInit, OnDestroy {
         this.session = this.sessionsService.getSession(params.get('id'));
         if (!this.session) {
           // TODO: inform through notification service that session doesn't exist
-          this.router.navigate(['sessions/']);
+          // this.router.navigate(['projects/']);
         }
       }
     );

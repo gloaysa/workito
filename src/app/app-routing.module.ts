@@ -13,10 +13,6 @@ const routes: Routes = [
     loadChildren: () => import('./components/projects/projects.module').then(mod => mod.ProjectsModule),
     canActivateChild: [UserGuard]
   },
-  { path: 'sessions',
-    loadChildren: () => import('./components/sessions/sessions.module').then(mod => mod.SessionsModule),
-    canActivateChild: [UserGuard]
-  },
   { path: 'user',
     loadChildren: () => import('./components/users/users.module').then(mod => mod.UsersModule),
     canActivateChild: [UserGuard]

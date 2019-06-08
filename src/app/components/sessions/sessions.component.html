@@ -28,7 +28,7 @@
         <div class="is-title">Sesiones anteriores</div>
         <ul>
           <li class="text" *ngFor="let session of sessions">
-            <a [routerLink]="['/sessions', session.id]" class="link">{{session.name}}</a>
+            <a [routerLink]="[session.id]" class="link">{{session.name}}</a>
           </li>
         </ul>
       </div>
