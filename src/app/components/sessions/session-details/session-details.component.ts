@@ -15,6 +15,8 @@ import {Subscription} from 'rxjs';
 export class SessionDetailsComponent implements OnInit, OnDestroy {
   private session: SessionModel;
   private sessionsCollectionSubscription: Subscription;
+  private childParamSubscription: Subscription;
+  private paramSubscription: Subscription;
 
   constructor(private sessionsService: SessionsService,
               private route: ActivatedRoute,
@@ -22,10 +24,10 @@ export class SessionDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    let projectId;
-    this.route.parent.paramMap.subscribe(paramMap => projectId = paramMap.get('id'));
-    this.route.paramMap.subscribe(paramMap => {
-      const sessionId = paramMap.get('id');
+    let sessionId;
+    this.childParamSubscription = this.route.firstChild.paramMap.subscribe(paramMap => sessionId = paramMap.get('sessionId'));
+    this.paramSubscription = this.route.paramMap.subscribe(paramMap => {
+      const projectId = paramMap.get('projectId');
       if (this.sessionsService.sessionRunning && this.sessionsService.sessionRunning.id === sessionId) {
         this.session = this.sessionsService.sessionRunning;
       } else {
