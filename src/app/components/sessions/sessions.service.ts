@@ -33,11 +33,12 @@ export class SessionsService {
     return this.sessionsCollection.doc(projectId).collection('sessions');
   }
 
-  async createNewSession(projectId, name?): Promise<void> {
+  async createNewSession(projectId, name?): Promise<SessionModel> {
     if (!this.sessionRunning && this.userService.currentUser) {
       const id = this.db.createId();
       const session = new SessionModel(id, this.userService.currentUser.uid, projectId, name);
       await this.getsessionsCollection(projectId).doc(session.id).set(Object.assign({}, session));
+      return session;
     }
   }
 

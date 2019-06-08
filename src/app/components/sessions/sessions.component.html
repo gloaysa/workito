@@ -29,6 +29,7 @@
         <ul>
           <li class="text" *ngFor="let session of sessions">
             <a [routerLink]="['/sessions', session.project, session.id]" class="link">{{session.name}}</a>
+            <span> | {{ session.timer | date:'HH:mm:ss' }}</span>
           </li>
         </ul>
       </div>

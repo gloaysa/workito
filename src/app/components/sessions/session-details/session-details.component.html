@@ -1,6 +1,12 @@
-<div class="columns is-centered">
+<div class="columns is-centered" *ngIf="session">
   <div class="column is-full-mobile is-half-tablet is-one-quarter-desktop">
-    <div class="workito-session-details card" *ngIf="session">
+    <a class="button" [routerLink]="['/projects', session.project]">
+      <span class="icon">
+        <i class="fas fa-chevron-left"></i>
+      </span>
+    </a>
+
+    <div class="workito-session-details card">
       <div class="workito-session-details__name card-header-title">
         <input type="text" class="input is-static title" [(ngModel)]="session.name">
       </div>

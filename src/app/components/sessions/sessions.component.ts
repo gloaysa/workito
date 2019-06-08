@@ -6,6 +6,7 @@ import {ProjectModel} from '../../models/project.model';
 import {SessionModel} from '../../models/session.model';
 import {AutoUnsubscribe} from '../../decorators/autoUnsubscribe.decorator';
 import {Subscription} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'workito-sessions',
@@ -19,7 +20,7 @@ export class SessionsComponent implements OnInit {
   private sessionName = format(new Date(), 'dddd DD MMMM YY');
   private sessions: SessionModel[];
 
-  constructor(private sessionsService: SessionsService) {}
+  constructor(private sessionsService: SessionsService, private router: Router) {}
 
   ngOnInit(): void {
     this.getSessions();
@@ -35,7 +36,7 @@ export class SessionsComponent implements OnInit {
   createNewSession() {
     if (!this.sessionsService.sessionRunning) {
       this.sessionsService.createNewSession(this.project.id, this.sessionName).then(session => {
-        // this.router.navigate(['sessions/' + session.id]);
+        this.router.navigate(['sessions/', session.project, session.id]);
       });
     }
   }

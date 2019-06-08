@@ -6,7 +6,8 @@
       </span>
     </a>
     <span *ngIf="sessionsService.sessionRunning">
-      <a class="button is-dark" [routerLink]="['sessions/' + sessionsService.sessionRunning.id]">
+      <a class="button is-dark"
+         [routerLink]="['sessions/', sessionsService.sessionRunning.project, sessionsService.sessionRunning.id]">
       <span class="workito-new-session-counter__name">{{sessionsService.sessionRunning.name}}</span>
       <span class="icon">
       <i class="fas fa-grip-lines-vertical"></i>
