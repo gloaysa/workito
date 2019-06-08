@@ -1,20 +1,19 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import {SessionsService} from './sessions.service';
 import {format} from 'date-fns';
-import {ActivatedRoute} from '@angular/router';
 import {ProjectModel} from '../../models/project.model';
 import {SessionModel} from '../../models/session.model';
-import {Subscription} from 'rxjs';
+import {AutoUnsubscribe} from '../../decorators/autoUnsubscribe.decorator';
 
 @Component({
   selector: 'workito-sessions',
   templateUrl: './sessions.component.html',
   styleUrls: ['./sessions.component.scss']
 })
-export class SessionsComponent implements OnInit, OnDestroy {
+@AutoUnsubscribe
+export class SessionsComponent implements OnInit {
   @Input() project: ProjectModel;
-  private sessionsCollectionSubscription: Subscription;
   private sessionName = format(new Date(), 'dddd DD MMMM YY');
   private sessions: SessionModel[];
 
@@ -24,9 +23,8 @@ export class SessionsComponent implements OnInit, OnDestroy {
     this.getSessions();
   }
 
-
   getSessions() {
-    this.sessionsCollectionSubscription = this.sessionsService.getsessionsCollection(this.project.id).valueChanges()
+    this.sessionsService.getsessionsCollection(this.project.id).valueChanges()
       .subscribe(sessions => {
         this.sessions = sessions.map(session => new SessionModel(session.id, session.uid, session.project).deserialize(session));
       });
@@ -38,10 +36,6 @@ export class SessionsComponent implements OnInit, OnDestroy {
         // this.router.navigate(['sessions/' + session.id]);
       });
     }
-  }
-
-  ngOnDestroy(): void {
-    this.sessionsCollectionSubscription.unsubscribe();
   }
 
 }

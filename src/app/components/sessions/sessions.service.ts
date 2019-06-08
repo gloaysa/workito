@@ -3,26 +3,21 @@ import {AngularFirestore, AngularFirestoreCollection, DocumentData} from '@angul
 
 import {SessionModel} from '../../models/session.model';
 import {UserService} from '../users/user.service';
-import {Subscription} from 'rxjs';
+import {AutoUnsubscribe} from '../../decorators/autoUnsubscribe.decorator';
 
-@Injectable()
+@Injectable() @AutoUnsubscribe
 export class SessionsService {
   private sessionsCollection: AngularFirestoreCollection<any>;
-  private sessionsCollectionSubscription: Subscription;
-  private userServiceSubscription: Subscription;
 
   sessions: SessionModel[];
   sessionRunning: SessionModel;
 
   constructor(private db: AngularFirestore, private userService: UserService) {
-    this.userServiceSubscription = this.userService.userLoggedInAsObservable.subscribe((user) => {
+    this.userService.userLoggedInAsObservable.subscribe((user) => {
       if (user) {
         this.sessionsCollection = db.collection<SessionModel[]>('users')
           .doc(user.uid)
           .collection('projects');
-      } else {
-        this.sessionsCollectionSubscription.unsubscribe();
-        this.userServiceSubscription.unsubscribe();
       }
     });
 
@@ -36,12 +31,11 @@ export class SessionsService {
     return this.sessionsCollection.doc(projectId).collection('sessions');
   }
 
-  async createNewSession(projectId, name?): Promise<SessionModel> {
+  async createNewSession(projectId, name?): Promise<void> {
     if (!this.sessionRunning && this.userService.currentUser) {
       const id = this.db.createId();
       const session = new SessionModel(id, this.userService.currentUser.uid, projectId, name);
       await this.getsessionsCollection(projectId).doc(session.id).set(Object.assign({}, session));
-      return this.sessionRunning = this.getSession(session.id);
     }
   }
 
@@ -51,12 +45,6 @@ export class SessionsService {
 
   async destroySession(session: SessionModel): Promise<void> {
     await this.getsessionsCollection(session.project).doc(session.id).delete();
-  }
-
-  getSession(sessionId: string): SessionModel {
-    if (this.sessions) {
-      return this.sessions.find(session => session.id === sessionId);
-    }
   }
 
   startTimer(session) {

@@ -1,29 +1,33 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, ParamMap, Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 import {SessionsService} from '../sessions.service';
 import {SessionModel} from '../../../models/session.model';
+import {AutoUnsubscribe} from '../../../decorators/autoUnsubscribe.decorator';
 
 @Component({
   selector: 'workito-session-detail',
   templateUrl: './session-details.component.html',
   styleUrls: ['./session-details.component.scss']
 })
+@AutoUnsubscribe
 export class SessionDetailsComponent implements OnInit, OnDestroy {
-  session: SessionModel;
+  private session: SessionModel;
 
   constructor(private sessionsService: SessionsService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
-    this.route.paramMap.subscribe(
-      (params: ParamMap) => {
-        this.session = this.sessionsService.getSession(params.get('id'));
-        if (!this.session) {
-          // TODO: inform through notification service that session doesn't exist
-          // this.router.navigate(['projects/']);
-        }
-      }
-    );
+    let projectId;
+    this.route.parent.paramMap.subscribe(paramMap => projectId = paramMap.get('id'));
+    this.route.paramMap.subscribe(paramMap => {
+      const sessionId = paramMap.get('id');
+      this.getSession(projectId, sessionId);
+    });
+  }
+
+  getSession(projectId, sessionId) {
+    this.sessionsService.getsessionsCollection(projectId).doc(sessionId)
+      .valueChanges().subscribe((session: SessionModel) => this.session = session);
   }
 
   updateSession() {
