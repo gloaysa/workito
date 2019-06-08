@@ -27,6 +27,7 @@
         <ul>
           <li class="text" *ngFor="let project of projectsService.projects">
             <a [routerLink]="['/projects', project.id]" class="link">{{project.name}}</a>
+            <a class="button is-small is-danger" (click)="destroyProject(project)" >Delete</a>
           </li>
         </ul>
       </div>

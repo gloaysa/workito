@@ -55,6 +55,10 @@ export class ProjectsService {
     }
   }
 
+  public destroyProject(projectId) {
+    this.projectsCollection.doc(projectId).delete().catch(error => console.log('ERROR:', error.message));
+  }
+
   public projectNameIsValid(name): boolean {
     return name && name.length < 31 && !!!this.projects.find(project => project.name.toLowerCase() === name.toLowerCase());
   }

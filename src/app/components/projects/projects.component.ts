@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {ProjectsService} from './projects.service';
 
 @Component({
@@ -16,6 +16,10 @@ export class ProjectsComponent {
     if (this.name && !this.invalidName) {
       this.projectsService.createNewProject(this.name);
     }
+  }
+
+  private destroyProject(project) {
+    this.projectsService.destroyProject(project.id);
   }
 
   private checkName(event: any) {
