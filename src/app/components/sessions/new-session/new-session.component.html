@@ -1,6 +1,6 @@
 <div class="workito-new-session navbar-brand">
   <div class="navbar-item">
-    <a class="button is-dark" *ngIf="!sessionsService.noSessionIsRunning">
+    <a class="button is-dark" *ngIf="sessionsService.sessionRunning">
       <span class="icon">
         <i class="fas fa-hourglass-start"></i>
       </span>

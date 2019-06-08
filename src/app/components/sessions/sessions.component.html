@@ -2,9 +2,32 @@
   <div class="container">
     <div class="columns">
       <div class="column">
+        <form #nameForm="ngForm" (ngSubmit)="nameForm.valid && createNewSession()">
+          <div class="field has-addons">
+            <div class="control">
+              <input
+                class="input is-static"
+                type="text"
+                maxlength="20"
+                required
+                [(ngModel)]="sessionName"
+                name="name">
+              <p class="help is-danger" *ngIf="nameForm.touched && !nameForm.valid">Obligatorio</p>
+            </div>
+            <div class="control">
+              <button class="button is-info">
+                <span class="icon">
+                  <i class="far fa-plus-square"></i>
+                </span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="column">
         <div class="is-title">Sesiones anteriores</div>
         <ul>
-          <li class="text" *ngFor="let session of sessionsService.sessions">
+          <li class="text" *ngFor="let session of sessions">
             <a [routerLink]="['/sessions', session.id]" class="link">{{session.name}}</a>
           </li>
         </ul>

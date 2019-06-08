@@ -14,8 +14,7 @@ export class ProjectsService {
   private userServiceSubscription: Subscription;
 
   public projectsCollection: AngularFirestoreCollection<any>;
-
-  projects: ProjectModel[];
+  public projects: ProjectModel[];
 
   constructor(private db: AngularFirestore, private userService: UserService) {
     this.userServiceSubscription = this.userService.userLoggedInAsObservable.subscribe((user) => {
@@ -42,7 +41,7 @@ export class ProjectsService {
   }
 
   private async getProjects(): Promise<void> {
-    this.userServiceSubscription = await this.projectsCollection.valueChanges()
+    this.projectsCollectionSubscription = await this.projectsCollection.valueChanges()
       .subscribe(projects => {
         this.projects = projects.map(project => new ProjectModel(project.id, project.uid, project.name).deserialize(project));
       });

@@ -25,7 +25,6 @@ export class ProjectDetailsComponent implements OnInit {
     this.projectsService.projectsCollection.doc(projectId).get().forEach(doc => {
       const newProject = doc.data();
       this.project = new ProjectModel(newProject.uid, newProject.id, newProject.name).deserialize(newProject);
-      console.log(this.project)
     });
   }
 

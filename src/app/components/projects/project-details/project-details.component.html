@@ -1,5 +1,8 @@
 <div class="workito-project-details" *ngIf="project">
   <p>{{project.name}}</p>
 
-  <workito-sessions></workito-sessions>
+  <div *ngIf="project">
+    <workito-sessions [project]="project"></workito-sessions>
+  </div>
+
 </div>

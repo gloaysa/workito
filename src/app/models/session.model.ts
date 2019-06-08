@@ -4,7 +4,7 @@ import {Deserialize} from './deserialize.interface';
 import * as esLocale from 'date-fns/locale/es/index.js';
 
 export class SessionModel implements Deserialize {
-  constructor(id, uid, name?) {
+  constructor(id, uid, projectId, name?) {
     this.id = id;
     this.uid = uid;
     this.createdAt = new Date().toString();
@@ -13,6 +13,7 @@ export class SessionModel implements Deserialize {
     this.started = false;
     this.stopped = false;
     this.paused = true;
+    this.project = projectId;
   }
   id: string;
   uid: string;
@@ -23,6 +24,7 @@ export class SessionModel implements Deserialize {
   stopped: boolean;
   paused: boolean;
   comments: string;
+  project: string;
   protected timerInterval;
 
   static generateName(): string {

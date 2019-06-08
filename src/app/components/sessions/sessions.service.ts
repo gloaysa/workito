@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreCollection, DocumentData} from '@angular/fire/firestore';
 
 import {SessionModel} from '../../models/session.model';
 import {UserService} from '../users/user.service';
@@ -13,15 +13,13 @@ export class SessionsService {
 
   sessions: SessionModel[];
   sessionRunning: SessionModel;
-  noSessionIsRunning = true;
 
   constructor(private db: AngularFirestore, private userService: UserService) {
     this.userServiceSubscription = this.userService.userLoggedInAsObservable.subscribe((user) => {
       if (user) {
         this.sessionsCollection = db.collection<SessionModel[]>('users')
           .doc(user.uid)
-          .collection('projects').doc(user.uid).collection('sessions');
-        this.getSessions();
+          .collection('projects');
       } else {
         this.sessionsCollectionSubscription.unsubscribe();
         this.userServiceSubscription.unsubscribe();
@@ -34,28 +32,25 @@ export class SessionsService {
     session.timer = session.timer.toString();
   }
 
-  private getSessions() {
-    this.sessionsCollectionSubscription = this.sessionsCollection.valueChanges()
-      .subscribe(sessions => {
-        this.sessions = sessions.map(session => new SessionModel(session.id, session.uid).deserialize(session));
-      });
+  public getsessionsCollection(projectId): AngularFirestoreCollection<DocumentData> {
+    return this.sessionsCollection.doc(projectId).collection('sessions');
   }
 
-  async createNewSession(name?): Promise<SessionModel> {
-    if (this.noSessionIsRunning && this.userService.currentUser) {
+  async createNewSession(projectId, name?): Promise<SessionModel> {
+    if (!this.sessionRunning && this.userService.currentUser) {
       const id = this.db.createId();
-      const session = new SessionModel(id, this.userService.currentUser.uid, name);
-      await this.sessionsCollection.doc(id).set(Object.assign({}, session));
+      const session = new SessionModel(id, this.userService.currentUser.uid, projectId, name);
+      await this.getsessionsCollection(projectId).doc(session.id).set(Object.assign({}, session));
       return this.sessionRunning = this.getSession(session.id);
     }
   }
 
   async updateSession(session: SessionModel): Promise<void> {
-    await this.sessionsCollection.doc(session.id).update(Object.assign({}, session));
+    await this.getsessionsCollection(session.project).doc(session.id).update(Object.assign({}, session));
   }
 
   async destroySession(session: SessionModel): Promise<void> {
-    await this.sessionsCollection.doc(session.id).delete();
+    await this.getsessionsCollection(session.project).doc(session.id).delete();
   }
 
   getSession(sessionId: string): SessionModel {
@@ -65,11 +60,10 @@ export class SessionsService {
   }
 
   startTimer(session) {
-    if (this.noSessionIsRunning) {
-      session.started = true;
+    if (!this.sessionRunning) {
       this.sessionRunning = session;
+      session.started = true;
       session.startTimer();
-      this.noSessionIsRunning = false;
     }
   }
 
@@ -77,13 +71,13 @@ export class SessionsService {
     session.pauseTimer();
     SessionsService.currentTimerToString(session);
     this.updateSession(session);
-    this.noSessionIsRunning = true;
+    this.sessionRunning = null;
   }
 
   stopTimer(session) {
     session.stopTimer();
     SessionsService.currentTimerToString(session);
     this.updateSession(session);
-    this.noSessionIsRunning = true;
+    this.sessionRunning = null;
   }
 }
