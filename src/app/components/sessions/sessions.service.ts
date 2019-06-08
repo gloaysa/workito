@@ -3,17 +3,19 @@ import {AngularFirestore, AngularFirestoreCollection, DocumentData} from '@angul
 
 import {SessionModel} from '../../models/session.model';
 import {UserService} from '../users/user.service';
+import {Subscription} from 'rxjs';
 import {AutoUnsubscribe} from '../../decorators/autoUnsubscribe.decorator';
 
 @Injectable() @AutoUnsubscribe
 export class SessionsService {
   private sessionsCollection: AngularFirestoreCollection<any>;
+  private userServiceSubscription: Subscription;
 
   sessions: SessionModel[];
   sessionRunning: SessionModel;
 
   constructor(private db: AngularFirestore, private userService: UserService) {
-    this.userService.userLoggedInAsObservable.subscribe((user) => {
+    this.userServiceSubscription = this.userService.userLoggedInAsObservable.subscribe((user) => {
       if (user) {
         this.sessionsCollection = db.collection<SessionModel[]>('users')
           .doc(user.uid)

@@ -5,6 +5,7 @@ import {format} from 'date-fns';
 import {ProjectModel} from '../../models/project.model';
 import {SessionModel} from '../../models/session.model';
 import {AutoUnsubscribe} from '../../decorators/autoUnsubscribe.decorator';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'workito-sessions',
@@ -14,6 +15,7 @@ import {AutoUnsubscribe} from '../../decorators/autoUnsubscribe.decorator';
 @AutoUnsubscribe
 export class SessionsComponent implements OnInit {
   @Input() project: ProjectModel;
+  private sessionsCollectionSubscription: Subscription;
   private sessionName = format(new Date(), 'dddd DD MMMM YY');
   private sessions: SessionModel[];
 
@@ -24,7 +26,7 @@ export class SessionsComponent implements OnInit {
   }
 
   getSessions() {
-    this.sessionsService.getsessionsCollection(this.project.id).valueChanges()
+    this.sessionsCollectionSubscription = this.sessionsService.getsessionsCollection(this.project.id).valueChanges()
       .subscribe(sessions => {
         this.sessions = sessions.map(session => new SessionModel(session.id, session.uid, session.project).deserialize(session));
       });
