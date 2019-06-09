@@ -3,6 +3,7 @@
     <div class="panel-heading">
       <span class="is-text">Proyectos</span>
 
+      <!--  NEW PROJECT BUTTON  -->
       <div class="is-pulled-right">
         <button class="button is-small is-light" *ngIf="!addProject" (click)="toggleAddButton()">
           <span class="icon has-text-info" >
@@ -10,6 +11,7 @@
         </span>
         </button>
 
+        <!--  NEW PROJECT FORM  -->
         <form #nameForm="ngForm" (ngSubmit)="createNewProject(nameForm)" *ngIf="addProject">
           <div class="field is-horizontal has-addons">
             <div class="control">
@@ -33,31 +35,33 @@
               </button>
             </div>
           </div>
-
         </form>
-
       </div>
     </div>
-
+    <!--  SEARCH BOX  -->
     <div class="panel-block">
-      <p class="control has-icons-left">
+      <p class="control has-icons-left has-icons-right">
         <input class="input is-small" [(ngModel)]="search" (keyup)="searchProjects()" type="text" placeholder="buscar">
         <span class="icon is-small is-left">
-        <i class="fas fa-search" aria-hidden="true"></i>
-      </span>
+          <i class="fas fa-search" aria-hidden="true"></i>
+        </span>
+        <span class="icon is-right">
+          <a *ngIf="search" (click)="cleanSearchBox()" class="delete is-small"></a>
+        </span>
       </p>
     </div>
-    <div class="panel-block" *ngFor="let project of projectList">
-      <a class="" [routerLink]="[project.id]">
-      <span class="panel-icon">
-        <i class="fas fa-tasks" aria-hidden="true"></i>
-      </span>
-        {{project.name}}
-      </a>
-      <span class="icon has-text-danger is-pulled-right" (click)="destroyProject(project)">
-        <i class="fas fa-trash"></i>
-      </span>
-    </div>
+    <!--  PROJECT LISTS  -->
+    <ng-container *ngIf="!filteredList">
+      <div *ngFor="let project of projectList">
+        <workito-project-list [project]="project"></workito-project-list>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="filteredList">
+      <div *ngFor="let project of filteredList">
+        <workito-project-list [project]="project"></workito-project-list>
+      </div>
+    </ng-container>
 
   </nav>
 </div>

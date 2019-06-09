@@ -38,15 +38,11 @@ export class ProjectsComponent implements OnInit {
   }
 
   private searchProjects() {
-    const searchReg = RegExp(this.search, 'i');
-    if (this.search) {
-      this.filteredList = this.projectList.filter(({name}) => name.match(searchReg));
+    const searchReg = new RegExp(this.search, 'i');
+    this.filteredList = this.projectList.filter(({name}) => name.match(searchReg));
+    if (!this.search) {
+      this.filteredList = null;
     }
-    console.log(this.filteredList);
-  }
-
-  private destroyProject(project) {
-    this.projectsService.destroyProject(project.id);
   }
 
   private checkName(event: any) {
@@ -62,6 +58,11 @@ export class ProjectsComponent implements OnInit {
     if (this.invalidName) {
       return true;
     }
+  }
+
+  cleanSearchBox() {
+    this.search = '';
+    this.filteredList = null;
   }
 
   toggleAddButton() {
