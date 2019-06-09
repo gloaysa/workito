@@ -51,17 +51,13 @@
       </p>
     </div>
     <!--  PROJECT LISTS  -->
-    <ng-container *ngIf="!filteredList">
-      <div *ngFor="let project of projectList">
-        <workito-project-list [project]="project"></workito-project-list>
-      </div>
-    </ng-container>
+    <div *ngIf="!filteredList">
+      <workito-project-list *ngFor="let project of projectList" [project]="project"></workito-project-list>
+    </div>
 
-    <ng-container *ngIf="filteredList">
-      <div *ngFor="let project of filteredList">
-        <workito-project-list [project]="project"></workito-project-list>
-      </div>
-    </ng-container>
+    <div *ngIf="filteredList">
+      <workito-project-list *ngFor="let project of filteredList" [project]="project"></workito-project-list>
+    </div>
 
   </nav>
 </div>

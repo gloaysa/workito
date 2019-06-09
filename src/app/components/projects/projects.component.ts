@@ -26,7 +26,16 @@ export class ProjectsComponent implements OnInit {
 
   ngOnInit(): void {
     this.projectsService.projectsCollection.valueChanges()
-      .subscribe(projects => this.projectList = projects);
+      .subscribe(projects => this.projectList = this.createAndSortProjects(projects));
+  }
+
+  private createAndSortProjects(projects: ProjectModel[]): ProjectModel[] {
+    return projects.map(project => new ProjectModel(project.id, project.uid, project.name)
+      .deserialize(project)).sort((a, b) => {
+      const aDate = new Date(a.createdAt);
+      const bDate = new Date(b.createdAt);
+      return bDate.getTime() - aDate.getTime();
+    });
   }
 
   private createNewProject(nameForm: NgForm) {
