@@ -1,56 +1,15 @@
 <div class="container">
-  <nav class="panel">
-    <div class="panel-heading">
-      <span class="is-text">Proyectos</span>
+  <workito-panel-list
+    title="Proyectos"
+    inputPlaceholder="Crear nuevo proyecto"
+    [modelList]="projectList"
+    searchCriteria="name"
+    [invalidInput]="invalidName"
+    (onCreateItem)="createNewProject($event)"
+    (onCheckInput)="checkName($event)"
+    (onSearch)="addSearchToFilteredList($event)"
+  >
 
-      <!--  NEW PROJECT BUTTON  -->
-      <div class="is-pulled-right">
-        <button class="button is-small is-light" *ngIf="!addProject" (click)="toggleAddButton()">
-          <span class="icon has-text-info" >
-          <i class="fas fa-plus"></i>
-        </span>
-        </button>
-
-        <!--  NEW PROJECT FORM  -->
-        <form #nameForm="ngForm" (ngSubmit)="createNewProject(nameForm)" *ngIf="addProject">
-          <div class="field is-horizontal has-addons">
-            <div class="control">
-              <label class="label is-sr-only">Nombre del projecto</label>
-              <input
-                class="input is-small"
-                [ngClass]="{'is-danger': formInvalid(nameForm)}"
-                type="text"
-                maxlength="30"
-                required
-                (keyup)="checkName($event)"
-                [(ngModel)]="name"
-                name="name"
-                placeholder="Nombre">
-            </div>
-            <div class="control">
-              <button class="button is-info is-small" [ngClass]="{'is-danger': formInvalid(nameForm) }">
-              <span class="icon has-text-light">
-                <i class="fas fa-plus"></i>
-              </span>
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-    <!--  SEARCH BOX  -->
-    <div class="panel-block">
-      <p class="control has-icons-left has-icons-right">
-        <input class="input is-small" [(ngModel)]="search" (keyup)="searchProjects()" type="text" placeholder="buscar">
-        <span class="icon is-small is-left">
-          <i class="fas fa-search" aria-hidden="true"></i>
-        </span>
-        <span class="icon is-right">
-          <a *ngIf="search" (click)="cleanSearchBox()" class="delete is-small"></a>
-        </span>
-      </p>
-    </div>
-    <!--  PROJECT LISTS  -->
     <div *ngIf="!filteredList">
       <workito-project-list *ngFor="let project of projectList" [project]="project"></workito-project-list>
     </div>
@@ -58,7 +17,7 @@
     <div *ngIf="filteredList">
       <workito-project-list *ngFor="let project of filteredList" [project]="project"></workito-project-list>
     </div>
+  </workito-panel-list>
 
-  </nav>
 </div>
 

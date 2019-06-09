@@ -7,6 +7,7 @@ import {ProjectsComponent} from './projects.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import {SessionsModule} from '../sessions/sessions.module';
 import { ProjectListComponent } from './project-list/project-list.component';
+import {ElementsModule} from '../elements/elements.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ProjectListComponent } from './project-list/project-list.component';
     CommonModule,
     ProjectsRoutingModule,
     FormsModule,
-    SessionsModule
+    SessionsModule,
+    ElementsModule
   ]
 })
 export class ProjectsModule { }

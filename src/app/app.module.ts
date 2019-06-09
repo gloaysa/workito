@@ -19,10 +19,11 @@ import { SignUpComponent } from './components/auth/sign-up/sign-up.component';
 import {SessionsService} from './components/sessions/sessions.service';
 import {AuthService} from './components/auth/auth.service';
 import {UserService} from './components/users/user.service';
-import { FixedNavbarComponent } from './components/fixed-navbar/fixed-navbar.component';
-import { ProjectsComponent } from './components/projects/projects.component';
+import { FixedNavbarComponent } from './components/elements/fixed-navbar/fixed-navbar.component';
 import {ProjectsModule} from './components/projects/projects.module';
 import {ProjectsService} from './components/projects/projects.service';
+import { PanelListComponent } from './components/elements/panel-list/panel-list.component';
+import {ElementsModule} from './components/elements/elements.module';
 
 const SpanishConfig = new DateFnsConfigurationService();
 SpanishConfig.setLocale(esLocale);
@@ -32,8 +33,7 @@ SpanishConfig.setLocale(esLocale);
   declarations: [
     AppComponent,
     LoginComponent,
-    SignUpComponent,
-    FixedNavbarComponent
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +46,8 @@ SpanishConfig.setLocale(esLocale);
     FormsModule,
     SessionsModule,
     UsersModule,
-    ProjectsModule
+    ProjectsModule,
+    ElementsModule
   ],
   providers: [
     { provide: DateFnsConfigurationService, useValue: SpanishConfig },

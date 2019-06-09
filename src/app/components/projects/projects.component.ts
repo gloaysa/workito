@@ -19,7 +19,6 @@ export class ProjectsComponent implements OnInit {
 
   projectList: ProjectModel[];
   filteredList: ProjectModel[];
-  search: string;
 
 
   constructor(private projectsService: ProjectsService) { }
@@ -38,43 +37,18 @@ export class ProjectsComponent implements OnInit {
     });
   }
 
-  private createNewProject(nameForm: NgForm) {
-    if (this.name && !this.invalidName) {
-      this.projectsService.createNewProject(this.name);
-      nameForm.reset();
-      this.toggleAddButton();
+  private createNewProject(name: string) {
+    if (name && !this.invalidName) {
+      this.projectsService.createNewProject(name);
     }
   }
 
-  private searchProjects() {
-    const searchReg = new RegExp(this.search, 'i');
-    this.filteredList = this.projectList.filter(({name}) => name.match(searchReg));
-    if (!this.search) {
-      this.filteredList = null;
-    }
+  private checkName(value: string) {
+    this.invalidName = !this.projectsService.projectNameIsValid(value);
   }
 
-  private checkName(event: any) {
-    this.invalidName = !this.projectsService.projectNameIsValid(event.target.value);
+  addSearchToFilteredList(search) {
+    this.filteredList = search;
   }
 
-  private formInvalid(nameForm: NgForm): boolean {
-    if (!nameForm.pristine && !nameForm.valid) {
-
-      // TODO: call notification service for error
-      return true;
-    }
-    if (this.invalidName) {
-      return true;
-    }
-  }
-
-  cleanSearchBox() {
-    this.search = '';
-    this.filteredList = null;
-  }
-
-  toggleAddButton() {
-    this.addProject = !this.addProject;
-  }
 }
