@@ -1,6 +1,13 @@
 <div class="container">
+  <!-- BACK BUTTON -->
+  <a class="button" routerLink="/projects">
+      <span class="icon">
+        <i class="fas fa-chevron-left"></i>
+      </span>
+  </a>
+
   <workito-panel
-    title="Sessiones"
+    title="Sesiones"
     inputPlaceholder="Crear nueva sesión"
     [modelList]="sessionList"
     searchCriteria="name"
