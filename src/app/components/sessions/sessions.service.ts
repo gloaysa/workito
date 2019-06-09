@@ -55,7 +55,6 @@ export class SessionsService {
     if (!this.sessionRunning) {
       this.sessionRunning = session;
       session.startTimer();
-      this.updateSession(session);
     }
   }
 

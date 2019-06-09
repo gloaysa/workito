@@ -13,7 +13,7 @@ export class SessionItemComponent implements OnInit {
   constructor(private sessionsService: SessionsService) { }
 
   ngOnInit(): void {
-    if (this.session && this.session.started && !this.session.paused && !this.session.paused) {
+    if (this.sessionsService.sessionRunning && this.sessionsService.sessionRunning.id === this.session.id) {
       this.session = this.sessionsService.sessionRunning;
     }
   }

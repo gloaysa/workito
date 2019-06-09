@@ -55,17 +55,21 @@ export class SessionDetailsComponent implements OnInit, OnDestroy {
     if (this.session.stopped) {
       this.sessionsService.destroySession(this.session);
       this.router.navigate(['/projects', this.session.project]);
+      this.session = null;
     }
   }
 
   ngOnDestroy(): void {
     if (this.session && !this.session.started) {
       this.sessionsService.destroySession(this.session);
+    } else if (this.session) {
+      this.sessionsService.updateSession(this.session);
     }
   }
 
   private startTimer() {
     this.sessionsService.startTimer(this.session);
+    this.session = this.sessionsService.sessionRunning;
   }
 
   private pauseTimer() {
