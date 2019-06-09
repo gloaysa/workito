@@ -1,13 +1,22 @@
-<div class="section">
-  <div class="container">
-    <div class="columns">
-      <div class="column">
-        <form #nameForm="ngForm" (ngSubmit)="createNewProject()">
-          <div class="field">
-            <label class="label">Nombre del projecto</label>
+<div class="container">
+  <nav class="panel">
+    <div class="panel-heading">
+      <span class="is-text">Proyectos</span>
+
+      <div class="is-pulled-right">
+        <button class="button is-small is-light" *ngIf="!addProject" (click)="toggleAddButton()">
+          <span class="icon has-text-info" >
+          <i class="fas fa-plus"></i>
+        </span>
+        </button>
+
+        <form #nameForm="ngForm" (ngSubmit)="createNewProject(nameForm)" *ngIf="addProject">
+          <div class="field is-horizontal has-addons">
             <div class="control">
+              <label class="label is-sr-only">Nombre del projecto</label>
               <input
-                class="input"
+                class="input is-small"
+                [ngClass]="{'is-danger': formInvalid(nameForm)}"
                 type="text"
                 maxlength="30"
                 required
@@ -16,21 +25,40 @@
                 name="name"
                 placeholder="Nombre">
             </div>
-            <p class="help is-danger" *ngIf="nameForm.touched && !nameForm.valid">Obligatorio</p>
-            <p class="help is-danger" *ngIf="invalidName">Ya hay un proyecto con ese nombre</p>
+            <div class="control">
+              <button class="button is-info is-small" [ngClass]="{'is-danger': formInvalid(nameForm) }">
+              <span class="icon has-text-light">
+                <i class="fas fa-plus"></i>
+              </span>
+              </button>
+            </div>
           </div>
-          <button class="button">Crear nuevo projecto</button>
+
         </form>
-      </div>
-      <div class="column">
-        <div class="is-title">Projectos anteriores</div>
-        <ul>
-          <li class="text" *ngFor="let project of projectsService.projects">
-            <a [routerLink]="[project.id]" class="link">{{project.name}}</a>
-            <a class="button is-small is-danger" (click)="destroyProject(project)" >Delete</a>
-          </li>
-        </ul>
+
       </div>
     </div>
-  </div>
+
+    <div class="panel-block">
+      <p class="control has-icons-left">
+        <input class="input is-small" [(ngModel)]="search" (keyup)="searchProjects()" type="text" placeholder="buscar">
+        <span class="icon is-small is-left">
+        <i class="fas fa-search" aria-hidden="true"></i>
+      </span>
+      </p>
+    </div>
+    <div class="panel-block" *ngFor="let project of projectList">
+      <a class="" [routerLink]="[project.id]">
+      <span class="panel-icon">
+        <i class="fas fa-tasks" aria-hidden="true"></i>
+      </span>
+        {{project.name}}
+      </a>
+      <span class="icon has-text-danger is-pulled-right" (click)="destroyProject(project)">
+        <i class="fas fa-trash"></i>
+      </span>
+    </div>
+
+  </nav>
 </div>
+

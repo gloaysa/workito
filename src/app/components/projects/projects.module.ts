@@ -6,11 +6,13 @@ import {ProjectsRoutingModule} from './projects-routing.module';
 import {ProjectsComponent} from './projects.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import {SessionsModule} from '../sessions/sessions.module';
+import { ProjectListComponent } from './project-list/project-list.component';
 
 @NgModule({
   declarations: [
     ProjectsComponent,
-    ProjectDetailsComponent
+    ProjectDetailsComponent,
+    ProjectListComponent
   ],
   exports: [
     ProjectsComponent,
