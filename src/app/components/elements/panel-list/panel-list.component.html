@@ -1,0 +1,11 @@
+<div class="panel-block" *ngIf="item">
+  <a class="link has-text-black has-icons-left" (click)="clickItem(item)">
+      <span class="icon">
+        <i class="fas fa-tasks" aria-hidden="true"></i>
+      </span>
+    {{item.name}}
+  </a>
+  <span class="icon has-text-danger is-pulled-right" (click)="deleteItem(item)">
+        <i class="fas fa-trash"></i>
+      </span>
+</div>
