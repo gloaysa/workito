@@ -34,13 +34,13 @@ export class PanelComponent {
     this.whenCheckInput.emit(event.target.value);
   }
 
-  private search() {
-    const searchReg = new RegExp(this.searchInput, 'i');
-    this.filteredList = this.modelList.filter(model => model[this.searchCriteria].match(searchReg));
-    if (!this.search) {
-      this.filteredList = null;
+  get itemList() {
+    if (this.searchInput) {
+      const searchReg = new RegExp(this.searchInput, 'i');
+      return this.modelList.filter(model => model[this.searchCriteria].match(searchReg));
+    } else {
+      return this.modelList;
     }
-    this.whenSearch.emit(this.filteredList);
   }
 
   createNewItem(form: NgForm) {

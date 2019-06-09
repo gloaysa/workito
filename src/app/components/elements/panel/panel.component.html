@@ -14,7 +14,7 @@
       <form #form="ngForm" (ngSubmit)="createNewItem(form)" *ngIf="formOpen">
         <div class="field is-horizontal has-addons">
           <div class="control">
-            <label class="label is-sr-only">{{searchInput}}</label>
+            <label for="name" class="label is-sr-only">{{searchInput}}</label>
             <input
               class="input is-small"
               [ngClass]="{'is-danger': formInvalid(form)}"
@@ -24,6 +24,7 @@
               (keyup)="checkInput($event)"
               [(ngModel)]="nameInput"
               name="name"
+              id="name"
               placeholder="{{inputPlaceholder}}">
           </div>
           <div class="control">
@@ -40,26 +41,23 @@
   <!--  SEARCH BOX  -->
   <div class="panel-block">
     <p class="control has-icons-left has-icons-right">
-      <input class="input is-small" [(ngModel)]="searchInput" (keyup)="search()" type="text" placeholder="buscar">
+        <label class="is-sr-only" for="searchInput"></label>
+        <input class="input is-small" id="searchInput" [(ngModel)]="searchInput" type="text" placeholder="buscar">
       <span class="icon is-small is-left">
           <i class="fas fa-search" aria-hidden="true"></i>
         </span>
       <span class="icon is-right">
-          <a *ngIf="search" (click)="cleanSearchBox()" class="delete is-small"></a>
+          <a *ngIf="searchInput" (click)="cleanSearchBox()" class="delete is-small"></a>
         </span>
     </p>
   </div>
 
-  <div *ngIf="!filteredList">
-    <workito-panel-list *ngFor="let item of modelList"
+  <div *ngIf="itemList">
+    <workito-panel-list *ngFor="let item of itemList"
                         [item]="item"
                         (whenClickItem)="clickItem($event)"
                         (whenDeleteItem)="deleteItem($event)"
     ></workito-panel-list>
-  </div>
-
-  <div *ngIf="filteredList">
-    <workito-panel-list *ngFor="let item of filteredList" [item]="item"></workito-panel-list>
   </div>
 
 </nav>
