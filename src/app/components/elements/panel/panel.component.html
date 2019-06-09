@@ -52,13 +52,21 @@
     </p>
   </div>
 
-  <div *ngIf="itemList">
-    <workito-panel-list *ngFor="let item of itemList"
-                        [item]="item"
-                        (whenClickItem)="clickItem($event)"
-                        (whenDeleteItem)="deleteItem($event)"
-    ></workito-panel-list>
-  </div>
+  <!-- ITEM LIST --->
+
+  <ng-container *ngFor="let item of itemList">
+    <div class="panel-block" *ngIf="item">
+      <a class="link has-text-black has-icons-left" (click)="clickItem(item)">
+      <span class="icon">
+        <i class="fas {{leftIcon? leftIcon : 'fa-tasks'}}" aria-hidden="true"></i>
+      </span>
+        {{item.name}}
+      </a>
+      <span class="icon has-text-danger is-pulled-right" (click)="deleteItem(item)">
+        <i class="fas fa-trash"></i>
+      </span>
+    </div>
+  </ng-container>
 
 </nav>
 

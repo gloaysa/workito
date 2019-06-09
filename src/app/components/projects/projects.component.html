@@ -2,8 +2,8 @@
   <workito-panel
     title="Proyectos"
     inputPlaceholder="Crear nuevo proyecto"
-    [modelList]="projectList"
     searchCriteria="name"
+    [modelList]="projectList"
     [invalidInput]="invalidName"
     (whenCreateItem)="createNewProject($event)"
     (whenCheckInput)="checkName($event)"

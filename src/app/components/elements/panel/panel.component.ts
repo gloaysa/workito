@@ -11,7 +11,8 @@ export class PanelComponent {
   @Input() inputPlaceholder: string;
   @Input() modelList: any[];
   @Input() searchCriteria: string;
-  @Input() invalidInput;
+  @Input() invalidInput: string;
+  @Input() leftIcon: string;
 
   @Output() whenCreateItem = new EventEmitter();
   @Output() whenCheckInput = new EventEmitter();
