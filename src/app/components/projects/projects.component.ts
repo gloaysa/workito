@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ProjectsService} from './projects.service';
-import {Form, NgForm} from '@angular/forms';
 import {ProjectModel} from '../../models/project.model';
-import {Subscription} from 'rxjs';
 import {AutoUnsubscribe} from '../../decorators/autoUnsubscribe.decorator';
-import {isRegExp} from 'util';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'workito-projects',
@@ -14,14 +12,12 @@ import {isRegExp} from 'util';
 @AutoUnsubscribe
 export class ProjectsComponent implements OnInit {
   private invalidName: boolean;
-  private addProject: boolean;
-  private name: string;
 
   projectList: ProjectModel[];
   filteredList: ProjectModel[];
 
 
-  constructor(private projectsService: ProjectsService) { }
+  constructor(private projectsService: ProjectsService, private router: Router) { }
 
   ngOnInit(): void {
     this.projectsService.projectsCollection.valueChanges()
@@ -41,6 +37,14 @@ export class ProjectsComponent implements OnInit {
     if (name && !this.invalidName) {
       this.projectsService.createNewProject(name);
     }
+  }
+
+  private deleteProject(project) {
+    this.projectsService.destroyProject(project.id);
+  }
+
+  private projectClicked(project) {
+    this.router.navigate(['/projects', project.id]);
   }
 
   private checkName(value: string) {

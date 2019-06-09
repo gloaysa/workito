@@ -4,11 +4,13 @@ import {FixedNavbarComponent} from './fixed-navbar/fixed-navbar.component';
 import {PanelComponent} from './panel/panel.component';
 import {FormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
+import { PanelListComponent } from './panel-list/panel-list.component';
 
 @NgModule({
   declarations: [
     FixedNavbarComponent,
-    PanelComponent
+    PanelComponent,
+    PanelListComponent
   ],
   exports: [
     FixedNavbarComponent,

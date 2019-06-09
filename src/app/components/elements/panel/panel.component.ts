@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {NgForm} from '@angular/forms';
 
 @Component({
@@ -16,6 +16,8 @@ export class PanelComponent {
   @Output() whenCreateItem = new EventEmitter();
   @Output() whenCheckInput = new EventEmitter();
   @Output() whenSearch = new EventEmitter();
+  @Output() whenDeleteItem = new EventEmitter();
+  @Output() whenClickItem = new EventEmitter();
 
   formOpen: boolean;
   nameInput: string;
@@ -46,6 +48,14 @@ export class PanelComponent {
       this.whenCreateItem.emit(form.value.name);
       form.reset();
     }
+  }
+
+  deleteItem(item) {
+    this.whenDeleteItem.emit(item);
+  }
+
+  clickItem(item) {
+    this.whenClickItem.emit(item);
   }
 
   cleanSearchBox() {

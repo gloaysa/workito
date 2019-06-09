@@ -50,13 +50,17 @@
     </p>
   </div>
 
-<!--  <div *ngIf="!filteredList">-->
-<!--    <workito-project-list *ngFor="let project of projectList" [project]="project"></workito-project-list>-->
-<!--  </div>-->
+  <div *ngIf="!filteredList">
+    <workito-panel-list *ngFor="let item of modelList"
+                        [item]="item"
+                        (whenClickItem)="clickItem($event)"
+                        (whenDeleteItem)="deleteItem($event)"
+    ></workito-panel-list>
+  </div>
 
-<!--  <div *ngIf="filteredList">-->
-<!--    <workito-project-list *ngFor="let project of filteredList" [project]="project"></workito-project-list>-->
-<!--  </div>-->
+  <div *ngIf="filteredList">
+    <workito-panel-list *ngFor="let item of filteredList" [item]="item"></workito-panel-list>
+  </div>
 
 </nav>
 

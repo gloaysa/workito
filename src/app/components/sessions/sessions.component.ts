@@ -34,7 +34,7 @@ export class SessionsComponent implements OnInit {
       });
   }
 
-  createNewSession(name) {
+  createNewSession(name: string) {
     if (name && !this.sessionsService.sessionRunning) {
       this.sessionsService.createNewSession(this.project.id, name).then(session => {
         this.router.navigate(['sessions/', session.project, session.id]);
@@ -42,8 +42,16 @@ export class SessionsComponent implements OnInit {
     }
   }
 
-  checkName(name) {
+  checkName(name: string) {
     this.invalidName = !name || name.length > 20;
+  }
+
+  deleteSession(session: SessionModel) {
+    this.sessionsService.destroySession(session);
+  }
+
+  sessionClicked(session: SessionModel) {
+    this.router.navigate(['/sessions', session.project, session.id]);
   }
 
   addSearchToFilteredList(filteredSessions) {
