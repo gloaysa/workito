@@ -1,8 +1,6 @@
-import { Component } from '@angular/core';
-import {Router} from '@angular/router';
+import {Component, HostListener} from '@angular/core';
 
 import {SessionsService} from '../sessions.service';
-import {format} from 'date-fns';
 
 @Component({
   selector: 'workito-new-session',
@@ -10,5 +8,12 @@ import {format} from 'date-fns';
   styleUrls: ['./new-session.component.scss']
 })
 export class NewSessionComponent {
-  constructor(private sessionsService: SessionsService, private router: Router) { }
+  @HostListener('window:beforeunload', ['$event'])
+  warningBeforeClosingTab($event) {
+    if (this.sessionsService.sessionRunning) {
+      event.preventDefault();
+      $event.returnValue = 'Pausa la sesión antes de cerrar la página';
+    }
+  }
+  constructor(private sessionsService: SessionsService) { }
 }
