@@ -8,17 +8,20 @@ import {SessionsRoutingModule} from './sessions-routing.module';
 import { NewSessionComponent } from './new-session/new-session.component';
 import {FormsModule} from '@angular/forms';
 import {ElementsModule} from '../elements/elements.module';
+import { SessionItemComponent } from './session-item/session-item.component';
 
 @NgModule({
   declarations: [
     SessionsComponent,
     SessionDetailsComponent,
-    NewSessionComponent
+    NewSessionComponent,
+    SessionItemComponent
   ],
   exports: [
     SessionsComponent,
     NewSessionComponent,
-    SessionDetailsComponent
+    SessionDetailsComponent,
+    SessionItemComponent
   ],
   imports: [
     CommonModule,

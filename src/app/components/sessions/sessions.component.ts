@@ -19,7 +19,7 @@ export class SessionsComponent implements OnInit {
   private sessionList: SessionModel[];
   private invalidName: boolean;
 
-  filteredList: SessionModel[];
+  filteredSessions: SessionModel[];
 
   constructor(private sessionsService: SessionsService, private router: Router) {}
 
@@ -46,16 +46,12 @@ export class SessionsComponent implements OnInit {
     this.invalidName = !name || name.length > 20;
   }
 
-  deleteSession(session: SessionModel) {
-    this.sessionsService.destroySession(session);
+  filteredList(filteredSessions: SessionModel[]) {
+    this.filteredSessions = filteredSessions;
   }
 
-  sessionClicked(session: SessionModel) {
-    this.router.navigate(['/sessions', session.project, session.id]);
-  }
-
-  addSearchToFilteredList(filteredSessions) {
-    this.filteredList = filteredSessions;
+  get sessionsToShow(): SessionModel[] {
+    return this.filteredSessions ? this.filteredSessions : this.sessionList;
   }
 
 }

@@ -10,15 +10,18 @@
     title="Sesiones"
     inputPlaceholder="Crear nueva sesión"
     searchCriteria="name"
-    leftIcon="fa-clock"
     [modelList]="sessionList"
     [invalidInput]="invalidName"
+    [itemListTemplate]="sessionListTemplate"
     (whenCreateItem)="createNewSession($event)"
     (whenCheckInput)="checkName($event)"
-    (whenSearch)="addSearchToFilteredList($event)"
-    (whenDeleteItem)="deleteSession($event)"
-    (whenClickItem)="sessionClicked($event)"
+    (whenSearch)="filteredList($event)"
+
   >
   </workito-panel>
+
+  <ng-template #sessionListTemplate ngFor let-session [ngForOf]="sessionsToShow">
+    <workito-session-item [session]="session"></workito-session-item>
+  </ng-template>
 
 </div>
