@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, TemplateRef} from '@angular/core';
 import {NgForm} from '@angular/forms';
 
 @Component({
@@ -11,19 +11,17 @@ export class PanelComponent {
   @Input() inputPlaceholder: string;
   @Input() modelList: any[];
   @Input() searchCriteria: string;
-  @Input() invalidInput: string;
-  @Input() leftIcon: string;
+  @Input() invalidInput: boolean;
+
+  @Input() itemListTemplate: TemplateRef<any>;
 
   @Output() whenCreateItem = new EventEmitter();
   @Output() whenCheckInput = new EventEmitter();
   @Output() whenSearch = new EventEmitter();
-  @Output() whenDeleteItem = new EventEmitter();
-  @Output() whenClickItem = new EventEmitter();
 
   formOpen: boolean;
   nameInput: string;
   searchInput: string;
-  filteredList: any[];
 
   constructor() { }
 
@@ -35,12 +33,13 @@ export class PanelComponent {
     this.whenCheckInput.emit(event.target.value);
   }
 
-  get itemList() {
+  searchInList() {
     if (this.searchInput) {
       const searchReg = new RegExp(this.searchInput, 'i');
-      return this.modelList.filter(model => model[this.searchCriteria].match(searchReg));
+      const filteredList = this.modelList.filter(model => model[this.searchCriteria].match(searchReg));
+      this.whenSearch.emit(filteredList);
     } else {
-      return this.modelList;
+      this.whenSearch.emit(this.modelList);
     }
   }
 
@@ -51,23 +50,12 @@ export class PanelComponent {
     }
   }
 
-  deleteItem(item) {
-    this.whenDeleteItem.emit(item);
-  }
-
-  clickItem(item) {
-    this.whenClickItem.emit(item);
-  }
-
   cleanSearchBox() {
     this.searchInput = '';
-    this.filteredList = null;
   }
 
   private formInvalid(nameForm: NgForm): boolean {
     if (!nameForm.pristine && !nameForm.valid) {
-
-      // TODO: call notification service for error
       return true;
     }
     if (this.invalidInput) {

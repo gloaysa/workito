@@ -42,7 +42,12 @@
   <div class="panel-block">
     <p class="control has-icons-left has-icons-right">
         <label class="is-sr-only" for="searchInput"></label>
-        <input class="input is-small" id="searchInput" [(ngModel)]="searchInput" type="text" placeholder="buscar">
+        <input class="input is-small"
+               id="searchInput"
+               [(ngModel)]="searchInput"
+               (keyup)="searchInList()"
+               type="text"
+               placeholder="buscar">
       <span class="icon is-small is-left">
           <i class="fas fa-search" aria-hidden="true"></i>
         </span>
@@ -54,19 +59,7 @@
 
   <!-- ITEM LIST --->
 
-  <ng-container *ngFor="let item of itemList">
-    <div class="panel-block" *ngIf="item">
-      <a class="link has-text-black has-icons-left" (click)="clickItem(item)">
-      <span class="icon">
-        <i class="fas {{leftIcon? leftIcon : 'fa-tasks'}}" aria-hidden="true"></i>
-      </span>
-        {{item.name}}
-      </a>
-      <span class="icon has-text-danger is-pulled-right" (click)="deleteItem(item)">
-        <i class="fas fa-trash"></i>
-      </span>
-    </div>
-  </ng-container>
+  <ng-container *ngTemplateOutlet="itemListTemplate"></ng-container>
 
 </nav>
 
