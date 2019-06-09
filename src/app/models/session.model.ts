@@ -39,6 +39,7 @@ export class SessionModel implements Deserialize {
   startTimer() {
     if (this.paused || !this.timerInterval ) {
       this.timer = parse(this.timer);
+      this.started = true;
       this.paused = false;
       this.timerInterval = setInterval(() => {
         this.timer = addSeconds(this.timer, 1);
@@ -55,7 +56,7 @@ export class SessionModel implements Deserialize {
 
   stopTimer() {
     clearInterval(this.timerInterval);
-    this.paused = false;
+    this.paused = true;
     this.stopped = true;
   }
 

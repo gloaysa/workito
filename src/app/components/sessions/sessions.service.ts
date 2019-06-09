@@ -43,6 +43,7 @@ export class SessionsService {
   }
 
   async updateSession(session: SessionModel): Promise<void> {
+    SessionsService.currentTimerToString(session);
     await this.getsessionsCollection(session.project).doc(session.id).update(Object.assign({}, session));
   }
 
@@ -53,21 +54,19 @@ export class SessionsService {
   startTimer(session) {
     if (!this.sessionRunning) {
       this.sessionRunning = session;
-      session.started = true;
       session.startTimer();
+      this.updateSession(session);
     }
   }
 
   pauseTimer(session) {
     session.pauseTimer();
-    SessionsService.currentTimerToString(session);
     this.updateSession(session);
     this.sessionRunning = null;
   }
 
   stopTimer(session) {
     session.stopTimer();
-    SessionsService.currentTimerToString(session);
     this.updateSession(session);
     this.sessionRunning = null;
   }

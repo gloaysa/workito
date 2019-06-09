@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {SessionModel} from '../../../models/session.model';
 import {SessionsService} from '../sessions.service';
 
@@ -7,13 +7,15 @@ import {SessionsService} from '../sessions.service';
   templateUrl: './session-item.component.html',
   styleUrls: ['./session-item.component.scss']
 })
-export class SessionItemComponent {
+export class SessionItemComponent implements OnInit {
   @Input() session: SessionModel;
 
   constructor(private sessionsService: SessionsService) { }
 
-  deleteSession(session) {
-    this.sessionsService.destroySession(session);
+  ngOnInit(): void {
+    if (this.session && this.session.started && !this.session.paused && !this.session.paused) {
+      this.session = this.sessionsService.sessionRunning;
+    }
   }
 
 }

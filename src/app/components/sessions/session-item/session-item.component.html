@@ -5,7 +5,21 @@
       </span>
     {{session.name}}
   </a>
-  <span class="icon has-text-danger is-pulled-right" (click)="deleteSession(session)">
-        <i class="fas fa-trash"></i>
-      </span>
+
+  <span class="is-pulled-right">
+    <span>
+      {{session.timer | date:'HH:mm:ss'}}
+    </span>
+    <span *ngIf="session.stopped" class="icon has-text-danger">
+        <i class="far fa-stop-circle"></i>
+    </span>
+    <span *ngIf="session.paused && !session.stopped" class="icon has-text-warning">
+      <i class="far fa-pause-circle"></i>
+    </span>
+    <span *ngIf="session.started && !session.paused && !session.stopped" class="icon has-text-info">
+      <i class="fas fa-hourglass-start"></i>
+    </span>
+  </span>
+
+
 </div>
