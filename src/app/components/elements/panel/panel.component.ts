@@ -52,6 +52,7 @@ export class PanelComponent {
 
   cleanSearchBox() {
     this.searchInput = '';
+    this.searchInList();
   }
 
   private formInvalid(nameForm: NgForm): boolean {
