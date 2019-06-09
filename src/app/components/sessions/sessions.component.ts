@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 
 import {SessionsService} from './sessions.service';
-import {format} from 'date-fns';
 import {ProjectModel} from '../../models/project.model';
 import {SessionModel} from '../../models/session.model';
 import {AutoUnsubscribe} from '../../decorators/autoUnsubscribe.decorator';
@@ -17,8 +16,10 @@ import {Router} from '@angular/router';
 export class SessionsComponent implements OnInit {
   @Input() project: ProjectModel;
   private sessionsCollectionSubscription: Subscription;
-  private sessionName = format(new Date(), 'dddd DD MMMM YY');
-  private sessions: SessionModel[];
+  private sessionList: SessionModel[];
+  private invalidName: boolean;
+
+  filteredList: SessionModel[];
 
   constructor(private sessionsService: SessionsService, private router: Router) {}
 
@@ -29,16 +30,24 @@ export class SessionsComponent implements OnInit {
   getSessions() {
     this.sessionsCollectionSubscription = this.sessionsService.getsessionsCollection(this.project.id).valueChanges()
       .subscribe(sessions => {
-        this.sessions = sessions.map(session => new SessionModel(session.id, session.uid, session.project).deserialize(session));
+        this.sessionList = sessions.map(session => new SessionModel(session.id, session.uid, session.project).deserialize(session));
       });
   }
 
-  createNewSession() {
-    if (!this.sessionsService.sessionRunning) {
-      this.sessionsService.createNewSession(this.project.id, this.sessionName).then(session => {
+  createNewSession(name) {
+    if (name && !this.sessionsService.sessionRunning) {
+      this.sessionsService.createNewSession(this.project.id, name).then(session => {
         this.router.navigate(['sessions/', session.project, session.id]);
       });
     }
+  }
+
+  checkName(name) {
+    this.invalidName = !name || name.length > 20;
+  }
+
+  addSearchToFilteredList(filteredSessions) {
+    this.filteredList = filteredSessions;
   }
 
 }

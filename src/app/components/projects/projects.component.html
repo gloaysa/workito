@@ -1,23 +1,14 @@
 <div class="container">
-  <workito-panel-list
+  <workito-panel
     title="Proyectos"
     inputPlaceholder="Crear nuevo proyecto"
     [modelList]="projectList"
     searchCriteria="name"
     [invalidInput]="invalidName"
-    (onCreateItem)="createNewProject($event)"
-    (onCheckInput)="checkName($event)"
-    (onSearch)="addSearchToFilteredList($event)"
-  >
-
-    <div *ngIf="!filteredList">
-      <workito-project-list *ngFor="let project of projectList" [project]="project"></workito-project-list>
-    </div>
-
-    <div *ngIf="filteredList">
-      <workito-project-list *ngFor="let project of filteredList" [project]="project"></workito-project-list>
-    </div>
-  </workito-panel-list>
+    (whenCreateItem)="createNewProject($event)"
+    (whenCheckInput)="checkName($event)"
+    (whenSearch)="addSearchToFilteredList($event)"
+  ></workito-panel>
 
 </div>
 

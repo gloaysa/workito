@@ -7,14 +7,13 @@ import {DateFnsModule} from 'ngx-date-fns';
 import {SessionsRoutingModule} from './sessions-routing.module';
 import { NewSessionComponent } from './new-session/new-session.component';
 import {FormsModule} from '@angular/forms';
-import { SessionListItemComponent } from './session-list-item/session-list-item.component';
+import {ElementsModule} from '../elements/elements.module';
 
 @NgModule({
   declarations: [
     SessionsComponent,
     SessionDetailsComponent,
-    NewSessionComponent,
-    SessionListItemComponent
+    NewSessionComponent
   ],
   exports: [
     SessionsComponent,
@@ -25,7 +24,8 @@ import { SessionListItemComponent } from './session-list-item/session-list-item.
     CommonModule,
     DateFnsModule,
     SessionsRoutingModule,
-    FormsModule
+    FormsModule,
+    ElementsModule
   ]
 })
 export class SessionsModule { }

@@ -1,105 +1,13 @@
-<!--
-<div class="section">
-  <div class="container">
-    <div class="columns">
-      <div class="column">
-        <form #nameForm="ngForm" (ngSubmit)="nameForm.valid && createNewSession()">
-          <div class="field has-addons">
-            <div class="control">
-              <input
-                class="input is-static"
-                type="text"
-                maxlength="20"
-                required
-                [(ngModel)]="sessionName"
-                name="name">
-              <p class="help is-danger" *ngIf="nameForm.touched && !nameForm.valid">Obligatorio</p>
-            </div>
-            <div class="control">
-              <button class="button is-info">
-                <span class="icon">
-                  <i class="far fa-plus-square"></i>
-                </span>
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="column">
-        <div class="is-title">Sesiones anteriores</div>
-        <ul>
-          <li class="text" *ngFor="let session of sessions">
-            <a [routerLink]="['/sessions', session.project, session.id]" class="link">{{session.name}}</a>
-            <span> | {{ session.timer | date:'HH:mm:ss' }}</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
--->
-
 <div class="container">
-  <nav class="panel">
-    <div class="panel-heading">
-      <span class="is-text">Sesiones</span>
+  <workito-panel
+    title="Sessiones"
+    inputPlaceholder="Crear nueva sesión"
+    [modelList]="sessionList"
+    searchCriteria="name"
+    [invalidInput]="invalidName"
+    (whenCreateItem)="createNewSession($event)"
+    (whenCheckInput)="checkName($event)"
+    (whenSearch)="addSearchToFilteredList($event)"
+  ></workito-panel>
 
-      <!--  NEW PROJECT BUTTON  -->
-      <div class="is-pulled-right">
-        <button class="button is-small is-light" *ngIf="!addProject" (click)="toggleAddButton()">
-          <span class="icon has-text-info" >
-          <i class="fas fa-plus"></i>
-        </span>
-        </button>
-
-        <!--  NEW PROJECT FORM  -->
-        <form #nameForm="ngForm" (ngSubmit)="createNewSession(nameForm)" *ngIf="addProject">
-          <div class="field is-horizontal has-addons">
-            <div class="control">
-              <label class="label is-sr-only">Nombre del projecto</label>
-              <input
-                class="input is-small"
-                [ngClass]="{'is-danger': formInvalid(nameForm)}"
-                type="text"
-                maxlength="30"
-                required
-                (keyup)="checkName($event)"
-                [(ngModel)]="name"
-                name="name"
-                placeholder="Nombre">
-            </div>
-            <div class="control">
-              <button class="button is-info is-small" [ngClass]="{'is-danger': formInvalid(nameForm) }">
-              <span class="icon has-text-light">
-                <i class="fas fa-plus"></i>
-              </span>
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-    <!--  SEARCH BOX  -->
-    <div class="panel-block">
-      <p class="control has-icons-left has-icons-right">
-        <input class="input is-small" [(ngModel)]="search" (keyup)="searchProjects()" type="text" placeholder="buscar">
-        <span class="icon is-small is-left">
-          <i class="fas fa-search" aria-hidden="true"></i>
-        </span>
-        <span class="icon is-right">
-          <a *ngIf="search" (click)="cleanSearchBox()" class="delete is-small"></a>
-        </span>
-      </p>
-    </div>
-    <!--  PROJECT LISTS  -->
-    <div *ngIf="!filteredList">
-      <workito-session-list-item *ngFor="let session of sessionList" [session]="session"></workito-session-list-item>
-    </div>
-
-    <div *ngIf="filteredList">
-      <workito-session-list-item *ngFor="let session of sessionList" [session]="session"></workito-session-list-item>
-    </div>
-
-  </nav>
 </div>
-

@@ -2,20 +2,20 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgForm} from '@angular/forms';
 
 @Component({
-  selector: 'workito-panel-list',
-  templateUrl: './panel-list.component.html',
-  styleUrls: ['./panel-list.component.scss']
+  selector: 'workito-panel',
+  templateUrl: './panel.component.html',
+  styleUrls: ['./panel.component.scss']
 })
-export class PanelListComponent {
+export class PanelComponent {
   @Input() title: string;
   @Input() inputPlaceholder: string;
   @Input() modelList: any[];
   @Input() searchCriteria: string;
   @Input() invalidInput;
 
-  @Output() onCreateItem = new EventEmitter();
-  @Output() onCheckInput = new EventEmitter();
-  @Output() onSearch = new EventEmitter();
+  @Output() whenCreateItem = new EventEmitter();
+  @Output() whenCheckInput = new EventEmitter();
+  @Output() whenSearch = new EventEmitter();
 
   formOpen: boolean;
   nameInput: string;
@@ -29,7 +29,7 @@ export class PanelListComponent {
   }
 
   checkInput(event) {
-    this.onCheckInput.emit(event.target.value);
+    this.whenCheckInput.emit(event.target.value);
   }
 
   private search() {
@@ -38,12 +38,12 @@ export class PanelListComponent {
     if (!this.search) {
       this.filteredList = null;
     }
-    this.onSearch.emit(this.filteredList);
+    this.whenSearch.emit(this.filteredList);
   }
 
   createNewItem(form: NgForm) {
     if (this.nameInput && !this.invalidInput) {
-      this.onCreateItem.emit(form.value.name);
+      this.whenCreateItem.emit(form.value.name);
       form.reset();
     }
   }

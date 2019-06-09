@@ -19,10 +19,8 @@ import { SignUpComponent } from './components/auth/sign-up/sign-up.component';
 import {SessionsService} from './components/sessions/sessions.service';
 import {AuthService} from './components/auth/auth.service';
 import {UserService} from './components/users/user.service';
-import { FixedNavbarComponent } from './components/elements/fixed-navbar/fixed-navbar.component';
 import {ProjectsModule} from './components/projects/projects.module';
 import {ProjectsService} from './components/projects/projects.service';
-import { PanelListComponent } from './components/elements/panel-list/panel-list.component';
 import {ElementsModule} from './components/elements/elements.module';
 
 const SpanishConfig = new DateFnsConfigurationService();

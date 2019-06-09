@@ -14,7 +14,7 @@
       <form #form="ngForm" (ngSubmit)="createNewItem(form)" *ngIf="formOpen">
         <div class="field is-horizontal has-addons">
           <div class="control">
-            <label class="label is-sr-only">{{subtitle}}</label>
+            <label class="label is-sr-only">{{searchInput}}</label>
             <input
               class="input is-small"
               [ngClass]="{'is-danger': formInvalid(form)}"
@@ -50,8 +50,13 @@
     </p>
   </div>
 
-  <!--  TRANSCLUDED CONTENT  -->
-  <ng-content></ng-content>
+<!--  <div *ngIf="!filteredList">-->
+<!--    <workito-project-list *ngFor="let project of projectList" [project]="project"></workito-project-list>-->
+<!--  </div>-->
+
+<!--  <div *ngIf="filteredList">-->
+<!--    <workito-project-list *ngFor="let project of filteredList" [project]="project"></workito-project-list>-->
+<!--  </div>-->
 
 </nav>
 
