@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ProjectsService} from './projects.service';
 import {ProjectModel} from '../../models/project.model';
 import {AutoUnsubscribe} from '../../decorators/autoUnsubscribe.decorator';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'workito-projects',
@@ -14,10 +13,9 @@ export class ProjectsComponent implements OnInit {
   private invalidName: boolean;
 
   projectList: ProjectModel[];
-  filteredList: ProjectModel[];
+  filteredProjects: ProjectModel[];
 
-
-  constructor(private projectsService: ProjectsService, private router: Router) { }
+  constructor(private projectsService: ProjectsService) { }
 
   ngOnInit(): void {
     this.projectsService.projectsCollection.valueChanges()
@@ -39,20 +37,16 @@ export class ProjectsComponent implements OnInit {
     }
   }
 
-  private deleteProject(project) {
-    this.projectsService.destroyProject(project.id);
-  }
-
-  private projectClicked(project) {
-    this.router.navigate(['/projects', project.id]);
-  }
-
   private checkName(value: string) {
     this.invalidName = !this.projectsService.projectNameIsValid(value);
   }
 
-  addSearchToFilteredList(search) {
-    this.filteredList = search;
+  filteredList(filteredSessions: ProjectModel[]) {
+    this.filteredProjects = filteredSessions;
+  }
+
+  get projectsToShow(): ProjectModel[] {
+    return this.filteredProjects ? this.filteredProjects : this.projectList;
   }
 
 }

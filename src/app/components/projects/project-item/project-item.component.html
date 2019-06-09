@@ -1,0 +1,11 @@
+<div class="panel-block" *ngIf="project">
+  <a class="link has-text-black has-icons-left" [routerLink]="['/projects', project.id]">
+      <span class="icon">
+        <i class="fas fa-tasks" aria-hidden="true"></i>
+      </span>
+    {{project.name}}
+  </a>
+  <span class="icon has-text-danger is-pulled-right" (click)="deleteSession(project)">
+        <i class="fas fa-trash"></i>
+      </span>
+</div>

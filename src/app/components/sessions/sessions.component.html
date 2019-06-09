@@ -16,9 +16,7 @@
     (whenCreateItem)="createNewSession($event)"
     (whenCheckInput)="checkName($event)"
     (whenSearch)="filteredList($event)"
-
-  >
-  </workito-panel>
+  ></workito-panel>
 
   <ng-template #sessionListTemplate ngFor let-session [ngForOf]="sessionsToShow">
     <workito-session-item [session]="session"></workito-session-item>

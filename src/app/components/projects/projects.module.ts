@@ -7,11 +7,13 @@ import {ProjectsComponent} from './projects.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import {SessionsModule} from '../sessions/sessions.module';
 import {ElementsModule} from '../elements/elements.module';
+import { ProjectItemComponent } from './project-item/project-item.component';
 
 @NgModule({
   declarations: [
     ProjectsComponent,
-    ProjectDetailsComponent
+    ProjectDetailsComponent,
+    ProjectItemComponent
   ],
   exports: [
     ProjectsComponent,

@@ -5,12 +5,15 @@
     searchCriteria="name"
     [modelList]="projectList"
     [invalidInput]="invalidName"
+    [itemListTemplate]="projectListTemplate"
     (whenCreateItem)="createNewProject($event)"
     (whenCheckInput)="checkName($event)"
-    (whenSearch)="addSearchToFilteredList($event)"
-    (whenDeleteItem)="deleteProject($event)"
-    (whenClickItem)="projectClicked($event)"
+    (whenSearch)="filteredList($event)"
   ></workito-panel>
+
+  <ng-template #projectListTemplate ngFor let-project [ngForOf]="projectsToShow">
+    <workito-project-item [project]="project" ></workito-project-item>
+  </ng-template>
 
 </div>
 
