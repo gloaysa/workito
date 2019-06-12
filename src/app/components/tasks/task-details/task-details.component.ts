@@ -5,6 +5,7 @@ import {TaskService} from '../task.service';
 import {TaskModel} from '../../../models/task.model';
 import {AutoUnsubscribe} from '../../../decorators/autoUnsubscribe.decorator';
 import {Subscription} from 'rxjs';
+import { addSeconds, parse } from 'date-fns';
 
 @Component({
   selector: 'workito-task-detail',
@@ -14,6 +15,7 @@ import {Subscription} from 'rxjs';
 @AutoUnsubscribe
 export class TaskDetailsComponent implements OnInit, OnDestroy {
   private task: TaskModel;
+
   private tasksCollectionSubscription: Subscription;
   private childParamSubscription: Subscription;
   private paramSubscription: Subscription;
@@ -41,6 +43,7 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
       .valueChanges().subscribe((task: TaskModel) => {
         if (task) {
           this.task = new TaskModel(task.id, task.uid, task.project).deserialize(task);
+          console.log(this.task)
         } else {
           this.router.navigate(['/projects', projectId]);
         }
@@ -52,28 +55,19 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   }
 
   deleteTask() {
-    if (this.task.timer.stopped) {
       this.taskService.destroyTask(this.task);
       this.router.navigate(['/projects', this.task.project]);
       this.task = null;
-    }
   }
 
   ngOnDestroy(): void {
-    if (this.task && !this.task.timer.started) {
-      this.taskService.destroyTask(this.task);
-    } else if (this.task) {
-      this.taskService.updateTask(this.task);
-    }
+      if (this.task) {
+        this.taskService.updateTask(this.task);
+      }
   }
-
+  
   private startTimer() {
-    this.taskService.startTimer(this.task);
-    this.task = this.taskService.taskRunning;
-  }
-
-  private pauseTimer() {
-    this.taskService.pauseTimer(this.task);
+    this.taskService.startTimer(this.task);  
   }
 
   private stopTimer() {

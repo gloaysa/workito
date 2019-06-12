@@ -25,10 +25,6 @@ export class TaskService {
 
   }
 
-  static currentTimerToString(task) {
-    task.timer = task.timer.toString();
-  }
-
   public getTaskCollection(projectId): AngularFirestoreCollection<DocumentData> {
     return this.tasksCollection.doc(projectId).collection('tasks');
   }
@@ -37,18 +33,25 @@ export class TaskService {
     if (!this.taskRunning && this.userService.currentUser) {
       const id = this.db.createId();
       const task = new TaskModel(id, this.userService.currentUser.uid, projectId, name);
-      await this.getTaskCollection(projectId).doc(task.id).set(Object.assign({}, task));
+      await this.getTaskCollection(projectId).doc(task.id).set(this.stringifyTask(task));
       return task;
     }
   }
 
   async updateTask(task: TaskModel): Promise<void> {
-    TaskService.currentTimerToString(task);
-    await this.getTaskCollection(task.project).doc(task.id).update(Object.assign({}, task));
+    await this.getTaskCollection(task.project).doc(task.id).update(this.stringifyTask(task));
   }
 
   async destroyTask(task: TaskModel): Promise<void> {
     await this.getTaskCollection(task.project).doc(task.id).delete();
+  }
+
+  stringifyTask(task): object {
+    if (task.started) {
+      task.started = task.started.toString();
+      task.stopped = task.stopped.toString();
+    }
+    return Object.assign({}, task);
   }
 
   startTimer(task) {

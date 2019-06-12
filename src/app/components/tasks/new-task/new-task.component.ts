@@ -8,12 +8,6 @@ import {TaskService} from '../task.service';
   styleUrls: ['./new-task.component.scss']
 })
 export class NewTaskComponent {
-  @HostListener('window:beforeunload', ['$event'])
-  warningBeforeClosingTab($event) {
-    if (this.taskService.taskRunning) {
-      event.preventDefault();
-      $event.returnValue = 'Pausa la sesión antes de cerrar la página';
-    }
-  }
+  
   constructor(private taskService: TaskService) { }
 }

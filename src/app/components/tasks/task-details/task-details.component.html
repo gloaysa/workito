@@ -11,7 +11,7 @@
         <input type="text" class="input is-static title" [(ngModel)]="task.name">
       </div>
       <div class="card-content">
-        <p class="content workito-task-details__counter">{{task.timer.started | date:'HH:mm:ss'}}</p>
+        <p class="content workito-task-details__counter">{{task.totalTime | date:'HH:mm:ss'}}</p>
         <div class="content">
           <h4 class="is-title">Comentarios</h4>
           <textarea
@@ -21,24 +21,15 @@
         </div>
       </div>
       <footer class="card-footer">
-        <a class="card-footer-item button is-info" *ngIf="task.timers.length < 1 && !task.timer.started"
+        <a class="card-footer-item button is-info" *ngIf="task.stopped"
            (click)="startTimer()"
-        >Empezar una sesión
+        >Empezar
         </a>
-        <a class="card-footer-item button is-warning" *ngIf="task.timer.started && !task.timer.stopped"
-           (click)="pauseTimer()"
-        >Pausar
-        </a>
-        <a class="card-footer-item button is-primary" *ngIf="task.timers.length > 1 && !task.timer.started"
-           (click)="startTimer()"
-        >Reanudar
-        </a>
-        <a class="card-footer-item button is-danger" *ngIf="task.timer.started && !task.timer.stopped"
+        <a class="card-footer-item button is-danger" *ngIf="task.started && task.timers.length > 0"
            (click)="stopTimer()"
         >Parar
         </a>
-        <a class="card-footer-item button is-danger"
-           *ngIf="task.stopped"
+        <a class="card-footer-item button is-danger" *ngIf="task.stopped && task.timers.length > 0"
            (click)="deleteTask()"
         >Borrar sesión
         </a>
