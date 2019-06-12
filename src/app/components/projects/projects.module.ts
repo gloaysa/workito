@@ -5,7 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {ProjectsRoutingModule} from './projects-routing.module';
 import {ProjectsComponent} from './projects.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
-import {SessionsModule} from '../sessions/sessions.module';
+import {TasksModule} from '../tasks/tasks.module';
 import {ElementsModule} from '../elements/elements.module';
 import { ProjectItemComponent } from './project-item/project-item.component';
 
@@ -23,7 +23,7 @@ import { ProjectItemComponent } from './project-item/project-item.component';
     CommonModule,
     ProjectsRoutingModule,
     FormsModule,
-    SessionsModule,
+    TasksModule,
     ElementsModule
   ]
 })

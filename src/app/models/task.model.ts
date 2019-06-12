@@ -5,7 +5,11 @@ export class TaskModel implements Deserialize {
         this.id = id;
         this.uid = uid;
         this.createdAt = new Date().toString();
-        this.timer = new TimerModel();
+        this.timer = {
+            started: '',
+            stopped: ''
+        };
+        this.timers = [];
         this.name = name || TaskModel.generateName();
         this.project = projectId;
     }
@@ -13,8 +17,14 @@ export class TaskModel implements Deserialize {
     uid: string;
     createdAt: string;
     name: string;
-    timer: TimerModel;
-    timers: TimerModel[];
+    timer: {
+        started: string,
+        stopped: string
+    };
+    timers: [{
+        started: string,
+        stopped: string
+    }];
     comments: string;
     project: string;
 
@@ -36,9 +46,4 @@ export class TaskModel implements Deserialize {
         Object.assign(this, input);
         return this;
     }
-}
-
-export class TimerModel {
-    started: string;
-    stopped: string;
 }

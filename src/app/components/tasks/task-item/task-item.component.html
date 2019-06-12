@@ -1,0 +1,24 @@
+<div class="panel-block" *ngIf="task">
+  <a class="link has-text-black has-icons-left" [routerLink]="['/tasks', task.project, task.id]">
+      <span class="icon">
+        <i class="fas fa-clock" aria-hidden="true"></i>
+      </span>
+    {{task.name}}
+  </a>
+
+  <span class="is-pulled-right">
+    <span>
+      {{task.timer.started | date:'HH:mm:ss'}}
+    </span>
+    <span *ngIf="task.timer.stopped" class="icon has-text-danger">
+        <i class="far fa-stop-circle"></i>
+    </span>
+    <span *ngIf="task.timers.length > 1 && !task.timer.started" class="icon has-text-warning">
+      <i class="far fa-pause-circle"></i>
+    </span>
+    <span *ngIf="!task.timer.started" class="icon has-text-info">
+      <i class="fas fa-hourglass-start"></i>
+    </span>
+  </span>
+
+</div>

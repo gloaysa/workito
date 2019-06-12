@@ -3,12 +3,12 @@ import {Deserialize} from './deserialize.interface';
 
 import * as esLocale from 'date-fns/locale/es/index.js';
 
-export class SessionModel implements Deserialize {
+export class TaskModel implements Deserialize {
   constructor(id, uid, projectId, name?) {
     this.id = id;
     this.uid = uid;
     this.createdAt = new Date().toString();
-    this.name = name || SessionModel.generateName();
+    this.name = name || TaskModel.generateName();
     this.timer = new Date(2000, 1, 1).toString();
     this.started = false;
     this.stopped = false;

@@ -1,0 +1,49 @@
+<div class="columns is-centered" *ngIf="task">
+  <div class="column is-full-mobile is-half-tablet is-one-quarter-desktop">
+    <a class="button" [routerLink]="['/projects', task.project]">
+      <span class="icon">
+        <i class="fas fa-chevron-left"></i>
+      </span>
+    </a>
+
+    <div class="workito-task-details card">
+      <div class="workito-task-details__name card-header-title">
+        <input type="text" class="input is-static title" [(ngModel)]="task.name">
+      </div>
+      <div class="card-content">
+        <p class="content workito-task-details__counter">{{task.timer.started | date:'HH:mm:ss'}}</p>
+        <div class="content">
+          <h4 class="is-title">Comentarios</h4>
+          <textarea
+            class="workito-task-details__textarea textarea"
+            name="comments"
+            [(ngModel)]="task.comments"></textarea>
+        </div>
+      </div>
+      <footer class="card-footer">
+        <a class="card-footer-item button is-info" *ngIf="task.timers.length < 1 && !task.timer.started"
+           (click)="startTimer()"
+        >Empezar una sesión
+        </a>
+        <a class="card-footer-item button is-warning" *ngIf="task.timer.started && !task.timer.stopped"
+           (click)="pauseTimer()"
+        >Pausar
+        </a>
+        <a class="card-footer-item button is-primary" *ngIf="task.timers.length > 1 && !task.timer.started"
+           (click)="startTimer()"
+        >Reanudar
+        </a>
+        <a class="card-footer-item button is-danger" *ngIf="task.timer.started && !task.timer.stopped"
+           (click)="stopTimer()"
+        >Parar
+        </a>
+        <a class="card-footer-item button is-danger"
+           *ngIf="task.stopped"
+           (click)="deleteTask()"
+        >Borrar sesión
+        </a>
+      </footer>
+    </div>
+  </div>
+</div>
+
