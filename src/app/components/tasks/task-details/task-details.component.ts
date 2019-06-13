@@ -1,10 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import {TaskService} from '../task.service';
-import {TaskModel} from '../../../models/task.model';
-import {AutoUnsubscribe} from '../../../decorators/autoUnsubscribe.decorator';
-import {Subscription} from 'rxjs';
+import { TaskService } from '../task.service';
+import { TaskModel } from '../../../models/task.model';
+import { AutoUnsubscribe } from '../../../decorators/autoUnsubscribe.decorator';
+import { Subscription } from 'rxjs';
 import { addSeconds, parse } from 'date-fns';
 
 @Component({
@@ -21,9 +21,9 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   private paramSubscription: Subscription;
 
   constructor(private taskService: TaskService,
-              private route: ActivatedRoute,
-              private router: Router
-  ) {}
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     let taskId;
@@ -43,11 +43,10 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
       .valueChanges().subscribe((task: TaskModel) => {
         if (task) {
           this.task = new TaskModel(task.id, task.uid, task.project).deserialize(task);
-          console.log(this.task)
         } else {
           this.router.navigate(['/projects', projectId]);
         }
-    });
+      });
   }
 
   updateTask() {
@@ -55,19 +54,19 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   }
 
   deleteTask() {
-      this.taskService.destroyTask(this.task);
-      this.router.navigate(['/projects', this.task.project]);
-      this.task = null;
+    this.taskService.destroyTask(this.task);
+    this.router.navigate(['/projects', this.task.project]);
+    this.task = null;
   }
 
   ngOnDestroy(): void {
-      if (this.task) {
-        this.taskService.updateTask(this.task);
-      }
+    if (this.task) {
+      this.taskService.updateTask(this.task);
+    }
   }
-  
+
   private startTimer() {
-    this.taskService.startTimer(this.task);  
+    this.taskService.startTimer(this.task);
   }
 
   private stopTimer() {

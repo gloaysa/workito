@@ -42,10 +42,10 @@ export class TaskModel implements Deserialize {
             this.timers.push({
                 started: new Date().toString(),
                 stopped: ''
-            }) 
+            })
         }
     }
-    
+
     stopTimer() {
         if (this.started) {
             this.started = false;
@@ -53,7 +53,6 @@ export class TaskModel implements Deserialize {
             clearInterval(this.interval);
             const lastIndex = this.timers.length - 1;
             this.timers[lastIndex].stopped = new Date().toString();
-            this.totalTime = addSeconds(this.totalTime, this.getTime).toString();
         }
     }
 
@@ -71,7 +70,7 @@ export class TaskModel implements Deserialize {
             return differenceInSeconds(lastStopped, firstStarted);
         }
     }
-    
+
     deserialize(input: any): this {
         Object.assign(this, input);
         return this;
