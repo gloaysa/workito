@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {TaskModel} from '../../../models/task.model';
-import {TaskService} from '../task.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { TaskModel } from '../../../models/task.model';
+import { TaskService } from '../task.service';
 
 @Component({
   selector: 'workito-task-item',
@@ -13,7 +13,7 @@ export class TaskItemComponent implements OnInit {
   constructor(private taskService: TaskService) { }
 
   ngOnInit(): void {
-    if (this.taskService.taskRunning && this.taskService.taskRunning.id === this.task.id) {
+    if (this.task && this.task.started) {
       this.task = this.taskService.taskRunning;
     }
   }

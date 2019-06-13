@@ -1,8 +1,8 @@
 <div class="panel-block" *ngIf="task">
   <a class="link has-text-black has-icons-left" [routerLink]="['/tasks', task.project, task.id]">
-      <span class="icon">
-        <i class="fas fa-clock" aria-hidden="true"></i>
-      </span>
+    <span class="icon">
+      <i class="fas fa-clock" aria-hidden="true"></i>
+    </span>
     {{task.name}}
   </a>
 
@@ -10,13 +10,13 @@
     <span>
       {{task.totalTime | date:'HH:mm:ss'}}
     </span>
-    <span *ngIf="task.timers > 0" class="icon has-text-danger">
-        <i class="far fa-stop-circle"></i>
+    <span class="icon has-text-danger" *ngIf="task.stopped">
+      <i class="far fa-stop-circle"></i>
     </span>
-    <span *ngIf="task.timers.length > 1" class="icon has-text-warning">
+    <span class="icon has-text-warning" *ngIf="task.stopped">
       <i class="far fa-pause-circle"></i>
     </span>
-    <span *ngIf="task.timers.length === 0" class="icon has-text-info">
+    <span class="icon has-text-info" *ngIf="task.started">
       <i class="fas fa-hourglass-start"></i>
     </span>
   </span>

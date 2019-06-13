@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection, DocumentData} from '@angular/fire/firestore';
+import { Injectable } from '@angular/core';
+import { AngularFirestore, AngularFirestoreCollection, DocumentData } from '@angular/fire/firestore';
 
-import {TaskModel} from '../../models/task.model';
-import {UserService} from '../users/user.service';
-import {Subscription} from 'rxjs';
-import {AutoUnsubscribe} from '../../decorators/autoUnsubscribe.decorator';
+import { TaskModel } from '../../models/task.model';
+import { UserService } from '../users/user.service';
+import { Subscription } from 'rxjs';
+import { AutoUnsubscribe } from '../../decorators/autoUnsubscribe.decorator';
 
 @Injectable() @AutoUnsubscribe
 export class TaskService {
@@ -22,14 +22,13 @@ export class TaskService {
           .collection('projects');
       }
     });
-
   }
 
-  public getTaskCollection(projectId): AngularFirestoreCollection<DocumentData> {
+  public getTaskCollection(projectId: string): AngularFirestoreCollection<DocumentData> {
     return this.tasksCollection.doc(projectId).collection('tasks');
   }
 
-  async createNewTask(projectId, name?): Promise<TaskModel> {
+  async createNewTask(projectId: string, name?: string): Promise<TaskModel> {
     if (!this.taskRunning && this.userService.currentUser) {
       const id = this.db.createId();
       const task = new TaskModel(id, this.userService.currentUser.uid, projectId, name);
@@ -46,28 +45,18 @@ export class TaskService {
     await this.getTaskCollection(task.project).doc(task.id).delete();
   }
 
-  stringifyTask(task): object {
-    if (task.started) {
-      task.started = task.started.toString();
-      task.stopped = task.stopped.toString();
-    }
+  stringifyTask(task: TaskModel): object {
     return Object.assign({}, task);
   }
 
-  startTimer(task) {
+  startTimer(task: TaskModel) {
     if (!this.taskRunning) {
       this.taskRunning = task;
       task.startTimer();
     }
   }
 
-  pauseTimer(task) {
-    task.pauseTimer();
-    this.updateTask(task);
-    this.taskRunning = null;
-  }
-
-  stopTimer(task) {
+  stopTimer(task: TaskModel) {
     task.stopTimer();
     this.updateTask(task);
     this.taskRunning = null;

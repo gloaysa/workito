@@ -2,7 +2,7 @@ import { Deserialize } from './deserialize.interface';
 import { differenceInSeconds, addSeconds } from 'date-fns';
 
 export class TaskModel implements Deserialize {
-    constructor(id, uid, projectId, name?) {
+    constructor(id: string, uid: string, projectId: string, name?: string) {
         this.id = id;
         this.uid = uid;
         this.createdAt = new Date().toString();
@@ -16,10 +16,10 @@ export class TaskModel implements Deserialize {
     uid: string;
     createdAt: string;
     name: string;
-    totalTime: string;
+    totalTime: string | Date;
     timers: {
-        started: string,
-        stopped: string
+        started: string | Date,
+        stopped: string | Date
     }[];
     started: boolean;
     stopped: boolean;

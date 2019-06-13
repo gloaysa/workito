@@ -26,7 +26,7 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    let taskId;
+    let taskId: string;
     this.childParamSubscription = this.route.firstChild.paramMap.subscribe(paramMap => taskId = paramMap.get('taskId'));
     this.paramSubscription = this.route.paramMap.subscribe(paramMap => {
       const projectId = paramMap.get('projectId');
@@ -38,7 +38,7 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  getTask(projectId, taskId) {
+  getTask(projectId: string, taskId: string) {
     this.tasksCollectionSubscription = this.taskService.getTaskCollection(projectId).doc(taskId)
       .valueChanges().subscribe((task: TaskModel) => {
         if (task) {
