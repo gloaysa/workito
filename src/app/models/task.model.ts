@@ -6,69 +6,61 @@ export class TaskModel implements Deserialize {
         this.id = id;
         this.uid = uid;
         this.createdAt = new Date().toString();
+        this.totalTime = 0;
         this.timers = [];
-        this.started = true;
-        this.stopped = false;
         this.name = name || TaskModel.generateName();
         this.project = projectId;
+        this.stopped = true;
     }
     id: string;
     uid: string;
     createdAt: string;
     name: string;
-    totalTime: string | Date;
+    totalTime: number;
     timers: {
-        started: string | Date,
-        stopped: string | Date
+        started: number,
+        stopped: number
     }[];
-    started: boolean;
+    running: boolean;
     stopped: boolean;
     comments: string;
     project: string;
-    private interval;
 
     static generateName(): string {
         return Intl.DateTimeFormat('es-ES').format(new Date());
     }
 
     startTimer() {
-        if (this.stopped) {
-            if (!this.totalTime) {
-                this.totalTime = new Date(2000, 1, 1).toString();
-            }
-            this.stopped = false;
-            this.started = true;
-            this.startInterval();
-            this.timers.push({
-                started: new Date().toString(),
-                stopped: ''
-            })
-        }
+      if (!this.running) {
+        this.stopped = false;
+        this.running = true;
+        this.timers.push({
+            started: Date.now(),
+            stopped: 0
+        });
+      }
     }
 
     stopTimer() {
-        if (this.started) {
-            this.started = false;
-            this.stopped = true;
-            clearInterval(this.interval);
-            const lastIndex = this.timers.length - 1;
-            this.timers[lastIndex].stopped = new Date().toString();
-        }
+      if (this.running) {
+          this.running = false;
+          this.stopped = true;
+          const lastIndex = this.timers.length - 1;
+          this.timers[lastIndex].stopped = Date.now();
+          this.totalTime = this.getTotalTime;
+      }
     }
 
-    startInterval() {
-        this.interval = setInterval(() => {
-            this.totalTime = addSeconds(this.totalTime, 1).toString();
-        }, 1000)
-    }
-
-    get getTime(): number {
-        if (this.stopped) {
-            const lastIndex = this.timers.length - 1;
-            const firstStarted = this.timers[0].started;
-            const lastStopped = this.timers[lastIndex].stopped;
-            return differenceInSeconds(lastStopped, firstStarted);
-        }
+    get getTotalTime(): number {
+      if (this.running) {
+        const lastIndex = this.timers.length - 1;
+        this.timers[lastIndex].stopped = Date.now();
+      }
+      let totalTime = 0;
+      this.timers.forEach(timer => {
+        totalTime = this.totalTime + (timer.stopped - timer.started);
+      });
+      return totalTime;
     }
 
     deserialize(input: any): this {
