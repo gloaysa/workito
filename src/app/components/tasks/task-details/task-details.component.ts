@@ -5,6 +5,7 @@ import { TaskService } from '../task.service';
 import { TaskModel } from '../../../models/task.model';
 import { AutoUnsubscribe } from '../../../decorators/autoUnsubscribe.decorator';
 import { Subscription } from 'rxjs';
+import {TaskRunningService} from '../task-running/task-running.service';
 
 @Component({
   selector: 'workito-task-detail',
@@ -20,6 +21,7 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   private paramSubscription: Subscription;
 
   constructor(private taskService: TaskService,
+              private taskRunningService: TaskRunningService,
               private route: ActivatedRoute,
               private router: Router
   ) {}
@@ -29,11 +31,7 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     this.childParamSubscription = this.route.firstChild.paramMap.subscribe(paramMap => taskId = paramMap.get('taskId'));
     this.paramSubscription = this.route.paramMap.subscribe(paramMap => {
       const projectId = paramMap.get('projectId');
-      if (this.taskService.taskRunning && this.taskService.taskRunning.id === taskId) {
-        this.task = this.taskService.taskRunning;
-      } else {
-        this.getTask(projectId, taskId);
-      }
+      this.getTask(projectId, taskId);
     });
   }
 
@@ -46,6 +44,16 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
           this.router.navigate(['/projects', projectId]);
         }
       });
+  }
+
+  startTimer() {
+    this.taskRunningService.startTimer(this.task);
+    this.taskService.updateTask(this.task);
+  }
+
+  stopTimer() {
+    this.taskRunningService.stopTimer();
+    this.taskService.updateTask(this.task);
   }
 
   deleteTask() {

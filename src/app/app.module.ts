@@ -22,6 +22,7 @@ import {UserService} from './components/users/user.service';
 import {ProjectsModule} from './components/projects/projects.module';
 import {ProjectsService} from './components/projects/projects.service';
 import {ElementsModule} from './components/elements/elements.module';
+import {TaskRunningService} from './components/tasks/task-running/task-running.service';
 
 const SpanishConfig = new DateFnsConfigurationService();
 SpanishConfig.setLocale(esLocale);
@@ -51,6 +52,7 @@ SpanishConfig.setLocale(esLocale);
     { provide: DateFnsConfigurationService, useValue: SpanishConfig },
     UserGuard,
     TaskService,
+    TaskRunningService,
     AuthService,
     UserService,
     ProjectsService

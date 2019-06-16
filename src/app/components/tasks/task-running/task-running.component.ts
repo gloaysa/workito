@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-import {TaskService} from '../task.service';
+import {TaskRunningService} from './task-running.service';
 
 @Component({
   selector: 'workito-task-running',
@@ -9,5 +9,5 @@ import {TaskService} from '../task.service';
 })
 export class TaskRunningComponent {
 
-  constructor(private taskService: TaskService) { }
+  constructor(private taskRunningService: TaskRunningService) { }
 }
