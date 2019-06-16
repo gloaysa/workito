@@ -1,12 +1,10 @@
 import { Deserialize } from './deserialize.interface';
-import { differenceInSeconds, addSeconds } from 'date-fns';
 
 export class TaskModel implements Deserialize {
     constructor(id: string, uid: string, projectId: string, name?: string) {
         this.id = id;
         this.uid = uid;
         this.createdAt = new Date().toString();
-        this.totalTime = 0;
         this.timers = [];
         this.name = name || TaskModel.generateName();
         this.project = projectId;
@@ -16,7 +14,6 @@ export class TaskModel implements Deserialize {
     uid: string;
     createdAt: string;
     name: string;
-    totalTime: number;
     timers: {
         started: number,
         stopped: number
@@ -47,7 +44,6 @@ export class TaskModel implements Deserialize {
           this.stopped = true;
           const lastIndex = this.timers.length - 1;
           this.timers[lastIndex].stopped = Date.now();
-          this.totalTime = this.getTotalTime;
       }
     }
 
@@ -58,7 +54,7 @@ export class TaskModel implements Deserialize {
       }
       let totalTime = 0;
       this.timers.forEach(timer => {
-        totalTime = this.totalTime + (timer.stopped - timer.started);
+        totalTime = totalTime + (timer.stopped - timer.started);
       });
       return totalTime;
     }
