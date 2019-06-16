@@ -43,7 +43,7 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   }
 
   stopTimer() {
-    this.taskRunningService.stopTimer();
+    this.taskRunningService.stopTimer(this.task);
     this.taskService.updateTask(this.task);
   }
 

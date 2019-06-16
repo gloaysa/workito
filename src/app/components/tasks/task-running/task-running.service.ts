@@ -12,18 +12,18 @@ export class TaskRunningService {
   constructor() {
   }
 
-  startTimer(task) {
+  startTimer(task: TaskModel) {
     if (!this.task) {
       this.showTimer = addMilliseconds(new Date(0, 0, 0), task.getTotalTime);
       this.task = task;
-      this.task.startTimer();
+      task.startTimer();
       this.startShowTimerInterval();
     }
   }
 
-  stopTimer() {
+  stopTimer(task: TaskModel) {
     if (this.task) {
-      this.task.stopTimer();
+      task.stopTimer();
       this.task = null;
       clearInterval(this.timerInterval);
     }
