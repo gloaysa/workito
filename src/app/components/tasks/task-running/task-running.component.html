@@ -12,8 +12,7 @@
       <span class="icon">
       <i class="fas fa-grip-lines-vertical"></i>
     </span>
-      <span
-        class="workito-new-task-counter__timer"> {{taskService.taskRunning.totalTime | date:'HH mm ss' }}</span>
+      <workito-task-timer [task]="taskService.taskRunning"></workito-task-timer>
     </a>
     </span>
   </div>
