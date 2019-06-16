@@ -1,4 +1,8 @@
 .workito-task-details {
+  &__counter {
+    font-size: 36px;
+    font-family: "Fira Code", serif;
+  }
   &__textarea {
     resize: none;
     overflow-y: hidden;

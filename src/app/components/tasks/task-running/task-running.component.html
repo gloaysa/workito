@@ -1,4 +1,4 @@
-<div class="workito-new-task navbar-brand">
+<div class="workito-task-running navbar-brand">
   <div class="navbar-item">
     <a class="button is-dark" *ngIf="taskService.taskRunning">
       <span class="icon">
@@ -8,11 +8,11 @@
     <span *ngIf="taskService.taskRunning">
       <a class="button is-dark"
          [routerLink]="['tasks/', taskService.taskRunning.project, taskService.taskRunning.id]">
-      <span class="workito-new-task-counter__name">{{taskService.taskRunning.name}}</span>
+      <span class="workito-task-running-counter__name">{{taskService.taskRunning.name}}</span>
       <span class="icon">
       <i class="fas fa-grip-lines-vertical"></i>
     </span>
-      <workito-task-timer [task]="taskService.taskRunning"></workito-task-timer>
+      <workito-task-timer class="workito-task-running__counter" [task]="taskService.taskRunning"></workito-task-timer>
     </a>
     </span>
   </div>
