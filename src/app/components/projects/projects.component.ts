@@ -41,8 +41,8 @@ export class ProjectsComponent implements OnInit {
     this.invalidName = !this.projectsService.projectNameIsValid(value);
   }
 
-  filteredList(filteredSessions: ProjectModel[]) {
-    this.filteredProjects = filteredSessions;
+  filteredList(filteredTasks: ProjectModel[]) {
+    this.filteredProjects = filteredTasks;
   }
 
   get projectsToShow(): ProjectModel[] {

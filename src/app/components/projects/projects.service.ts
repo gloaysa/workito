@@ -3,7 +3,7 @@ import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firest
 
 import {Subscription} from 'rxjs';
 import {UserService} from '../users/user.service';
-import {SessionModel} from '../../models/session.model';
+import {TaskModel} from '../../models/task.model';
 import {ProjectModel} from '../../models/project.model';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class ProjectsService {
   constructor(private db: AngularFirestore, private userService: UserService) {
     this.userServiceSubscription = this.userService.userLoggedInAsObservable.subscribe((user) => {
       if (user) {
-        this.projectsCollection = db.collection<SessionModel[]>('users')
+        this.projectsCollection = db.collection<TaskModel[]>('users')
           .doc(this.userService.currentUser.uid)
           .collection('projects');
         this.getProjects();
@@ -55,7 +55,7 @@ export class ProjectsService {
     }
   }
 
-  public destroyProject(projectId) {
+  public destroyProject(projectId: string) {
     this.projectsCollection.doc(projectId).delete().catch(error => console.log('ERROR:', error.message));
   }
 

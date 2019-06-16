@@ -1,0 +1,6 @@
+<ng-container *ngIf="task.running">
+  {{  taskRunningService.showTimer | date:'HH:mm:ss'}}
+</ng-container>
+<ng-container *ngIf="!task.running">
+  {{  getTotalTime() | date:'HH:mm:ss'}}
+</ng-container>

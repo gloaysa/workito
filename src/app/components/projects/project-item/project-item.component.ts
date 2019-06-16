@@ -12,8 +12,8 @@ export class ProjectItemComponent {
 
   constructor(private projectsService: ProjectsService) {}
 
-  deleteSession(project) {
-    this.projectsService.destroyProject(project);
+  deleteTask(project) {
+    this.projectsService.destroyProject(project.id);
   }
 
 }

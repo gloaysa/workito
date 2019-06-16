@@ -1,0 +1,10 @@
+.workito-task-item {
+  &__counter {
+    font-size: 16px;
+    font-family: "Fira Code", serif;
+  }
+
+  &.panel-block {
+    display: block;
+  }
+}
