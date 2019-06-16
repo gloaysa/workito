@@ -9,13 +9,15 @@ import { NewTaskComponent } from './new-task/new-task.component';
 import {FormsModule} from '@angular/forms';
 import {ElementsModule} from '../elements/elements.module';
 import { TaskItemComponent } from './task-item/task-item.component';
+import { TaskTimerComponent } from './task-timer/task-timer.component';
 
 @NgModule({
   declarations: [
     TasksComponent,
     TaskDetailsComponent,
     NewTaskComponent,
-    TaskItemComponent
+    TaskItemComponent,
+    TaskTimerComponent
   ],
   exports: [
     TasksComponent,
