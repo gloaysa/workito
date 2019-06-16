@@ -30,7 +30,7 @@ import { TaskTimerComponent } from './task-timer/task-timer.component';
     DateFnsModule,
     TasksRoutingModule,
     FormsModule,
-    ElementsModule
+    ElementsModule,
   ]
 })
 export class TasksModule { }
