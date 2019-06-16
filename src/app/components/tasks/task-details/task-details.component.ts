@@ -5,7 +5,6 @@ import { TaskService } from '../task.service';
 import { TaskModel } from '../../../models/task.model';
 import { AutoUnsubscribe } from '../../../decorators/autoUnsubscribe.decorator';
 import { Subscription } from 'rxjs';
-import { addSeconds, parse } from 'date-fns';
 
 @Component({
   selector: 'workito-task-detail',
@@ -21,9 +20,9 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   private paramSubscription: Subscription;
 
   constructor(private taskService: TaskService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) { }
+              private route: ActivatedRoute,
+              private router: Router
+  ) {}
 
   ngOnInit() {
     let taskId: string;
@@ -49,10 +48,6 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
-  updateTask() {
-    this.taskService.updateTask(this.task);
-  }
-
   deleteTask() {
     this.taskService.destroyTask(this.task);
     this.router.navigate(['/projects', this.task.project]);
@@ -63,14 +58,6 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     if (this.task) {
       this.taskService.updateTask(this.task);
     }
-  }
-
-  private startTimer() {
-    this.taskService.startTimer(this.task);
-  }
-
-  private stopTimer() {
-    this.taskService.stopTimer(this.task);
   }
 
 }
