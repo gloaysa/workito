@@ -5,11 +5,12 @@ import { TaskModel } from '../../models/task.model';
 import { UserService } from '../users/user.service';
 import {ReplaySubject, Subscription} from 'rxjs';
 import { AutoUnsubscribe } from '../../decorators/autoUnsubscribe.decorator';
+import {TaskRunningService} from './task-running/task-running.service';
 
 @Injectable() @AutoUnsubscribe
 export class TaskService {
 
-  constructor(private db: AngularFirestore, private userService: UserService) {
+  constructor(private db: AngularFirestore, private userService: UserService, private taskRunningService: TaskRunningService) {
     this.userServiceSubscription = this.userService.userLoggedInAsObservable.subscribe((user) => {
       if (user) {
         this.tasksCollection = db.collection<TaskModel[]>('users')
@@ -33,7 +34,13 @@ export class TaskService {
 
   private getTasks(): void {
     this.tasksCollectionSubs =  this.tasksCollection.valueChanges().subscribe(tasks => {
-      const taskList = tasks.map(task => new TaskModel(task.id, task.uid, task.project).deserialize(task));
+      const taskList = tasks.map(task => {
+        const newTask = new TaskModel(task.id, task.uid, task.project).deserialize(task);
+        if (newTask.running) {
+          this.taskRunningService.startTimer(newTask);
+        }
+        return newTask;
+      });
       this.tasks$.next(taskList);
     });
   }
