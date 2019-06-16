@@ -7,10 +7,18 @@
     </a>
 
     <div class="workito-task-details card">
-      <div class="workito-task-details__name card-header-title">
-        <label for="taskName">
-          <input id="taskName" type="text" class="input is-static title" [(ngModel)]="task.name">
-        </label>
+      <div class="field card-header-title workito-task-details__name">
+        <p class="control has-icons-left">
+          <label for="taskName"></label>
+          <input
+            id="taskName"
+            class="input is-static is-large"
+            type="text"
+            [(ngModel)]="task.name">
+          <span class="icon is-small is-left">
+            <i class="fas fa-edit"></i>
+          </span>
+        </p>
       </div>
       <div class="card-content">
         <workito-task-timer [task]="task" class="workito-task-details__counter"></workito-task-timer>
