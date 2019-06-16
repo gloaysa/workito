@@ -49,6 +49,7 @@ export class TaskService {
     if (!this.taskRunning && this.userService.currentUser) {
       const id = this.db.createId();
       const task = new TaskModel(id, this.userService.currentUser.uid, projectId, name);
+      task.startTimer();
       await this.tasksCollection.doc(task.id).set(TaskService.stringifyTask(task));
       return task;
     }

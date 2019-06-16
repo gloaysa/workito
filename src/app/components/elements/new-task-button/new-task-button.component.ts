@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {TaskService} from '../../tasks/task.service';
 import {Router} from '@angular/router';
+import {TaskRunningService} from '../../tasks/task-running/task-running.service';
 
 @Component({
   selector: 'workito-new-task-button',
@@ -13,15 +14,18 @@ export class NewTaskButtonComponent {
   @Input() redirectOnCreate: boolean;
   @Output() whenCreateNewTask = new EventEmitter();
 
-  constructor(private taskService: TaskService, private router: Router) {}
+  constructor(private taskService: TaskService, private taskRunningService: TaskRunningService, private router: Router) {}
 
   createNewTask() {
-    this.taskService.createNewTask(this.projectId).then(task => {
-      this.whenCreateNewTask.emit(task);
-      if (this.redirectOnCreate) {
-        this.router.navigate(['tasks/', task.project, task.id]);
-      }
-    });
+    if (!this.taskRunningService.task) {
+      this.taskService.createNewTask(this.projectId).then(task => {
+        this.whenCreateNewTask.emit(task);
+        this.taskRunningService.startTimer(task);
+        if (this.redirectOnCreate) {
+          this.router.navigate(['tasks/', task.project, task.id]);
+        }
+      });
+    }
   }
 
 }
