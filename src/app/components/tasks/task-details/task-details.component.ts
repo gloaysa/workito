@@ -16,8 +16,7 @@ import {TaskRunningService} from '../task-running/task-running.service';
 export class TaskDetailsComponent implements OnInit, OnDestroy {
   private task: TaskModel;
 
-  private tasksCollectionSubscription: Subscription;
-  private childParamSubscription: Subscription;
+  private tasksSubscription: Subscription;
   private paramSubscription: Subscription;
 
   constructor(private taskService: TaskService,
@@ -27,23 +26,15 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    let taskId: string;
-    this.childParamSubscription = this.route.firstChild.paramMap.subscribe(paramMap => taskId = paramMap.get('taskId'));
-    this.paramSubscription = this.route.paramMap.subscribe(paramMap => {
-      const projectId = paramMap.get('projectId');
-      this.getTask(projectId, taskId);
-    });
+    this.paramSubscription = this.route.firstChild.paramMap
+      .subscribe(paramMap => this.getTask(paramMap.get('taskId')));
+
   }
 
-  getTask(projectId: string, taskId: string) {
-    this.tasksCollectionSubscription = this.taskService.getTaskCollection(projectId).doc(taskId)
-      .valueChanges().subscribe((task: TaskModel) => {
-        if (task) {
-          this.task = new TaskModel(task.id, task.uid, task.project).deserialize(task);
-        } else {
-          this.router.navigate(['/projects', projectId]);
-        }
-      });
+  getTask(taskId): void {
+    this.tasksSubscription = this.taskService.tasks$.subscribe(tasks => {
+      this.task = tasks.find(task => task.id === taskId);
+    });
   }
 
   startTimer() {

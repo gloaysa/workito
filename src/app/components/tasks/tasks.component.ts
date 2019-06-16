@@ -15,7 +15,7 @@ import {Router} from '@angular/router';
 @AutoUnsubscribe
 export class TasksComponent implements OnInit {
   @Input() project: ProjectModel;
-  private tasksCollectionSubscription: Subscription;
+  private tasksSubscription: Subscription;
   private taskList: TaskModel[];
   private invalidName: boolean;
 
@@ -24,14 +24,7 @@ export class TasksComponent implements OnInit {
   constructor(private taskService: TaskService, private router: Router) {}
 
   ngOnInit(): void {
-    this.getTasks();
-  }
-
-  getTasks() {
-    this.tasksCollectionSubscription = this.taskService.getTaskCollection(this.project.id).valueChanges()
-      .subscribe(tasks => {
-        this.taskList = tasks.map(task => new TaskModel(task.id, task.uid, task.project).deserialize(task));
-      });
+    this.tasksSubscription = this.taskService.tasks$.subscribe(tasks => this.taskList = tasks);
   }
 
   createNewTask(name: string) {
