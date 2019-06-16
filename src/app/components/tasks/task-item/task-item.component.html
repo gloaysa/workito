@@ -1,4 +1,4 @@
-<div class="panel-block" *ngIf="task">
+<div class="workito-task-item panel-block" *ngIf="task">
   <a class="link has-text-black has-icons-left" [routerLink]="['/tasks', task.project, task.id]">
     <span class="icon">
       <i class="fas fa-clock" aria-hidden="true"></i>
@@ -6,19 +6,17 @@
     {{task.name}}
   </a>
 
-  <span class="is-pulled-right">
-    <span>
-      {{task.totalTime | date:'HH:mm:ss'}}
-    </span>
+  <div class="is-pulled-right">
+    <workito-task-timer class="content workito-task-item__counter" [task]="task"></workito-task-timer>
     <span class="icon has-text-danger" *ngIf="task.stopped">
       <i class="far fa-stop-circle"></i>
     </span>
     <span class="icon has-text-warning" *ngIf="task.stopped">
       <i class="far fa-pause-circle"></i>
     </span>
-    <span class="icon has-text-info" *ngIf="task.started">
+    <span class="icon has-text-info" *ngIf="task.running">
       <i class="fas fa-hourglass-start"></i>
     </span>
-  </span>
+  </div>
 
 </div>
