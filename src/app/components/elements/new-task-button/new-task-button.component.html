@@ -1,0 +1,10 @@
+<div class="container">
+  <a
+    class="button"
+    [ngClass]="{'is-large is-info': !classes, classes: classes}"
+    (click)="createNewTask()">
+    <span class="icon is-large">
+      <i class="fas fa-play"></i>
+    </span>
+  </a>
+</div>

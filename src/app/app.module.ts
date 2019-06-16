@@ -23,6 +23,7 @@ import {ProjectsModule} from './components/projects/projects.module';
 import {ProjectsService} from './components/projects/projects.service';
 import {ElementsModule} from './components/elements/elements.module';
 import {TaskRunningService} from './components/tasks/task-running/task-running.service';
+import { NewTaskButtonComponent } from './components/elements/new-task-button/new-task-button.component';
 
 const SpanishConfig = new DateFnsConfigurationService();
 SpanishConfig.setLocale(esLocale);
@@ -32,7 +33,8 @@ SpanishConfig.setLocale(esLocale);
   declarations: [
     AppComponent,
     LoginComponent,
-    SignUpComponent
+    SignUpComponent,
+    NewTaskButtonComponent
   ],
   imports: [
     BrowserModule,
