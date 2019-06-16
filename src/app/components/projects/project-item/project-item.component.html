@@ -5,7 +5,15 @@
       </span>
     {{project.name}}
   </a>
-  <span class="icon has-text-danger is-pulled-right" (click)="deleteTask(project)">
+  <div class="is-pulled-right">
+    <workito-new-task-button
+      [projectId]="project.id"
+      classes="is-info is-small"
+      redirectOnCreate="true"
+    ></workito-new-task-button>
+    <span class="icon has-text-danger" (click)="deleteProject(project)">
         <i class="fas fa-trash"></i>
-      </span>
+    </span>
+  </div>
+
 </div>

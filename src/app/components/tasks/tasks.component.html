@@ -6,7 +6,11 @@
       </span>
   </a>
 
-  <workito-new-task-button [projectId]="project.id" (whenCreateNewTask)="onCreateNewTask($event)"></workito-new-task-button>
+  <workito-new-task-button
+    [projectId]="project.id"
+    redirectOnCreate="true"
+    classes="is-info is-large"
+  ></workito-new-task-button>
 
   <workito-panel
     title="Sesiones"

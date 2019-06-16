@@ -12,7 +12,7 @@ export class ProjectItemComponent {
 
   constructor(private projectsService: ProjectsService) {}
 
-  deleteTask(project) {
+  deleteProject(project) {
     this.projectsService.destroyProject(project.id);
   }
 

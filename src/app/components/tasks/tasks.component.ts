@@ -30,13 +30,9 @@ export class TasksComponent implements OnInit {
   createNewTask(name: string) {
     if (name) {
       this.taskService.createNewTask(this.project.id, name).then(task => {
-        this.onCreateNewTask(task);
+        this.router.navigate(['tasks/', task.project, task.id]);
       });
     }
-  }
-
-  onCreateNewTask(task) {
-    this.router.navigate(['tasks/', task.project, task.id]);
   }
 
   checkName(name: string) {
