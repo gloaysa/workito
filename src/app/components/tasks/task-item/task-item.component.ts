@@ -14,7 +14,7 @@ export class TaskItemComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.task && this.task.running) {
-      this.task = this.taskRunningService.task;
+      this.taskRunningService.task = this.task;
     }
   }
 

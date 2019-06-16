@@ -34,7 +34,6 @@ export class TaskService {
   private getTasks(): void {
     this.tasksCollectionSubs =  this.tasksCollection.valueChanges().subscribe(tasks => {
       const taskList = tasks.map(task => new TaskModel(task.id, task.uid, task.project).deserialize(task));
-      console.log('changed');
       this.tasks$.next(taskList);
     });
   }
