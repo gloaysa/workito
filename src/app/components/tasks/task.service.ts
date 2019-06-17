@@ -1,48 +1,46 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 import { TaskModel } from '../../models/task.model';
 import { UserService } from '../users/user.service';
-import {ReplaySubject, Subscription} from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import { AutoUnsubscribe } from '../../decorators/autoUnsubscribe.decorator';
-import {TaskRunningService} from './task-running/task-running.service';
+import {switchMap} from 'rxjs/operators';
 
 @Injectable() @AutoUnsubscribe
 export class TaskService {
 
-  constructor(private db: AngularFirestore, private userService: UserService, private taskRunningService: TaskRunningService) {
-    this.userServiceSubscription = this.userService.userLoggedInAsObservable.subscribe((user) => {
-      if (user) {
-        this.tasksCollection = db.collection<TaskModel[]>('users')
-          .doc(user.uid)
-          .collection('tasks', ref => ref.orderBy('createdAt', 'desc'));
-
-        this.getTasks();
-      }
-    });
-  }
-  private tasksCollection: AngularFirestoreCollection<any>;
-  private tasksCollectionSubs: Subscription;
-  private userServiceSubscription: Subscription;
-
-  tasks$: ReplaySubject<TaskModel[]> = new ReplaySubject();
+  tasks$: Observable<TaskModel[]>;
+  private projectFilter$: BehaviorSubject<string|null>;
+  private dateFilter$: BehaviorSubject<string|null>;
   taskRunning: TaskModel;
+
+  constructor(private db: AngularFirestore, private userService: UserService) {
+    this.projectFilter$ = new BehaviorSubject(null);
+    this.dateFilter$ = new BehaviorSubject(null);
+
+    this.tasks$ = combineLatest(
+      this.projectFilter$,
+      this.dateFilter$
+    ).pipe(
+      switchMap(([projectId, date]) => {
+        return db.collection<TaskModel>('tasks', ref => {
+          let query: firebase.firestore.Query = ref;
+          if (projectId) { query = query.where('project', '==', projectId); }
+          if (date) { query = query.where('createdAt', '==', date); }
+          return query;
+        }).valueChanges();
+      })
+    );
+
+  }
 
   static stringifyTask(task: TaskModel): object {
     return Object.assign({}, task);
   }
 
-  private getTasks(): void {
-    this.tasksCollectionSubs =  this.tasksCollection.valueChanges().subscribe(tasks => {
-      const taskList = tasks.map(task => {
-        const newTask = new TaskModel(task.id, task.uid, task.project).deserialize(task);
-        if (newTask.running) {
-          this.taskRunningService.startTimer(newTask);
-        }
-        return newTask;
-      });
-      this.tasks$.next(taskList);
-    });
+  public async getTasks(projectId): Promise<void> {
+    await this.projectFilter$.next(projectId);
   }
 
   async createNewTask(projectId: string, name?: string): Promise<TaskModel> {
@@ -50,16 +48,16 @@ export class TaskService {
       const id = this.db.createId();
       const task = new TaskModel(id, this.userService.currentUser.uid, projectId, name);
       task.startTimer();
-      await this.tasksCollection.doc(task.id).set(TaskService.stringifyTask(task));
+      await this.db.collection('tasks').doc(task.id).set(TaskService.stringifyTask(task));
       return task;
     }
   }
 
   async updateTask(task: TaskModel): Promise<void> {
-    await this.tasksCollection.doc(task.id).update(TaskService.stringifyTask(task));
+    await this.db.collection('tasks').doc(task.id).update(TaskService.stringifyTask(task));
   }
 
   async destroyTask(task: TaskModel): Promise<void> {
-    await this.tasksCollection.doc(task.id).delete();
+    await this.db.collection('tasks').doc(task.id).delete();
   }
 }
