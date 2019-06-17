@@ -20,7 +20,7 @@ export class NewTaskButtonComponent {
     if (!this.taskRunningService.task) {
       this.taskService.createNewTask(this.projectId).then(task => {
         this.whenCreateNewTask.emit(task);
-        this.taskRunningService.startTimer(task);
+        task.startTimer();
         if (this.redirectOnCreate) {
           this.router.navigate(['tasks/', task.project, task.id]);
         }

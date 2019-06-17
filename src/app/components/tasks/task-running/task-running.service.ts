@@ -15,28 +15,22 @@ export class TaskRunningService {
       .subscribe((task: TaskModel[]) => {
         if (task.length) {
           this.task = new TaskModel(task[0].id, task[0].uid, task[0].project).deserialize(task[0]);
+          this.startShowTimerInterval();
+        } else {
+          this.stopTimer();
         }
       });
   }
 
-  startTimer() {
-    if (!this.task) {
-      this.showTimer = addMilliseconds(new Date(0, 0, 0), this.task.getTotalTime);
-      this.task.startTimer();
-      this.startShowTimerInterval();
-    }
-  }
-
-  stopTimer() {
-    if (this.task) {
-      this.task.stopTimer();
-      clearInterval(this.timerInterval);
-    }
-  }
-
   private startShowTimerInterval() {
+    this.showTimer = addMilliseconds(new Date(0, 0, 0), this.task.getTotalTime);
     this.timerInterval = setInterval(() => {
       this.showTimer = addSeconds(this.showTimer, 1);
     }, 1000);
+  }
+
+  stopTimer() {
+    this.task = null;
+    clearInterval(this.timerInterval);
   }
 }
