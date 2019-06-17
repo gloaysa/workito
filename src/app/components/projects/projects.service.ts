@@ -21,7 +21,7 @@ export class ProjectsService {
       if (user) {
         this.projectsCollection = db.collection<TaskModel[]>('users')
           .doc(this.userService.currentUser.uid)
-          .collection('projects');
+          .collection('projects', ref => ref.orderBy('updatedAt', 'desc'));
         this.getProjects();
       } else {
         this.projectsCollectionSubscription.unsubscribe();
@@ -31,7 +31,7 @@ export class ProjectsService {
   }
 
   private createFriendlyId(id: string): string {
-    let newId = id.replace(/([^a-z0-9_-]|[\t\n\f\r\v\0\s\.,])/gim, '').trim().toLowerCase();
+    let newId = id.replace(/([^a-z0-9_-]|[\t\n\f\r\v\0\s.,])/gim, '').trim().toLowerCase();
     let suffix = 1;
     while (!!this.projects.find(project => project.id === newId)) {
       newId = newId + '-' + suffix;

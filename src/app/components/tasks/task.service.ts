@@ -15,7 +15,7 @@ export class TaskService {
       if (user) {
         this.tasksCollection = db.collection<TaskModel[]>('users')
           .doc(user.uid)
-          .collection('tasks');
+          .collection('tasks', ref => ref.orderBy('createdAt', 'desc'));
 
         this.getTasks();
       }

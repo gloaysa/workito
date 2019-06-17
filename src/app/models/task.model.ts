@@ -4,7 +4,7 @@ export class TaskModel implements Deserialize {
     constructor(id: string, uid: string, projectId: string, name?: string) {
         this.id = id;
         this.uid = uid;
-        this.createdAt = new Date().toString();
+        this.createdAt = new Date();
         this.timers = [];
         this.name = name || TaskModel.generateName();
         this.project = projectId;
@@ -12,7 +12,7 @@ export class TaskModel implements Deserialize {
     }
     id: string;
     uid: string;
-    createdAt: string;
+    createdAt: Date;
     name: string;
     timers: {
         started: number,

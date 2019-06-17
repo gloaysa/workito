@@ -5,11 +5,13 @@ export class ProjectModel implements Deserialize {
     this.id = id;
     this.uid = uid;
     this.name = name;
-    this.createdAt = new Date().toString();
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
   }
   id: string;
   uid: string;
-  createdAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   name: string;
   status: string;
   totalTime: string;
