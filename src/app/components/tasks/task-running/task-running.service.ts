@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {TaskModel} from '../../../models/task.model';
 import {addMilliseconds, addSeconds} from 'date-fns';
+import {AngularFirestore} from '@angular/fire/firestore';
 
 
 @Injectable()
@@ -9,22 +10,26 @@ export class TaskRunningService {
   showTimer: Date;
   timerInterval: number;
 
-  constructor() {
+  constructor(private afs: AngularFirestore) {
+    afs.collection('tasks', ref => ref.where('running', '==', true).limit(1)).valueChanges()
+      .subscribe((task: TaskModel[]) => {
+        if (task.length) {
+          this.task = new TaskModel(task[0].id, task[0].uid, task[0].project).deserialize(task[0]);
+        }
+      });
   }
 
-  startTimer(task: TaskModel) {
+  startTimer() {
     if (!this.task) {
-      this.showTimer = addMilliseconds(new Date(0, 0, 0), task.getTotalTime);
-      this.task = task;
-      task.startTimer();
+      this.showTimer = addMilliseconds(new Date(0, 0, 0), this.task.getTotalTime);
+      this.task.startTimer();
       this.startShowTimerInterval();
     }
   }
 
-  stopTimer(task: TaskModel) {
+  stopTimer() {
     if (this.task) {
-      task.stopTimer();
-      this.task = null;
+      this.task.stopTimer();
       clearInterval(this.timerInterval);
     }
   }
