@@ -25,7 +25,9 @@ export class TasksComponent implements OnInit {
 
   ngOnInit(): void {
     this.taskService.getTasks(this.project.id).then(() => {
-      this.tasksSubscription = this.taskService.tasks$.subscribe(tasks => this.taskList = tasks);
+      this.tasksSubscription = this.taskService.tasks$.subscribe(tasks => {
+        this.taskList = tasks.map(task => new TaskModel(task.id, task.uid, task.project).deserialize(task));
+      });
     });
   }
 

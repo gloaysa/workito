@@ -33,7 +33,8 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
 
   getTask(taskId): void {
     this.tasksSubscription = this.taskService.tasks$.subscribe(tasks => {
-      this.task = tasks.find(task => task.id === taskId);
+      const foundTask = tasks.find(task => task.id === taskId);
+      this.task = new TaskModel(foundTask.id, foundTask.uid, foundTask.project).deserialize(foundTask);
     });
   }
 
