@@ -11,23 +11,15 @@ import {ProjectModel} from '../../models/project.model';
 })
 export class ProjectsService {
   private projectsCollectionSubscription: Subscription;
-  private userServiceSubscription: Subscription;
 
   public projectsCollection: AngularFirestoreCollection<any>;
   public projects: ProjectModel[];
 
   constructor(private db: AngularFirestore, private userService: UserService) {
-    this.userServiceSubscription = this.userService.userLoggedInAsObservable.subscribe((user) => {
-      if (user) {
-        this.projectsCollection = db.collection<TaskModel[]>('users')
-          .doc(this.userService.currentUser.uid)
-          .collection('projects', ref => ref.orderBy('updatedAt', 'desc'));
-        this.getProjects();
-      } else {
-        this.projectsCollectionSubscription.unsubscribe();
-        this.userServiceSubscription.unsubscribe();
-      }
-    });
+    this.projectsCollection = db.collection<TaskModel[]>('projects', ref =>
+      ref.orderBy('updatedAt', 'desc'));
+
+    this.getProjects();
   }
 
   private createFriendlyId(id: string): string {
