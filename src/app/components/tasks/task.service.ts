@@ -28,6 +28,7 @@ export class TaskService {
           let query: firebase.firestore.Query = ref;
           if (projectId) { query = query.where('project', '==', projectId); }
           if (date) { query = query.where('createdAt', '==', date); }
+          query = query.orderBy('createdAt', 'desc');
           return query;
         }).valueChanges();
       })

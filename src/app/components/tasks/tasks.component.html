@@ -24,8 +24,13 @@
     (whenSearch)="filteredList($event)"
   ></workito-panel>
 
-  <ng-template #taskListTemplate ngFor let-task [ngForOf]="tasksToShow">
-    <workito-task-item [task]="task"></workito-task-item>
+  <ng-template #taskListTemplate>
+    <div *ngFor="let session of sessionsToShow">
+      <div>{{ session.name | date:'fullDate' }} || <span>{{ session.getTotalHours | date:'HH:mm:ss' }}</span></div>
+      <div *ngFor="let task of session.tasks">
+        <workito-task-item [task]="task"></workito-task-item>
+      </div>
+    </div>
   </ng-template>
 
 </div>

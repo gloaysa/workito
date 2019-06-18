@@ -1,4 +1,5 @@
 import { Deserialize } from './deserialize.interface';
+import {startOfDay} from 'date-fns';
 
 export class TaskModel implements Deserialize {
     constructor(id: string, uid: string, projectId: string, name?: string) {
@@ -8,6 +9,7 @@ export class TaskModel implements Deserialize {
         this.timers = [];
         this.name = name || TaskModel.generateName();
         this.project = projectId;
+        this.session = startOfDay(new Date()).toString();
         this.stopped = true;
     }
     id: string;
@@ -22,6 +24,7 @@ export class TaskModel implements Deserialize {
     stopped: boolean;
     comments: string;
     project: string;
+    session: string;
 
     static generateName(): string {
         return Intl.DateTimeFormat('es-ES').format(new Date());
