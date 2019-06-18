@@ -23,7 +23,7 @@ import {ProjectsModule} from './components/projects/projects.module';
 import {ProjectsService} from './components/projects/projects.service';
 import {ElementsModule} from './components/elements/elements.module';
 import {TaskRunningService} from './components/tasks/task-running/task-running.service';
-import { ExpandableDirective } from './directives/expandable.directive';
+import {DirectivesModule} from './directives/directives.module';
 
 const SpanishConfig = new DateFnsConfigurationService();
 SpanishConfig.setLocale(esLocale);
@@ -33,8 +33,7 @@ SpanishConfig.setLocale(esLocale);
   declarations: [
     AppComponent,
     LoginComponent,
-    SignUpComponent,
-    ExpandableDirective
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +47,8 @@ SpanishConfig.setLocale(esLocale);
     TasksModule,
     UsersModule,
     ProjectsModule,
-    ElementsModule
+    ElementsModule,
+    DirectivesModule
   ],
   providers: [
     {provide: DateFnsConfigurationService, useValue: SpanishConfig},
