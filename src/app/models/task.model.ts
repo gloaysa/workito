@@ -1,5 +1,5 @@
 import { Deserialize } from './deserialize.interface';
-import {isToday, startOfDay} from 'date-fns';
+import {startOfDay} from 'date-fns';
 
 export class TaskModel implements Deserialize {
     constructor() {
@@ -26,7 +26,7 @@ export class TaskModel implements Deserialize {
     }
 
     startTimer() {
-      if (!this.running && isToday(this.session)) {
+      if (!this.running) {
         this.status = 'running';
         this.timers.push({
             started: Date.now(),
@@ -43,10 +43,10 @@ export class TaskModel implements Deserialize {
     }
 
     stopTimer() {
-      if (this.running) {
-        this.saveLastTimeEntry();
-      }
       this.status = 'stop';
+      if (this.running) {
+          this.saveLastTimeEntry();
+      }
     }
 
     get getTotalTime(): number {
