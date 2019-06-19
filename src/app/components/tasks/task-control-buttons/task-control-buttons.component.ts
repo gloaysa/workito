@@ -1,15 +1,15 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {TaskService} from '../../tasks/task.service';
+import {TaskService} from '../task.service';
 import {Router} from '@angular/router';
-import {TaskRunningService} from '../../tasks/task-running/task-running.service';
+import {TaskRunningService} from '../task-running/task-running.service';
 import {TaskModel} from '../../../models/task.model';
 
 @Component({
-  selector: 'workito-new-task-button',
-  templateUrl: './new-task-button.component.html',
-  styleUrls: ['./new-task-button.component.scss']
+  selector: 'workito-task-control-buttons',
+  templateUrl: './task-control-buttons.component.html',
+  styleUrls: ['./task-control-buttons.component.scss']
 })
-export class NewTaskButtonComponent {
+export class TaskControlButtonsComponent {
   @Input() task: TaskModel;
   @Input() projectId: string;
   @Input() classes: string;

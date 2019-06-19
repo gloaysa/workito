@@ -6,10 +6,10 @@
     {{project.name}}
   </a>
   <div class="is-pulled-right">
-    <workito-new-task-button
+    <workito-task-control-buttons
       [projectId]="project.id"
       classes="is-small is-white has-text-info"
-    ></workito-new-task-button>
+    ></workito-task-control-buttons>
     <span class="icon has-text-danger" (click)="deleteProject(project)">
         <i class="fas fa-trash"></i>
     </span>

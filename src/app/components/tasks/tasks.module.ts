@@ -12,6 +12,7 @@ import { TaskItemComponent } from './task-item/task-item.component';
 import { TaskTimerComponent } from './task-timer/task-timer.component';
 import {DirectivesModule} from '../../directives/directives.module';
 import { SessionItemComponent } from './sessions/session-item.component';
+import {TaskControlButtonsComponent} from './task-control-buttons/task-control-buttons.component';
 
 @NgModule({
   declarations: [
@@ -20,13 +21,15 @@ import { SessionItemComponent } from './sessions/session-item.component';
     TaskRunningComponent,
     TaskItemComponent,
     TaskTimerComponent,
-    SessionItemComponent
+    SessionItemComponent,
+    TaskControlButtonsComponent
   ],
   exports: [
     TasksComponent,
     TaskDetailsComponent,
     TaskRunningComponent,
-    TaskItemComponent
+    TaskItemComponent,
+    TaskControlButtonsComponent
   ],
   imports: [
     CommonModule,

@@ -4,18 +4,15 @@ import {FixedNavbarComponent} from './fixed-navbar/fixed-navbar.component';
 import {PanelComponent} from './panel/panel.component';
 import {FormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
-import {NewTaskButtonComponent} from './new-task-button/new-task-button.component';
 
 @NgModule({
   declarations: [
     FixedNavbarComponent,
-    PanelComponent,
-    NewTaskButtonComponent
+    PanelComponent
   ],
   exports: [
     FixedNavbarComponent,
-    PanelComponent,
-    NewTaskButtonComponent
+    PanelComponent
   ],
   imports: [
     CommonModule,
