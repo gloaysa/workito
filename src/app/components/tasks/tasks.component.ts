@@ -20,7 +20,7 @@ export class TasksComponent implements OnInit {
   private taskList: SessionModel[];
   private invalidName: boolean;
 
-  filteredTasks: TaskModel[];
+  filteredTasks: SessionModel[];
 
   constructor(private taskService: TaskService, private router: Router) {}
 
@@ -45,23 +45,23 @@ export class TasksComponent implements OnInit {
     this.invalidName = !name || name.length > 20;
   }
 
-  filteredList(filteredTasks: TaskModel[]) {
+  filteredList(filteredTasks: SessionModel[]) {
     this.filteredTasks = filteredTasks;
   }
 
-  get sessionsToShow() {
+  get sessionsToShow(): SessionModel[] {
     return this.filteredTasks ? this.filteredTasks : this.taskList;
   }
 
   orderTasks(taskList: TaskModel[]) {
     const newTaskList: SessionModel[] = [];
-    taskList.forEach(task => {
+    taskList.forEach((task, index) => {
       if (newTaskList.some(session => session.name === task.session)) {
         newTaskList.forEach(session => {
           if (session.name === task.session) { session.addTask(task); }
         });
       } else {
-        newTaskList.push(new SessionModel().deserialize({name: task.session, tasks: [task]}));
+        newTaskList.push(new SessionModel().deserialize({id: index, name: task.session, project: this.project.id, tasks: [task]}));
       }
     });
     return newTaskList;

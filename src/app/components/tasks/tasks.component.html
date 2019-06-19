@@ -9,7 +9,7 @@
   <workito-new-task-button
     [projectId]="project.id"
     redirectOnCreate="true"
-    classes="is-info is-large"
+    classes="is-large is-white has-text-info"
   ></workito-new-task-button>
 
   <workito-panel
@@ -26,10 +26,7 @@
 
   <ng-template #taskListTemplate>
     <div *ngFor="let session of sessionsToShow">
-      <div>{{ session.name | date:'fullDate' }} || <span>{{ session.getTotalHours | date:'HH:mm:ss' }}</span></div>
-      <div *ngFor="let task of session.tasks">
-        <workito-task-item [task]="task"></workito-task-item>
-      </div>
+      <workito-session-item [session]="session"></workito-session-item>
     </div>
   </ng-template>
 
