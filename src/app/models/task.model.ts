@@ -60,28 +60,16 @@ export class TaskModel implements Deserialize {
       return totalTime;
     }
 
-    get running(): boolean {
+    get running() {
       return this.status === 'running';
     }
 
-    get pause(): boolean {
+    get pause() {
       return this.status === 'pause';
     }
 
-    get stop(): boolean {
+    get stop() {
       return this.status === 'stop';
-    }
-
-    get getId(): string {
-      return this.id;
-    }
-
-    get getUid(): string {
-      return this.uid;
-    }
-
-    get getSession(): string {
-      return this.session;
     }
 
     private saveLastTimeEntry() {

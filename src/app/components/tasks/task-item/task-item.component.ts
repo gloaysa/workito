@@ -13,7 +13,7 @@ export class TaskItemComponent implements OnInit {
   constructor(private taskRunningService: TaskRunningService) { }
 
   ngOnInit(): void {
-    if (this.task && this.task.running) {
+    if (this.task && this.task.status === 'running') {
       this.taskRunningService.task = this.task;
     }
   }
