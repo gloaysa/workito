@@ -2,21 +2,21 @@
   <div class="buttons">
     <button class="button is-info is-large"
        (click)="createNewTask()"
-            [attr.disabled]="taskIsRunning ? true : null">
+            [attr.disabled]="!taskIsRunning ? null : true">
         <span class="icon">
           <i class="fas fa-play-circle"></i>
         </span>
     </button>
     <button class="button is-warning is-large"
        (click)="pauseTask()"
-            [attr.disabled]="!taskIsRunning ? true : null">
+            [attr.disabled]="taskIsRunning ? null : true">
         <span class="icon">
           <i class="fas fa-pause-circle"></i>
         </span>
     </button>
     <button class="button is-danger is-large"
        (click)="stopTask()"
-            [attr.disabled]="!taskIsRunning ? true : null">
+            [attr.disabled]="taskIsPaused || taskIsRunning ? null : true">
         <span class="icon">
           <i class="fas fa-stop-circle"></i>
         </span>

@@ -21,7 +21,8 @@ export class TaskRunningService {
         if (tasks.length) {
           const task = tasks[0];
           this.task = new TaskModel().deserialize(task);
-          if (this.task.status === 'running') { this.startShowTimerInterval(); }
+          if (this.task.running) { this.startShowTimerInterval(); }
+          if (this.task.pause) { this.pauseTimer(); }
         } else {
           this.stopTimer();
         }

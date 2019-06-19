@@ -26,7 +26,7 @@ export class TaskModel implements Deserialize {
     }
 
     startTimer() {
-      if (this.status !== 'running') {
+      if (!this.running) {
         this.status = 'running';
         this.timers.push({
             started: Date.now(),
@@ -36,21 +36,21 @@ export class TaskModel implements Deserialize {
     }
 
     pauseTimer() {
-      if (this.status === 'running') {
+      if (this.running) {
         this.status = 'pause';
         this.saveLastTimeEntry();
       }
     }
 
     stopTimer() {
-      if (this.status === 'running') {
+      if (this.running || this.pause) {
           this.status = 'stop';
           this.saveLastTimeEntry();
       }
     }
 
     get getTotalTime(): number {
-      if (this.status === 'running') {
+      if (this.running) {
         this.saveLastTimeEntry();
       }
       let totalTime = 0;
