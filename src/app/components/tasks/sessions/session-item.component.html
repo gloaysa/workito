@@ -1,0 +1,30 @@
+<div class="workito-session-item" *ngIf="session">
+  <div class="workito-session-item__wrapper panel-block">
+    <a class="link has-text-black has-icons-left" (click)="toggleIsOpen()">
+      <span class="icon">
+        <i *ngIf="!isOpen" class="fas fa-angle-down"></i>
+        <i *ngIf="isOpen" class="fas fa-angle-up"></i>
+      </span>
+    <ng-container class="is-text workito-task-item__name">
+      <ng-container *ngIf="isToday()">Hoy</ng-container>
+      <ng-container *ngIf="isYesterday()">Ayer</ng-container>
+      <ng-container *ngIf="!isToday() && !isYesterday()">{{session.name | date:'fullDate'}}</ng-container>
+    </ng-container>
+    </a>
+    <div class="is-pulled-right">
+      <ng-container>
+        {{ session.getTotalHours | date:'HH:mm:ss' }}
+        <workito-new-task-button
+          *ngIf="isToday()"
+          class="workito-session-item__new-task"
+          classes="is-small is-white has-text-info"
+          [projectId]="session.project"
+        ></workito-new-task-button>
+      </ng-container>
+    </div>
+  </div>
+  <div class="workito-session-item__tasks" workitoExpandable [expanded]="isOpen" *ngFor="let task of session.tasks">
+    <workito-task-item [task]="task"></workito-task-item>
+  </div>
+</div>
+

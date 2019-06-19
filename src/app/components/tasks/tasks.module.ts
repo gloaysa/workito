@@ -10,6 +10,8 @@ import {FormsModule} from '@angular/forms';
 import {ElementsModule} from '../elements/elements.module';
 import { TaskItemComponent } from './task-item/task-item.component';
 import { TaskTimerComponent } from './task-timer/task-timer.component';
+import {DirectivesModule} from '../../directives/directives.module';
+import { SessionItemComponent } from './sessions/session-item.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,8 @@ import { TaskTimerComponent } from './task-timer/task-timer.component';
     TaskDetailsComponent,
     TaskRunningComponent,
     TaskItemComponent,
-    TaskTimerComponent
+    TaskTimerComponent,
+    SessionItemComponent
   ],
   exports: [
     TasksComponent,
@@ -31,6 +34,7 @@ import { TaskTimerComponent } from './task-timer/task-timer.component';
     TasksRoutingModule,
     FormsModule,
     ElementsModule,
+    DirectivesModule,
   ]
 })
 export class TasksModule { }

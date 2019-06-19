@@ -3,8 +3,9 @@ import {Deserialize} from './deserialize.interface';
 import {addMilliseconds} from 'date-fns';
 
 export class SessionModel implements Deserialize {
-
+  id: number;
   name: string;
+  project: string;
   tasks: TaskModel[];
 
   get getTotalHours(): Date {

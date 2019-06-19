@@ -22,15 +22,19 @@ export class ExpandableDirective {
   }
 
   setNewHeight() {
-    const collapsedClass = 'workito-expandable-collapsed';
+    const closedClass = 'workito-expandable__close';
+    const openClass = 'workito-expandable__open';
     let newHeight;
 
     if (this.expand) {
       newHeight = this.getElementHeight();
-      this.renderer.removeClass(this.element.nativeElement, collapsedClass);
+      this.renderer.addClass(this.element.nativeElement, openClass);
+      this.renderer.removeClass(this.element.nativeElement, closedClass);
     } else {
       newHeight = 0;
-      this.renderer.addClass(this.element.nativeElement, collapsedClass);
+      this.renderer.addClass(this.element.nativeElement, closedClass);
+      this.renderer.removeClass(this.element.nativeElement, openClass);
+
     }
 
     this.element.nativeElement.style.height = newHeight + 'px';
