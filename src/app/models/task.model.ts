@@ -16,7 +16,7 @@ export class TaskModel implements Deserialize {
         started: number,
         stopped: number
     }[];
-    status: string;
+    protected status: string;
     comments: string;
     project: string;
     session: string;
@@ -58,6 +58,18 @@ export class TaskModel implements Deserialize {
         totalTime = totalTime + (timer.stopped - timer.started);
       });
       return totalTime;
+    }
+
+    get running() {
+      return this.status === 'running';
+    }
+
+    get pause() {
+      return this.status === 'pause';
+    }
+
+    get stop() {
+      return this.status === 'stop';
     }
 
     private saveLastTimeEntry() {

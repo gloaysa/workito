@@ -1,10 +1,26 @@
 <ng-container>
-  <a class="button"
-     [ngClass]="classes"
-     (click)="createNewTask()">
-    <span class="icon">
-      <i class="fas fa-play"></i>
-    </span>
-  </a>
+  <div class="buttons">
+    <button class="button is-info is-large"
+       (click)="createNewTask()"
+            [attr.disabled]="taskIsRunning ? true : null">
+        <span class="icon">
+          <i class="fas fa-play-circle"></i>
+        </span>
+    </button>
+    <button class="button is-warning is-large"
+       (click)="pauseTask()"
+            [attr.disabled]="!taskIsRunning ? true : null">
+        <span class="icon">
+          <i class="fas fa-pause-circle"></i>
+        </span>
+    </button>
+    <button class="button is-danger is-large"
+       (click)="stopTask()"
+            [attr.disabled]="!taskIsRunning ? true : null">
+        <span class="icon">
+          <i class="fas fa-stop-circle"></i>
+        </span>
+    </button>
+  </div>
 </ng-container>
 

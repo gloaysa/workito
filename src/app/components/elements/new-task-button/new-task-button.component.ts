@@ -25,7 +25,28 @@ export class NewTaskButtonComponent {
           this.router.navigate(['tasks/', task.project, task.id]);
         }
       });
+    } else if (this.taskRunningService.task.pause) {
+      this.taskRunningService.task.startTimer();
+      this.taskService.updateTask(this.taskRunningService.task);
     }
+  }
+
+  pauseTask() {
+    if (this.taskIsRunning) {
+      this.taskRunningService.task.pauseTimer();
+      this.taskService.updateTask(this.taskRunningService.task);
+    }
+  }
+
+  stopTask() {
+    if (this.taskIsRunning) {
+      this.taskRunningService.task.stopTimer();
+      this.taskService.updateTask(this.taskRunningService.task);
+    }
+  }
+
+  private get taskIsRunning(): boolean {
+    return this.taskRunningService.task && this.taskRunningService.task.running;
   }
 
 }
