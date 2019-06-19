@@ -14,12 +14,6 @@
     <div class="is-pulled-right">
       <ng-container>
         {{ session.getTotalHours | date:'HH:mm:ss' }}
-        <workito-new-task-button
-          *ngIf="isToday()"
-          class="workito-session-item__new-task"
-          classes="is-small is-white has-text-info"
-          [projectId]="session.project"
-        ></workito-new-task-button>
       </ng-container>
     </div>
   </div>

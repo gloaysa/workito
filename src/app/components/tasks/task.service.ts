@@ -47,7 +47,9 @@ export class TaskService {
   async createNewTask(projectId: string, name?: string): Promise<TaskModel> {
     if (!this.taskRunning && this.userService.currentUser) {
       const id = this.db.createId();
-      const task = new TaskModel(id, this.userService.currentUser.uid, projectId, name);
+      const newTask = {id, uid: this.userService.currentUser.uid, project: projectId};
+      const task = new TaskModel().deserialize(newTask);
+      if (name) { task.name = name; }
       task.startTimer();
       await this.db.collection('tasks').doc(task.id).set(TaskService.stringifyTask(task));
       return task;

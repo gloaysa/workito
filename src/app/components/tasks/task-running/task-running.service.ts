@@ -11,11 +11,17 @@ export class TaskRunningService {
   timerInterval: number;
 
   constructor(private afs: AngularFirestore) {
-    afs.collection('tasks', ref => ref.where('running', '==', true).limit(1)).valueChanges()
-      .subscribe((task: TaskModel[]) => {
-        if (task.length) {
-          this.task = new TaskModel(task[0].id, task[0].uid, task[0].project).deserialize(task[0]);
-          this.startShowTimerInterval();
+    afs.collection('tasks', ref => {
+      let query: firebase.firestore.Query = ref;
+      query = query.orderBy('status');
+      query = query.where('status', '<', 'stop').limit(1);
+      return query;
+    }).valueChanges()
+      .subscribe((tasks: TaskModel[]) => {
+        if (tasks.length) {
+          const task = tasks[0];
+          this.task = new TaskModel().deserialize(task);
+          if (this.task.status === 'running') { this.startShowTimerInterval(); }
         } else {
           this.stopTimer();
         }
@@ -29,8 +35,12 @@ export class TaskRunningService {
     }, 1000);
   }
 
-  stopTimer() {
-    this.task = null;
+  pauseTimer() {
     clearInterval(this.timerInterval);
+  }
+
+  stopTimer() {
+    clearInterval(this.timerInterval);
+    this.task = null;
   }
 }

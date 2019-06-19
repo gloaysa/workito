@@ -2,15 +2,11 @@ import { Deserialize } from './deserialize.interface';
 import {startOfDay} from 'date-fns';
 
 export class TaskModel implements Deserialize {
-    constructor(id: string, uid: string, projectId: string, name?: string) {
-        this.id = id;
-        this.uid = uid;
+    constructor() {
         this.createdAt = new Date();
         this.timers = [];
-        this.name = name || TaskModel.generateName();
-        this.project = projectId;
+        this.name = TaskModel.generateName();
         this.session = startOfDay(new Date()).toString();
-        this.stopped = true;
     }
     id: string;
     uid: string;
@@ -20,8 +16,7 @@ export class TaskModel implements Deserialize {
         started: number,
         stopped: number
     }[];
-    running: boolean;
-    stopped: boolean;
+    status: string;
     comments: string;
     project: string;
     session: string;
@@ -31,9 +26,8 @@ export class TaskModel implements Deserialize {
     }
 
     startTimer() {
-      if (!this.running) {
-        this.stopped = false;
-        this.running = true;
+      if (this.status !== 'running') {
+        this.status = 'running';
         this.timers.push({
             started: Date.now(),
             stopped: 0
@@ -41,25 +35,34 @@ export class TaskModel implements Deserialize {
       }
     }
 
+    pauseTimer() {
+      if (this.status === 'running') {
+        this.status = 'pause';
+        this.saveLastTimeEntry();
+      }
+    }
+
     stopTimer() {
-      if (this.running) {
-          this.running = false;
-          this.stopped = true;
-          const lastIndex = this.timers.length - 1;
-          this.timers[lastIndex].stopped = Date.now();
+      if (this.status === 'running') {
+          this.status = 'stop';
+          this.saveLastTimeEntry();
       }
     }
 
     get getTotalTime(): number {
-      if (this.running) {
-        const lastIndex = this.timers.length - 1;
-        this.timers[lastIndex].stopped = Date.now();
+      if (this.status === 'running') {
+        this.saveLastTimeEntry();
       }
       let totalTime = 0;
       this.timers.forEach(timer => {
         totalTime = totalTime + (timer.stopped - timer.started);
       });
       return totalTime;
+    }
+
+    private saveLastTimeEntry() {
+      const lastIndex = this.timers.length - 1;
+      this.timers[lastIndex].stopped = Date.now();
     }
 
     deserialize(input: any): this {
