@@ -15,6 +15,7 @@
   </a>
 
   <div class="is-pulled-right">
+    <span *ngIf="showSession">{{ task.session | date:'mediumDate'}}</span>
     <workito-task-timer [task]="task" class="content workito-task-item__counter"></workito-task-timer>
   </div>
 

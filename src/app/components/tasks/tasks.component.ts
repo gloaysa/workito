@@ -7,6 +7,7 @@ import {AutoUnsubscribe} from '../../decorators/autoUnsubscribe.decorator';
 import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {SessionModel} from '../../models/session.model';
+import {addMilliseconds} from 'date-fns';
 
 @Component({
   selector: 'workito-tasks',
@@ -17,18 +18,19 @@ import {SessionModel} from '../../models/session.model';
 export class TasksComponent implements OnInit {
   @Input() project: ProjectModel;
   private tasksSubscription: Subscription;
-  private taskList: SessionModel[];
+  private taskList: TaskModel[];
+  private sessionList: SessionModel[];
   private invalidName: boolean;
 
-  filteredTasks: SessionModel[];
+  filteredTasks: TaskModel[];
 
   constructor(private taskService: TaskService, private router: Router) {}
 
   ngOnInit(): void {
     this.taskService.getTasks(this.project.id).then(() => {
       this.tasksSubscription = this.taskService.tasks$.subscribe(tasks => {
-        const taskList = tasks.map(task => new TaskModel().deserialize(task));
-        this.taskList = this.orderTasks(taskList);
+        this.taskList = tasks.map(task => new TaskModel().deserialize(task));
+        this.sessionList = this.orderTasks(this.taskList);
       });
     });
   }
@@ -45,12 +47,18 @@ export class TasksComponent implements OnInit {
     this.invalidName = !name || name.length > 20;
   }
 
-  filteredList(filteredTasks: SessionModel[]) {
+  filteredList(filteredTasks: TaskModel[]) {
     this.filteredTasks = filteredTasks;
   }
 
-  get sessionsToShow(): SessionModel[] {
-    return this.filteredTasks ? this.filteredTasks : this.taskList;
+  get filteredTaskTotalHours(): Date {
+    let totalTime = 0;
+    if (this.filteredTasks) {
+      this.filteredTasks.forEach(task => {
+        totalTime += task.getTotalTime;
+      });
+    }
+    return addMilliseconds(new Date(0, 0, 0), totalTime);
   }
 
   orderTasks(taskList: TaskModel[]) {

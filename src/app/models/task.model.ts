@@ -43,10 +43,10 @@ export class TaskModel implements Deserialize {
     }
 
     stopTimer() {
-      this.status = 'stop';
       if (this.running) {
-          this.saveLastTimeEntry();
+        this.saveLastTimeEntry();
       }
+      this.status = 'stop';
     }
 
     get getTotalTime(): number {

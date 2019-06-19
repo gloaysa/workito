@@ -12,9 +12,7 @@
     </ng-container>
     </a>
     <div class="is-pulled-right">
-      <ng-container>
         {{ session.getTotalHours | date:'HH:mm:ss' }}
-      </ng-container>
     </div>
   </div>
   <div class="workito-session-item__tasks" workitoExpandable [expanded]="isOpen" *ngFor="let task of session.tasks">

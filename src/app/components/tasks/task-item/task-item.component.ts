@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TaskModel } from '../../../models/task.model';
-import {TaskRunningService} from '../task-running/task-running.service';
 
 @Component({
   selector: 'workito-task-item',
@@ -9,13 +8,12 @@ import {TaskRunningService} from '../task-running/task-running.service';
 })
 export class TaskItemComponent implements OnInit {
   @Input() task: TaskModel;
+  @Input() showSession: boolean;
 
-  constructor(private taskRunningService: TaskRunningService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    if (this.task && this.task.status === 'running') {
-      this.taskRunningService.task = this.task;
-    }
+
   }
 
 }

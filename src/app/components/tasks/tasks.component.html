@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container workito-tasks">
   <!-- BACK BUTTON -->
   <a class="button" routerLink="/projects">
       <span class="icon">
@@ -24,9 +24,24 @@
   ></workito-panel>
 
   <ng-template #taskListTemplate>
-    <div *ngFor="let session of sessionsToShow">
-      <workito-session-item [session]="session"></workito-session-item>
-    </div>
+    <ng-container *ngIf="!filteredTasks">
+      <ng-container *ngFor="let session of sessionList">
+        <workito-session-item [session]="session"></workito-session-item>
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="filteredTasks">
+      <div class="workito-session-item__wrapper panel-block">
+        <span>Tiempo total</span>
+        <div class="is-pulled-right">
+          {{ filteredTaskTotalHours | date:'HH:mm:ss' }}
+        </div>
+      </div>
+
+      <ng-container *ngFor="let task of filteredTasks">
+        <workito-task-item [task]="task" [showSession]="true"></workito-task-item>
+      </ng-container>
+    </ng-container>
   </ng-template>
 
 </div>

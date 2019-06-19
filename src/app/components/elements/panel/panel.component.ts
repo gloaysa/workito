@@ -39,7 +39,7 @@ export class PanelComponent {
       const filteredList = this.modelList.filter(model => model[this.searchCriteria].match(searchReg));
       this.whenSearch.emit(filteredList);
     } else {
-      this.whenSearch.emit(this.modelList);
+      this.whenSearch.emit(null);
     }
   }
 
