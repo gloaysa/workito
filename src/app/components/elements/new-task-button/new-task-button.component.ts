@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {TaskService} from '../../tasks/task.service';
 import {Router} from '@angular/router';
 import {TaskRunningService} from '../../tasks/task-running/task-running.service';
+import {TaskModel} from '../../../models/task.model';
 
 @Component({
   selector: 'workito-new-task-button',
@@ -9,6 +10,7 @@ import {TaskRunningService} from '../../tasks/task-running/task-running.service'
   styleUrls: ['./new-task-button.component.scss']
 })
 export class NewTaskButtonComponent {
+  @Input() task: TaskModel;
   @Input() projectId: string;
   @Input() classes: string;
   @Input() redirectOnCreate: boolean;
@@ -26,27 +28,35 @@ export class NewTaskButtonComponent {
         }
       });
     } else if (this.taskRunningService.task.pause) {
-      this.taskRunningService.task.startTimer();
+      this.currentTask.startTimer();
       this.taskService.updateTask(this.taskRunningService.task);
     }
   }
 
   pauseTask() {
     if (this.taskIsRunning) {
-      this.taskRunningService.task.pauseTimer();
+      this.currentTask.pauseTimer();
       this.taskService.updateTask(this.taskRunningService.task);
     }
   }
 
   stopTask() {
-    if (this.taskIsRunning) {
-      this.taskRunningService.task.stopTimer();
+    if (this.taskIsRunning || this.taskIsPaused) {
+      this.currentTask.stopTimer();
       this.taskService.updateTask(this.taskRunningService.task);
     }
   }
 
   private get taskIsRunning(): boolean {
-    return this.taskRunningService.task && this.taskRunningService.task.running;
+    return this.currentTask && this.currentTask.running;
+  }
+
+  private get taskIsPaused(): boolean {
+    return this.currentTask && this.currentTask.pause;
+  }
+
+  private get currentTask(): TaskModel {
+    return this.task ? this.task : this.taskRunningService.task;
   }
 
 }
