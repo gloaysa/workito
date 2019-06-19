@@ -8,18 +8,18 @@ export class TaskModel implements Deserialize {
         this.name = TaskModel.generateName();
         this.session = startOfDay(new Date()).toString();
     }
+    id: string;
+    uid: string;
+    createdAt: Date;
     name: string;
+    timers: {
+        started: number,
+        stopped: number
+    }[];
+    protected status: string;
     comments: string;
     project: string;
-    protected id: string;
-    protected uid: string;
-    protected status: string;
-    protected session: string;
-    protected createdAt: Date;
-    protected timers: {
-          started: number,
-          stopped: number
-      }[];
+    session: string;
 
     static generateName(): string {
         return Intl.DateTimeFormat('es-ES').format(new Date());
