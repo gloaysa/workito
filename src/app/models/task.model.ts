@@ -43,8 +43,8 @@ export class TaskModel implements Deserialize {
     }
 
     stopTimer() {
-      if (this.running || this.pause) {
-          this.status = 'stop';
+      this.status = 'stop';
+      if (this.running) {
           this.saveLastTimeEntry();
       }
     }
