@@ -19,7 +19,7 @@ export class NewTaskButtonComponent {
   constructor(private taskService: TaskService, private taskRunningService: TaskRunningService, private router: Router) {}
 
   createNewTask() {
-    if (!this.taskRunningService.task) {
+    if (!this.currentTask) {
       this.taskService.createNewTask(this.projectId).then(task => {
         this.whenCreateNewTask.emit(task);
         task.startTimer();
@@ -27,23 +27,23 @@ export class NewTaskButtonComponent {
           this.router.navigate(['tasks/', task.project, task.id]);
         }
       });
-    } else if (this.taskRunningService.task.pause) {
+    } else if (!this.currentTask.running) {
       this.currentTask.startTimer();
-      this.taskService.updateTask(this.taskRunningService.task);
+      this.taskService.updateTask(this.currentTask);
     }
   }
 
   pauseTask() {
     if (this.taskIsRunning) {
       this.currentTask.pauseTimer();
-      this.taskService.updateTask(this.taskRunningService.task);
+      this.taskService.updateTask(this.currentTask);
     }
   }
 
   stopTask() {
     if (this.taskIsRunning || this.taskIsPaused) {
       this.currentTask.stopTimer();
-      this.taskService.updateTask(this.taskRunningService.task);
+      this.taskService.updateTask(this.currentTask);
     }
   }
 

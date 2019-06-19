@@ -1,11 +1,13 @@
 <div class="columns is-centered" *ngIf="task">
   <div class="column is-full-mobile is-half-tablet is-one-quarter-desktop">
+    <!-- BUTTON BACK --->
     <a class="button" [routerLink]="['/projects', task.project]">
       <span class="icon">
         <i class="fas fa-chevron-left"></i>
       </span>
     </a>
 
+    <!-- START CARD --->
     <div class="workito-task-details card">
       <div class="field card-header-title workito-task-details__name">
         <p class="control has-icons-left">
@@ -20,33 +22,36 @@
           </span>
         </p>
       </div>
+      <!-- START ITEMS (timer, buttons, comments....) --->
       <div class="card-content">
-        <workito-task-timer [task]="task" class="workito-task-details__counter"></workito-task-timer>
-        <div class="content">
-          <h4 class="is-title">Comentarios</h4>
-          <label for="comments">
-            <textarea
-              id="comments"
-              class="workito-task-details__textarea textarea"
-              name="comments"
-              [(ngModel)]="task.comments">
-            </textarea>
-          </label>
+        <div class="field is-grouped is-grouped-centered">
+          <div class="control">
+            <workito-task-timer [task]="task" class="workito-task-details__counter"></workito-task-timer>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="control">
+            <workito-new-task-button classes="is-centered" [task]="task"></workito-new-task-button>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="control">
+            <label for="comments">
+              <textarea
+                id="comments"
+                class="workito-task-details__textarea textarea"
+                name="comments"
+                placeholder="Comentarios"
+                [(ngModel)]="task.comments">
+              </textarea>
+            </label>
+          </div>
         </div>
       </div>
       <footer class="card-footer">
-        <a class="card-footer-item button is-info" *ngIf="!task.running"
-           (click)="startTimer()"
-        >Empezar
-        </a>
-        <a class="card-footer-item button is-danger" *ngIf="task.running && !task.stopped"
-           (click)="stopTimer()"
-        >Parar
-        </a>
-        <a class="card-footer-item button is-danger"
-           (click)="deleteTask()"
-        >Borrar sesión
-        </a>
+
       </footer>
     </div>
   </div>

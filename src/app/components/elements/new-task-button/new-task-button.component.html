@@ -1,5 +1,5 @@
 <ng-container>
-  <div class="buttons">
+  <div class="buttons" [ngClass]="classes">
     <button class="button is-info is-large"
        (click)="createNewTask()"
             [attr.disabled]="!taskIsRunning ? null : true">
