@@ -36,7 +36,7 @@ export class TasksComponent implements OnInit {
   createNewTask(name: string) {
     if (name) {
       this.taskService.createNewTask(this.project.id, name).then(task => {
-        this.router.navigate(['tasks/', task.project, task.id]);
+        this.router.navigate(['tasks/', task.project, task.getId]);
       });
     }
   }
@@ -56,12 +56,12 @@ export class TasksComponent implements OnInit {
   orderTasks(taskList: TaskModel[]) {
     const newTaskList: SessionModel[] = [];
     taskList.forEach((task, index) => {
-      if (newTaskList.some(session => session.name === task.session)) {
+      if (newTaskList.some(session => session.name === task.getSession)) {
         newTaskList.forEach(session => {
-          if (session.name === task.session) { session.addTask(task); }
+          if (session.name === task.getSession) { session.addTask(task); }
         });
       } else {
-        newTaskList.push(new SessionModel().deserialize({id: index, name: task.session, project: this.project.id, tasks: [task]}));
+        newTaskList.push(new SessionModel().deserialize({id: index, name: task.getSession, project: this.project.id, tasks: [task]}));
       }
     });
     return newTaskList;

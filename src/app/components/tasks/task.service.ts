@@ -51,16 +51,16 @@ export class TaskService {
       const task = new TaskModel().deserialize(newTask);
       if (name) { task.name = name; }
       task.startTimer();
-      await this.db.collection('tasks').doc(task.id).set(TaskService.stringifyTask(task));
+      await this.db.collection('tasks').doc(task.getId).set(TaskService.stringifyTask(task));
       return task;
     }
   }
 
   async updateTask(task: TaskModel): Promise<void> {
-    await this.db.collection('tasks').doc(task.id).update(TaskService.stringifyTask(task));
+    await this.db.collection('tasks').doc(task.getId).update(TaskService.stringifyTask(task));
   }
 
   async destroyTask(task: TaskModel): Promise<void> {
-    await this.db.collection('tasks').doc(task.id).delete();
+    await this.db.collection('tasks').doc(task.getId).delete();
   }
 }

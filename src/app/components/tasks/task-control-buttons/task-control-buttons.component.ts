@@ -24,7 +24,7 @@ export class TaskControlButtonsComponent {
         this.whenCreateNewTask.emit(task);
         task.startTimer();
         if (this.redirectOnCreate) {
-          this.router.navigate(['tasks/', task.project, task.id]);
+          this.router.navigate(['tasks/', task.project, task.getId]);
         }
       });
     } else if (!this.currentTask.running) {
