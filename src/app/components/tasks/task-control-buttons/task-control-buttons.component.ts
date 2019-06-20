@@ -13,6 +13,7 @@ export class TaskControlButtonsComponent {
   @Input() task: TaskModel;
   @Input() projectId: string;
   @Input() classes: string;
+  @Input() buttonClass: string;
   @Input() redirectOnCreate: boolean;
   @Output() whenCreateNewTask = new EventEmitter();
 
