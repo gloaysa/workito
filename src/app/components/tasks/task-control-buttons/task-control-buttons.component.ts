@@ -28,7 +28,7 @@ export class TaskControlButtonsComponent {
           this.router.navigate(['tasks/', task.project, task.id]);
         }
       });
-    } else if (!this.currentTask.running) {
+    } else if (!this.currentTask.running && !this.taskRunningService.task) {
       this.currentTask.startTimer();
       this.taskService.updateTask(this.currentTask);
     }
