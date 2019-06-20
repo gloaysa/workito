@@ -3,10 +3,10 @@ import {startOfDay} from 'date-fns';
 
 export class TaskModel implements Deserialize {
     constructor() {
-        this.createdAt = new Date();
+        this.createdAt = new Date(new Date().toUTCString());
         this.timers = [];
         this.name = TaskModel.generateName();
-        this.session = startOfDay(new Date()).toString();
+        this.session = startOfDay(new Date()).toUTCString();
     }
     id: string;
     uid: string;
