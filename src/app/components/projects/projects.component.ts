@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ProjectsService} from './projects.service';
 import {ProjectModel} from '../../models/project.model';
 import {AutoUnsubscribe} from '../../decorators/autoUnsubscribe.decorator';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'workito-projects',
@@ -12,13 +13,14 @@ import {AutoUnsubscribe} from '../../decorators/autoUnsubscribe.decorator';
 export class ProjectsComponent implements OnInit {
   private invalidName: boolean;
 
+  private projectSub: Subscription;
   projectList: ProjectModel[];
   filteredProjects: ProjectModel[];
 
   constructor(private projectsService: ProjectsService) { }
 
   ngOnInit(): void {
-    this.projectsService.projectsCollection.valueChanges()
+    this.projectSub = this.projectsService.projectsCollection.valueChanges()
       .subscribe(projects => this.projectList = this.createAndSortProjects(projects));
   }
 

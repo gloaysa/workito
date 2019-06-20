@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 
 import { TaskModel } from '../../models/task.model';
 import { UserService } from '../users/user.service';
@@ -10,12 +10,14 @@ import {switchMap} from 'rxjs/operators';
 @Injectable() @AutoUnsubscribe
 export class TaskService {
 
-  tasks$: Observable<TaskModel[]>;
+  private tasksColl: AngularFirestoreCollection;
   private projectFilter$: BehaviorSubject<string|null>;
   private dateFilter$: BehaviorSubject<string|null>;
+  tasks$: Observable<TaskModel[]>;
   taskRunning: TaskModel;
 
   constructor(private db: AngularFirestore, private userService: UserService) {
+    this.tasksColl = db.collection('users').doc(userService.currentUser.uid).collection('tasks');
     this.projectFilter$ = new BehaviorSubject(null);
     this.dateFilter$ = new BehaviorSubject(null);
 
@@ -24,7 +26,7 @@ export class TaskService {
       this.dateFilter$
     ).pipe(
       switchMap(([projectId, date]) => {
-        return db.collection<TaskModel>('tasks', ref => {
+        return db.collection('users').doc(userService.currentUser.uid).collection<TaskModel>('tasks', ref => {
           let query: firebase.firestore.Query = ref;
           if (projectId) { query = query.where('project', '==', projectId); }
           if (date) { query = query.where('createdAt', '==', date); }
@@ -51,16 +53,16 @@ export class TaskService {
       const task = new TaskModel().deserialize(newTask);
       if (name) { task.name = name; }
       task.startTimer();
-      await this.db.collection('tasks').doc(task.id).set(TaskService.stringifyTask(task));
+      await this.tasksColl.doc(task.id).set(TaskService.stringifyTask(task));
       return task;
     }
   }
 
   async updateTask(task: TaskModel): Promise<void> {
-    await this.db.collection('tasks').doc(task.id).update(TaskService.stringifyTask(task));
+    await this.tasksColl.doc(task.id).update(TaskService.stringifyTask(task));
   }
 
   async destroyTask(task: TaskModel): Promise<void> {
-    await this.db.collection('tasks').doc(task.id).delete();
+    await this.tasksColl.doc(task.id).delete();
   }
 }

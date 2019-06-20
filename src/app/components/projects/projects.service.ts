@@ -5,10 +5,11 @@ import {Subscription} from 'rxjs';
 import {UserService} from '../users/user.service';
 import {TaskModel} from '../../models/task.model';
 import {ProjectModel} from '../../models/project.model';
+import {AutoUnsubscribe} from '../../decorators/autoUnsubscribe.decorator';
 
 @Injectable({
   providedIn: 'root'
-})
+}) @AutoUnsubscribe
 export class ProjectsService {
   private projectsCollectionSubscription: Subscription;
 
@@ -16,7 +17,7 @@ export class ProjectsService {
   public projects: ProjectModel[];
 
   constructor(private db: AngularFirestore, private userService: UserService) {
-    this.projectsCollection = db.collection<TaskModel[]>('projects', ref =>
+    this.projectsCollection = db.collection('users').doc(userService.currentUser.uid).collection<TaskModel[]>('projects', ref =>
       ref.orderBy('updatedAt', 'desc'));
 
     this.getProjects();
