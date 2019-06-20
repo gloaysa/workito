@@ -28,7 +28,17 @@
               placeholder="{{inputPlaceholder}}">
           </div>
           <div class="control">
-            <button class="button is-info is-small" [ngClass]="{'is-danger': formInvalid(form) }">
+            <a *ngIf="!nameInput"
+               [ngClass]="{'is-danger': formInvalid(form) }"
+               class="button is-info is-small"
+               (click)="toggleAddButton()">
+              <span class="icon has-text-light">
+                <i class="fas fa-minus"></i>
+              </span>
+            </a>
+            <button *ngIf="nameInput"
+                    class="button is-info is-small"
+                    [ngClass]="{'is-danger': formInvalid(form) }">
               <span class="icon has-text-light">
                 <i class="fas fa-plus"></i>
               </span>

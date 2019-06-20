@@ -47,6 +47,7 @@ export class PanelComponent {
     if (this.nameInput && !this.invalidInput) {
       this.whenCreateItem.emit(form.value.name);
       form.reset();
+      this.toggleAddButton();
     }
   }
 
@@ -59,7 +60,7 @@ export class PanelComponent {
     if (!nameForm.pristine && !nameForm.valid) {
       return true;
     }
-    if (this.invalidInput) {
+    if (!nameForm.pristine && this.invalidInput) {
       return true;
     }
   }
