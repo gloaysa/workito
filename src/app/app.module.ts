@@ -24,6 +24,7 @@ import {ProjectsService} from './components/projects/projects.service';
 import {ElementsModule} from './components/elements/elements.module';
 import {TaskRunningService} from './components/tasks/task-running/task-running.service';
 import {DirectivesModule} from './directives/directives.module';
+import {NotificationService} from './components/elements/notifications/notification.service';
 
 const SpanishConfig = new DateFnsConfigurationService();
 SpanishConfig.setLocale(esLocale);
@@ -57,7 +58,8 @@ SpanishConfig.setLocale(esLocale);
     TaskRunningService,
     AuthService,
     UserService,
-    ProjectsService
+    ProjectsService,
+    NotificationService
     ],
   bootstrap: [AppComponent]
 })

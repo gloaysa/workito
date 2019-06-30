@@ -1,0 +1,10 @@
+<div *ngIf="src">
+  <ng-container *ngFor="let notification of src.notifications.reverse()" >
+    <div [@notify]="'show'">
+      <div class="notification {{notification.classes}}">
+        <button class="delete" (click)="src.destroy(notification)"></button>
+        <span>{{notification.message}}</span>
+      </div>
+    </div>
+  </ng-container>
+</div>

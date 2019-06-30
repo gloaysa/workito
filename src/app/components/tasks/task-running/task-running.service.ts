@@ -5,6 +5,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {UserService} from '../../users/user.service';
 import {AutoUnsubscribe} from '../../../decorators/autoUnsubscribe.decorator';
 import {Observable, Subscription} from 'rxjs';
+import {NotificationService} from '../../elements/notifications/notification.service';
 
 
 @Injectable() @AutoUnsubscribe
@@ -15,7 +16,7 @@ export class TaskRunningService {
   showTimer: Date;
   timerInterval: number;
 
-  constructor(private afs: AngularFirestore, userService: UserService) {
+  constructor(private afs: AngularFirestore, userService: UserService, private notification: NotificationService) {
     this.taskColl = afs.collection('users').doc(userService.currentUser.uid).collection<TaskModel>('tasks', ref => {
       let query: firebase.firestore.Query = ref;
       query = query.orderBy('status');
@@ -45,6 +46,7 @@ export class TaskRunningService {
 
   pauseTimer() {
     clearInterval(this.timerInterval);
+    this.notification.notify('Task pausada', 'is-warning');
   }
 
   stopTimer() {
