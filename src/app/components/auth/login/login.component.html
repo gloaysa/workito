@@ -1,31 +1,48 @@
 <div class="section">
   <div class="container">
-    <div class="field">
-      <p class="control has-icons-left has-icons-right">
-        <input class="input" [(ngModel)]="user" type="email" placeholder="Email" id="email">
-        <span class="icon is-small is-left">
-      <i class="fa fa-envelope"></i>
-    </span>
-        <span class="icon is-small is-right">
-      <i class="fa fa-check"></i>
-    </span>
-      </p>
-    </div>
-    <div class="field">
-      <p class="control has-icons-left">
-        <input class="input" type="password" [(ngModel)]="password" placeholder="Password" id="password">
-        <span class="icon is-small is-left">
-      <i class="fa fa-lock"></i>
-    </span>
-      </p>
-    </div>
-    <div class="field">
-      <p class="control">
-        <button class="button is-success" (click)="login()">
-          Login
-        </button>
-      </p>
-    </div>
+    <form #loginForm="ngForm" (ngSubmit)="login(email, password)">
+      <div class="field">
+        <p class="control has-icons-left has-icons-right">
+          <label for="email" class="label is-sr-only">Enter email</label>
+          <input class="input" type="email"
+                 [ngClass]="{'is-danger': emailInvalid(email) || email.touched && email.invalid}"
+                 required="true"
+                 ngModel
+                 name="email"
+                 #email="ngModel"
+                 placeholder="Email" id="email">
+          <span class="icon is-small is-left">
+            <i class="fa fa-envelope"></i>
+          </span>
+        </p>
+      </div>
+      <div class="field">
+        <p class="control has-icons-left">
+          <label for="password" class="label is-sr-only">Enter password</label>
+          <input class="input" type="password"
+                 [ngClass]="{'is-danger': password.touched && password.invalid}"
+                 required="true"
+                 ngModel
+                 name="password"
+                 #password="ngModel"
+                 placeholder="Password" id="password">
+          <span class="icon is-small is-left">
+            <i class="fa fa-lock"></i>
+          </span>
+        </p>
+      </div>
+      <div class="field">
+        <p class="control">
+          <button
+            [ngClass]="{'is-danger': loginForm.touched && loginForm.invalid }"
+            [disabled]="loginForm.invalid"
+            class="button is-success">
+            Login
+          </button>
+        </p>
+      </div>
+    </form>
+
   </div>
   <p>
     <a class="link" routerLink="/sign-up">O regístrate</a>

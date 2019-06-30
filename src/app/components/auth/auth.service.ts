@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
 
@@ -10,27 +9,22 @@ import {UserModel} from '../../models/user.model';
 export class AuthService {
   constructor(
     private afAuth: AngularFireAuth,
-    private router: Router,
     private db: AngularFirestore
   ) {}
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string): Promise<void> {
     await this.afAuth.auth.signInWithEmailAndPassword(email, password)
         .catch(error => console.log('error', error.message));
-    this.router.navigate(['user']);
   }
 
-  signUp(email: string, password: string) {
-    this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+  async signUp(email: string, password: string): Promise<void> {
+    await this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then(data => this.createNewUserInDataBase(data.user))
       .catch(error => console.log(error.message));
-
-    this.router.navigate(['user']);
   }
 
   async logout() {
     await this.afAuth.auth.signOut();
-    this.router.navigate(['user/auth']);
   }
 
   private createNewUserInDataBase(user: User) {

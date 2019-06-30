@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'workito-sign-up',
@@ -10,13 +11,15 @@ export class SignUpComponent implements OnInit {
   user: string;
   password: string;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
   }
 
   signUp() {
-    this.authService.signUp(this.user, this.password);
+    this.authService.signUp(this.user, this.password).then(() => {
+      this.router.navigate(['user']);
+    });
   }
 
 }

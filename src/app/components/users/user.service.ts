@@ -33,13 +33,13 @@ export class UserService {
 
   }
 
-  login(email, password) {
-    this.authService.login(email, password);
+  async login(email, password) {
+    await this.authService.login(email, password);
   }
 
-  logout() {
+  async logout() {
     this.userLogged = false;
-    this.authService.logout();
+    await this.authService.logout();
     this.user = null;
   }
 
