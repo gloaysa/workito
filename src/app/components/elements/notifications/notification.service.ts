@@ -9,7 +9,7 @@ export class NotificationService {
 
   public notifier = new NotifierService();
 
-  public notify(message: string, notificationClass: string, duration: number = 8000): void {
+  public notify(message: string, notificationClass: string, duration: number = 2000): void {
 
     const notification: NotificationModel = new NotificationModel(message, notificationClass);
 

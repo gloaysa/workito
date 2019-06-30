@@ -42,6 +42,7 @@ export class TaskRunningService {
     this.timerInterval = setInterval(() => {
       this.showTimer = addSeconds(this.showTimer, 1);
     }, 1000);
+    this.notification.notify('Task empezada', 'is-info');
   }
 
   pauseTimer() {
@@ -52,5 +53,6 @@ export class TaskRunningService {
   stopTimer() {
     clearInterval(this.timerInterval);
     this.task = null;
+    this.notification.notify('Task parada', 'is-danger');
   }
 }

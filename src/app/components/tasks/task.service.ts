@@ -6,6 +6,7 @@ import { UserService } from '../users/user.service';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import { AutoUnsubscribe } from '../../decorators/autoUnsubscribe.decorator';
 import {switchMap} from 'rxjs/operators';
+import {NotificationService} from '../elements/notifications/notification.service';
 
 @Injectable() @AutoUnsubscribe
 export class TaskService {
@@ -16,7 +17,7 @@ export class TaskService {
   tasks$: Observable<TaskModel[]>;
   taskRunning: TaskModel;
 
-  constructor(private db: AngularFirestore, private userService: UserService) {
+  constructor(private db: AngularFirestore, private userService: UserService, private notification: NotificationService) {
     this.tasksColl = db.collection('users').doc(userService.currentUser.uid).collection('tasks');
     this.projectFilter$ = new BehaviorSubject(null);
     this.dateFilter$ = new BehaviorSubject(null);
@@ -59,10 +60,13 @@ export class TaskService {
   }
 
   async updateTask(task: TaskModel): Promise<void> {
-    await this.tasksColl.doc(task.id).update(TaskService.stringifyTask(task));
+    await this.tasksColl.doc(task.id).update(TaskService.stringifyTask(task))
+      .catch(err => this.notification.notify(err.message, 'is-danger'));
   }
 
   async destroyTask(task: TaskModel): Promise<void> {
-    await this.tasksColl.doc(task.id).delete();
+    await this.tasksColl.doc(task.id).delete()
+      .then(() => this.notification.notify('Task eliminada', 'is-success'))
+      .catch(err => this.notification.notify(err.message, 'is-danger'));
   }
 }
